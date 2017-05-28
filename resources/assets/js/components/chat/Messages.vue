@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="chat__messages">
+    <div class="uk-margin">
         <chat-message></chat-message>
     </div>
 </template>

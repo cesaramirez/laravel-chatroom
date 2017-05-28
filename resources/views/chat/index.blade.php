@@ -1,14 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8">
-            <chat></chat>
-        </div>
-        <div class="col-md-4">
-            <chat-users></chat-users>
+    <div class="uk-container">
+        {{-- <flash></flash> --}}
+        <div uk-grid>
+            <div class="uk-width-2-3@m uk-margin-top">
+                <chat></chat>
+            </div>
+            <div class="uk-width-1-3@m uk-margin-top">
+                <chat-users></chat-users>
+            </div>
         </div>
     </div>
-</div>
 @endsection

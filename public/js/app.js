@@ -1644,45 +1644,36 @@ module.exports = function spread(callback) {
 /***/ }),
 /* 28 */,
 /* 29 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_uikit__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_uikit___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_uikit__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_uikit_dist_js_uikit_icons__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_uikit_dist_js_uikit_icons___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_uikit_dist_js_uikit_icons__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
 
 
-window._ = __webpack_require__(32);
 
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
- * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
 
-try {
-  window.$ = window.jQuery = __webpack_require__(31);
 
-  __webpack_require__(30);
-} catch (e) {}
+__WEBPACK_IMPORTED_MODULE_0_uikit___default.a.use(__WEBPACK_IMPORTED_MODULE_1_uikit_dist_js_uikit_icons___default.a);
 
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
-
-window.axios = __webpack_require__(10);
+window._ = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a;
+window.axios = __WEBPACK_IMPORTED_MODULE_3_axios___default.a;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
-/**
- * Next we will register the CSRF Token as a common header with Axios so that
- * all outgoing HTTP requests automatically have it attached. This is just
- * a simple convenience so we don't have to attach every token manually.
- */
 
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 /**
@@ -1701,2389 +1692,7 @@ if (token) {
 // });
 
 /***/ }),
-/* 30 */
-/***/ (function(module, exports) {
-
-/*!
- * Bootstrap v3.3.7 (http://getbootstrap.com)
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under the MIT license
- */
-
-if (typeof jQuery === 'undefined') {
-  throw new Error('Bootstrap\'s JavaScript requires jQuery')
-}
-
-+function ($) {
-  'use strict';
-  var version = $.fn.jquery.split(' ')[0].split('.')
-  if ((version[0] < 2 && version[1] < 9) || (version[0] == 1 && version[1] == 9 && version[2] < 1) || (version[0] > 3)) {
-    throw new Error('Bootstrap\'s JavaScript requires jQuery version 1.9.1 or higher, but lower than version 4')
-  }
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: transition.js v3.3.7
- * http://getbootstrap.com/javascript/#transitions
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
-  // ============================================================
-
-  function transitionEnd() {
-    var el = document.createElement('bootstrap')
-
-    var transEndEventNames = {
-      WebkitTransition : 'webkitTransitionEnd',
-      MozTransition    : 'transitionend',
-      OTransition      : 'oTransitionEnd otransitionend',
-      transition       : 'transitionend'
-    }
-
-    for (var name in transEndEventNames) {
-      if (el.style[name] !== undefined) {
-        return { end: transEndEventNames[name] }
-      }
-    }
-
-    return false // explicit for ie8 (  ._.)
-  }
-
-  // http://blog.alexmaccaw.com/css-transitions
-  $.fn.emulateTransitionEnd = function (duration) {
-    var called = false
-    var $el = this
-    $(this).one('bsTransitionEnd', function () { called = true })
-    var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
-    setTimeout(callback, duration)
-    return this
-  }
-
-  $(function () {
-    $.support.transition = transitionEnd()
-
-    if (!$.support.transition) return
-
-    $.event.special.bsTransitionEnd = {
-      bindType: $.support.transition.end,
-      delegateType: $.support.transition.end,
-      handle: function (e) {
-        if ($(e.target).is(this)) return e.handleObj.handler.apply(this, arguments)
-      }
-    }
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: alert.js v3.3.7
- * http://getbootstrap.com/javascript/#alerts
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // ALERT CLASS DEFINITION
-  // ======================
-
-  var dismiss = '[data-dismiss="alert"]'
-  var Alert   = function (el) {
-    $(el).on('click', dismiss, this.close)
-  }
-
-  Alert.VERSION = '3.3.7'
-
-  Alert.TRANSITION_DURATION = 150
-
-  Alert.prototype.close = function (e) {
-    var $this    = $(this)
-    var selector = $this.attr('data-target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
-    }
-
-    var $parent = $(selector === '#' ? [] : selector)
-
-    if (e) e.preventDefault()
-
-    if (!$parent.length) {
-      $parent = $this.closest('.alert')
-    }
-
-    $parent.trigger(e = $.Event('close.bs.alert'))
-
-    if (e.isDefaultPrevented()) return
-
-    $parent.removeClass('in')
-
-    function removeElement() {
-      // detach from parent, fire event then clean up data
-      $parent.detach().trigger('closed.bs.alert').remove()
-    }
-
-    $.support.transition && $parent.hasClass('fade') ?
-      $parent
-        .one('bsTransitionEnd', removeElement)
-        .emulateTransitionEnd(Alert.TRANSITION_DURATION) :
-      removeElement()
-  }
-
-
-  // ALERT PLUGIN DEFINITION
-  // =======================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.alert')
-
-      if (!data) $this.data('bs.alert', (data = new Alert(this)))
-      if (typeof option == 'string') data[option].call($this)
-    })
-  }
-
-  var old = $.fn.alert
-
-  $.fn.alert             = Plugin
-  $.fn.alert.Constructor = Alert
-
-
-  // ALERT NO CONFLICT
-  // =================
-
-  $.fn.alert.noConflict = function () {
-    $.fn.alert = old
-    return this
-  }
-
-
-  // ALERT DATA-API
-  // ==============
-
-  $(document).on('click.bs.alert.data-api', dismiss, Alert.prototype.close)
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: button.js v3.3.7
- * http://getbootstrap.com/javascript/#buttons
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // BUTTON PUBLIC CLASS DEFINITION
-  // ==============================
-
-  var Button = function (element, options) {
-    this.$element  = $(element)
-    this.options   = $.extend({}, Button.DEFAULTS, options)
-    this.isLoading = false
-  }
-
-  Button.VERSION  = '3.3.7'
-
-  Button.DEFAULTS = {
-    loadingText: 'loading...'
-  }
-
-  Button.prototype.setState = function (state) {
-    var d    = 'disabled'
-    var $el  = this.$element
-    var val  = $el.is('input') ? 'val' : 'html'
-    var data = $el.data()
-
-    state += 'Text'
-
-    if (data.resetText == null) $el.data('resetText', $el[val]())
-
-    // push to event loop to allow forms to submit
-    setTimeout($.proxy(function () {
-      $el[val](data[state] == null ? this.options[state] : data[state])
-
-      if (state == 'loadingText') {
-        this.isLoading = true
-        $el.addClass(d).attr(d, d).prop(d, true)
-      } else if (this.isLoading) {
-        this.isLoading = false
-        $el.removeClass(d).removeAttr(d).prop(d, false)
-      }
-    }, this), 0)
-  }
-
-  Button.prototype.toggle = function () {
-    var changed = true
-    var $parent = this.$element.closest('[data-toggle="buttons"]')
-
-    if ($parent.length) {
-      var $input = this.$element.find('input')
-      if ($input.prop('type') == 'radio') {
-        if ($input.prop('checked')) changed = false
-        $parent.find('.active').removeClass('active')
-        this.$element.addClass('active')
-      } else if ($input.prop('type') == 'checkbox') {
-        if (($input.prop('checked')) !== this.$element.hasClass('active')) changed = false
-        this.$element.toggleClass('active')
-      }
-      $input.prop('checked', this.$element.hasClass('active'))
-      if (changed) $input.trigger('change')
-    } else {
-      this.$element.attr('aria-pressed', !this.$element.hasClass('active'))
-      this.$element.toggleClass('active')
-    }
-  }
-
-
-  // BUTTON PLUGIN DEFINITION
-  // ========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.button')
-      var options = typeof option == 'object' && option
-
-      if (!data) $this.data('bs.button', (data = new Button(this, options)))
-
-      if (option == 'toggle') data.toggle()
-      else if (option) data.setState(option)
-    })
-  }
-
-  var old = $.fn.button
-
-  $.fn.button             = Plugin
-  $.fn.button.Constructor = Button
-
-
-  // BUTTON NO CONFLICT
-  // ==================
-
-  $.fn.button.noConflict = function () {
-    $.fn.button = old
-    return this
-  }
-
-
-  // BUTTON DATA-API
-  // ===============
-
-  $(document)
-    .on('click.bs.button.data-api', '[data-toggle^="button"]', function (e) {
-      var $btn = $(e.target).closest('.btn')
-      Plugin.call($btn, 'toggle')
-      if (!($(e.target).is('input[type="radio"], input[type="checkbox"]'))) {
-        // Prevent double click on radios, and the double selections (so cancellation) on checkboxes
-        e.preventDefault()
-        // The target component still receive the focus
-        if ($btn.is('input,button')) $btn.trigger('focus')
-        else $btn.find('input:visible,button:visible').first().trigger('focus')
-      }
-    })
-    .on('focus.bs.button.data-api blur.bs.button.data-api', '[data-toggle^="button"]', function (e) {
-      $(e.target).closest('.btn').toggleClass('focus', /^focus(in)?$/.test(e.type))
-    })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: carousel.js v3.3.7
- * http://getbootstrap.com/javascript/#carousel
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // CAROUSEL CLASS DEFINITION
-  // =========================
-
-  var Carousel = function (element, options) {
-    this.$element    = $(element)
-    this.$indicators = this.$element.find('.carousel-indicators')
-    this.options     = options
-    this.paused      = null
-    this.sliding     = null
-    this.interval    = null
-    this.$active     = null
-    this.$items      = null
-
-    this.options.keyboard && this.$element.on('keydown.bs.carousel', $.proxy(this.keydown, this))
-
-    this.options.pause == 'hover' && !('ontouchstart' in document.documentElement) && this.$element
-      .on('mouseenter.bs.carousel', $.proxy(this.pause, this))
-      .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
-  }
-
-  Carousel.VERSION  = '3.3.7'
-
-  Carousel.TRANSITION_DURATION = 600
-
-  Carousel.DEFAULTS = {
-    interval: 5000,
-    pause: 'hover',
-    wrap: true,
-    keyboard: true
-  }
-
-  Carousel.prototype.keydown = function (e) {
-    if (/input|textarea/i.test(e.target.tagName)) return
-    switch (e.which) {
-      case 37: this.prev(); break
-      case 39: this.next(); break
-      default: return
-    }
-
-    e.preventDefault()
-  }
-
-  Carousel.prototype.cycle = function (e) {
-    e || (this.paused = false)
-
-    this.interval && clearInterval(this.interval)
-
-    this.options.interval
-      && !this.paused
-      && (this.interval = setInterval($.proxy(this.next, this), this.options.interval))
-
-    return this
-  }
-
-  Carousel.prototype.getItemIndex = function (item) {
-    this.$items = item.parent().children('.item')
-    return this.$items.index(item || this.$active)
-  }
-
-  Carousel.prototype.getItemForDirection = function (direction, active) {
-    var activeIndex = this.getItemIndex(active)
-    var willWrap = (direction == 'prev' && activeIndex === 0)
-                || (direction == 'next' && activeIndex == (this.$items.length - 1))
-    if (willWrap && !this.options.wrap) return active
-    var delta = direction == 'prev' ? -1 : 1
-    var itemIndex = (activeIndex + delta) % this.$items.length
-    return this.$items.eq(itemIndex)
-  }
-
-  Carousel.prototype.to = function (pos) {
-    var that        = this
-    var activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'))
-
-    if (pos > (this.$items.length - 1) || pos < 0) return
-
-    if (this.sliding)       return this.$element.one('slid.bs.carousel', function () { that.to(pos) }) // yes, "slid"
-    if (activeIndex == pos) return this.pause().cycle()
-
-    return this.slide(pos > activeIndex ? 'next' : 'prev', this.$items.eq(pos))
-  }
-
-  Carousel.prototype.pause = function (e) {
-    e || (this.paused = true)
-
-    if (this.$element.find('.next, .prev').length && $.support.transition) {
-      this.$element.trigger($.support.transition.end)
-      this.cycle(true)
-    }
-
-    this.interval = clearInterval(this.interval)
-
-    return this
-  }
-
-  Carousel.prototype.next = function () {
-    if (this.sliding) return
-    return this.slide('next')
-  }
-
-  Carousel.prototype.prev = function () {
-    if (this.sliding) return
-    return this.slide('prev')
-  }
-
-  Carousel.prototype.slide = function (type, next) {
-    var $active   = this.$element.find('.item.active')
-    var $next     = next || this.getItemForDirection(type, $active)
-    var isCycling = this.interval
-    var direction = type == 'next' ? 'left' : 'right'
-    var that      = this
-
-    if ($next.hasClass('active')) return (this.sliding = false)
-
-    var relatedTarget = $next[0]
-    var slideEvent = $.Event('slide.bs.carousel', {
-      relatedTarget: relatedTarget,
-      direction: direction
-    })
-    this.$element.trigger(slideEvent)
-    if (slideEvent.isDefaultPrevented()) return
-
-    this.sliding = true
-
-    isCycling && this.pause()
-
-    if (this.$indicators.length) {
-      this.$indicators.find('.active').removeClass('active')
-      var $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)])
-      $nextIndicator && $nextIndicator.addClass('active')
-    }
-
-    var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
-    if ($.support.transition && this.$element.hasClass('slide')) {
-      $next.addClass(type)
-      $next[0].offsetWidth // force reflow
-      $active.addClass(direction)
-      $next.addClass(direction)
-      $active
-        .one('bsTransitionEnd', function () {
-          $next.removeClass([type, direction].join(' ')).addClass('active')
-          $active.removeClass(['active', direction].join(' '))
-          that.sliding = false
-          setTimeout(function () {
-            that.$element.trigger(slidEvent)
-          }, 0)
-        })
-        .emulateTransitionEnd(Carousel.TRANSITION_DURATION)
-    } else {
-      $active.removeClass('active')
-      $next.addClass('active')
-      this.sliding = false
-      this.$element.trigger(slidEvent)
-    }
-
-    isCycling && this.cycle()
-
-    return this
-  }
-
-
-  // CAROUSEL PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.carousel')
-      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
-      var action  = typeof option == 'string' ? option : options.slide
-
-      if (!data) $this.data('bs.carousel', (data = new Carousel(this, options)))
-      if (typeof option == 'number') data.to(option)
-      else if (action) data[action]()
-      else if (options.interval) data.pause().cycle()
-    })
-  }
-
-  var old = $.fn.carousel
-
-  $.fn.carousel             = Plugin
-  $.fn.carousel.Constructor = Carousel
-
-
-  // CAROUSEL NO CONFLICT
-  // ====================
-
-  $.fn.carousel.noConflict = function () {
-    $.fn.carousel = old
-    return this
-  }
-
-
-  // CAROUSEL DATA-API
-  // =================
-
-  var clickHandler = function (e) {
-    var href
-    var $this   = $(this)
-    var $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) // strip for ie7
-    if (!$target.hasClass('carousel')) return
-    var options = $.extend({}, $target.data(), $this.data())
-    var slideIndex = $this.attr('data-slide-to')
-    if (slideIndex) options.interval = false
-
-    Plugin.call($target, options)
-
-    if (slideIndex) {
-      $target.data('bs.carousel').to(slideIndex)
-    }
-
-    e.preventDefault()
-  }
-
-  $(document)
-    .on('click.bs.carousel.data-api', '[data-slide]', clickHandler)
-    .on('click.bs.carousel.data-api', '[data-slide-to]', clickHandler)
-
-  $(window).on('load', function () {
-    $('[data-ride="carousel"]').each(function () {
-      var $carousel = $(this)
-      Plugin.call($carousel, $carousel.data())
-    })
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: collapse.js v3.3.7
- * http://getbootstrap.com/javascript/#collapse
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-/* jshint latedef: false */
-
-+function ($) {
-  'use strict';
-
-  // COLLAPSE PUBLIC CLASS DEFINITION
-  // ================================
-
-  var Collapse = function (element, options) {
-    this.$element      = $(element)
-    this.options       = $.extend({}, Collapse.DEFAULTS, options)
-    this.$trigger      = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
-                           '[data-toggle="collapse"][data-target="#' + element.id + '"]')
-    this.transitioning = null
-
-    if (this.options.parent) {
-      this.$parent = this.getParent()
-    } else {
-      this.addAriaAndCollapsedClass(this.$element, this.$trigger)
-    }
-
-    if (this.options.toggle) this.toggle()
-  }
-
-  Collapse.VERSION  = '3.3.7'
-
-  Collapse.TRANSITION_DURATION = 350
-
-  Collapse.DEFAULTS = {
-    toggle: true
-  }
-
-  Collapse.prototype.dimension = function () {
-    var hasWidth = this.$element.hasClass('width')
-    return hasWidth ? 'width' : 'height'
-  }
-
-  Collapse.prototype.show = function () {
-    if (this.transitioning || this.$element.hasClass('in')) return
-
-    var activesData
-    var actives = this.$parent && this.$parent.children('.panel').children('.in, .collapsing')
-
-    if (actives && actives.length) {
-      activesData = actives.data('bs.collapse')
-      if (activesData && activesData.transitioning) return
-    }
-
-    var startEvent = $.Event('show.bs.collapse')
-    this.$element.trigger(startEvent)
-    if (startEvent.isDefaultPrevented()) return
-
-    if (actives && actives.length) {
-      Plugin.call(actives, 'hide')
-      activesData || actives.data('bs.collapse', null)
-    }
-
-    var dimension = this.dimension()
-
-    this.$element
-      .removeClass('collapse')
-      .addClass('collapsing')[dimension](0)
-      .attr('aria-expanded', true)
-
-    this.$trigger
-      .removeClass('collapsed')
-      .attr('aria-expanded', true)
-
-    this.transitioning = 1
-
-    var complete = function () {
-      this.$element
-        .removeClass('collapsing')
-        .addClass('collapse in')[dimension]('')
-      this.transitioning = 0
-      this.$element
-        .trigger('shown.bs.collapse')
-    }
-
-    if (!$.support.transition) return complete.call(this)
-
-    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
-
-    this.$element
-      .one('bsTransitionEnd', $.proxy(complete, this))
-      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)[dimension](this.$element[0][scrollSize])
-  }
-
-  Collapse.prototype.hide = function () {
-    if (this.transitioning || !this.$element.hasClass('in')) return
-
-    var startEvent = $.Event('hide.bs.collapse')
-    this.$element.trigger(startEvent)
-    if (startEvent.isDefaultPrevented()) return
-
-    var dimension = this.dimension()
-
-    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
-
-    this.$element
-      .addClass('collapsing')
-      .removeClass('collapse in')
-      .attr('aria-expanded', false)
-
-    this.$trigger
-      .addClass('collapsed')
-      .attr('aria-expanded', false)
-
-    this.transitioning = 1
-
-    var complete = function () {
-      this.transitioning = 0
-      this.$element
-        .removeClass('collapsing')
-        .addClass('collapse')
-        .trigger('hidden.bs.collapse')
-    }
-
-    if (!$.support.transition) return complete.call(this)
-
-    this.$element
-      [dimension](0)
-      .one('bsTransitionEnd', $.proxy(complete, this))
-      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)
-  }
-
-  Collapse.prototype.toggle = function () {
-    this[this.$element.hasClass('in') ? 'hide' : 'show']()
-  }
-
-  Collapse.prototype.getParent = function () {
-    return $(this.options.parent)
-      .find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]')
-      .each($.proxy(function (i, element) {
-        var $element = $(element)
-        this.addAriaAndCollapsedClass(getTargetFromTrigger($element), $element)
-      }, this))
-      .end()
-  }
-
-  Collapse.prototype.addAriaAndCollapsedClass = function ($element, $trigger) {
-    var isOpen = $element.hasClass('in')
-
-    $element.attr('aria-expanded', isOpen)
-    $trigger
-      .toggleClass('collapsed', !isOpen)
-      .attr('aria-expanded', isOpen)
-  }
-
-  function getTargetFromTrigger($trigger) {
-    var href
-    var target = $trigger.attr('data-target')
-      || (href = $trigger.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
-
-    return $(target)
-  }
-
-
-  // COLLAPSE PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.collapse')
-      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
-
-      if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false
-      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.collapse
-
-  $.fn.collapse             = Plugin
-  $.fn.collapse.Constructor = Collapse
-
-
-  // COLLAPSE NO CONFLICT
-  // ====================
-
-  $.fn.collapse.noConflict = function () {
-    $.fn.collapse = old
-    return this
-  }
-
-
-  // COLLAPSE DATA-API
-  // =================
-
-  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
-    var $this   = $(this)
-
-    if (!$this.attr('data-target')) e.preventDefault()
-
-    var $target = getTargetFromTrigger($this)
-    var data    = $target.data('bs.collapse')
-    var option  = data ? 'toggle' : $this.data()
-
-    Plugin.call($target, option)
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: dropdown.js v3.3.7
- * http://getbootstrap.com/javascript/#dropdowns
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // DROPDOWN CLASS DEFINITION
-  // =========================
-
-  var backdrop = '.dropdown-backdrop'
-  var toggle   = '[data-toggle="dropdown"]'
-  var Dropdown = function (element) {
-    $(element).on('click.bs.dropdown', this.toggle)
-  }
-
-  Dropdown.VERSION = '3.3.7'
-
-  function getParent($this) {
-    var selector = $this.attr('data-target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
-    }
-
-    var $parent = selector && $(selector)
-
-    return $parent && $parent.length ? $parent : $this.parent()
-  }
-
-  function clearMenus(e) {
-    if (e && e.which === 3) return
-    $(backdrop).remove()
-    $(toggle).each(function () {
-      var $this         = $(this)
-      var $parent       = getParent($this)
-      var relatedTarget = { relatedTarget: this }
-
-      if (!$parent.hasClass('open')) return
-
-      if (e && e.type == 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return
-
-      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
-
-      if (e.isDefaultPrevented()) return
-
-      $this.attr('aria-expanded', 'false')
-      $parent.removeClass('open').trigger($.Event('hidden.bs.dropdown', relatedTarget))
-    })
-  }
-
-  Dropdown.prototype.toggle = function (e) {
-    var $this = $(this)
-
-    if ($this.is('.disabled, :disabled')) return
-
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
-
-    clearMenus()
-
-    if (!isActive) {
-      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
-        // if mobile we use a backdrop because click events don't delegate
-        $(document.createElement('div'))
-          .addClass('dropdown-backdrop')
-          .insertAfter($(this))
-          .on('click', clearMenus)
-      }
-
-      var relatedTarget = { relatedTarget: this }
-      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
-
-      if (e.isDefaultPrevented()) return
-
-      $this
-        .trigger('focus')
-        .attr('aria-expanded', 'true')
-
-      $parent
-        .toggleClass('open')
-        .trigger($.Event('shown.bs.dropdown', relatedTarget))
-    }
-
-    return false
-  }
-
-  Dropdown.prototype.keydown = function (e) {
-    if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
-
-    var $this = $(this)
-
-    e.preventDefault()
-    e.stopPropagation()
-
-    if ($this.is('.disabled, :disabled')) return
-
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
-
-    if (!isActive && e.which != 27 || isActive && e.which == 27) {
-      if (e.which == 27) $parent.find(toggle).trigger('focus')
-      return $this.trigger('click')
-    }
-
-    var desc = ' li:not(.disabled):visible a'
-    var $items = $parent.find('.dropdown-menu' + desc)
-
-    if (!$items.length) return
-
-    var index = $items.index(e.target)
-
-    if (e.which == 38 && index > 0)                 index--         // up
-    if (e.which == 40 && index < $items.length - 1) index++         // down
-    if (!~index)                                    index = 0
-
-    $items.eq(index).trigger('focus')
-  }
-
-
-  // DROPDOWN PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.dropdown')
-
-      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
-      if (typeof option == 'string') data[option].call($this)
-    })
-  }
-
-  var old = $.fn.dropdown
-
-  $.fn.dropdown             = Plugin
-  $.fn.dropdown.Constructor = Dropdown
-
-
-  // DROPDOWN NO CONFLICT
-  // ====================
-
-  $.fn.dropdown.noConflict = function () {
-    $.fn.dropdown = old
-    return this
-  }
-
-
-  // APPLY TO STANDARD DROPDOWN ELEMENTS
-  // ===================================
-
-  $(document)
-    .on('click.bs.dropdown.data-api', clearMenus)
-    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
-    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
-    .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
-    .on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: modal.js v3.3.7
- * http://getbootstrap.com/javascript/#modals
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // MODAL CLASS DEFINITION
-  // ======================
-
-  var Modal = function (element, options) {
-    this.options             = options
-    this.$body               = $(document.body)
-    this.$element            = $(element)
-    this.$dialog             = this.$element.find('.modal-dialog')
-    this.$backdrop           = null
-    this.isShown             = null
-    this.originalBodyPad     = null
-    this.scrollbarWidth      = 0
-    this.ignoreBackdropClick = false
-
-    if (this.options.remote) {
-      this.$element
-        .find('.modal-content')
-        .load(this.options.remote, $.proxy(function () {
-          this.$element.trigger('loaded.bs.modal')
-        }, this))
-    }
-  }
-
-  Modal.VERSION  = '3.3.7'
-
-  Modal.TRANSITION_DURATION = 300
-  Modal.BACKDROP_TRANSITION_DURATION = 150
-
-  Modal.DEFAULTS = {
-    backdrop: true,
-    keyboard: true,
-    show: true
-  }
-
-  Modal.prototype.toggle = function (_relatedTarget) {
-    return this.isShown ? this.hide() : this.show(_relatedTarget)
-  }
-
-  Modal.prototype.show = function (_relatedTarget) {
-    var that = this
-    var e    = $.Event('show.bs.modal', { relatedTarget: _relatedTarget })
-
-    this.$element.trigger(e)
-
-    if (this.isShown || e.isDefaultPrevented()) return
-
-    this.isShown = true
-
-    this.checkScrollbar()
-    this.setScrollbar()
-    this.$body.addClass('modal-open')
-
-    this.escape()
-    this.resize()
-
-    this.$element.on('click.dismiss.bs.modal', '[data-dismiss="modal"]', $.proxy(this.hide, this))
-
-    this.$dialog.on('mousedown.dismiss.bs.modal', function () {
-      that.$element.one('mouseup.dismiss.bs.modal', function (e) {
-        if ($(e.target).is(that.$element)) that.ignoreBackdropClick = true
-      })
-    })
-
-    this.backdrop(function () {
-      var transition = $.support.transition && that.$element.hasClass('fade')
-
-      if (!that.$element.parent().length) {
-        that.$element.appendTo(that.$body) // don't move modals dom position
-      }
-
-      that.$element
-        .show()
-        .scrollTop(0)
-
-      that.adjustDialog()
-
-      if (transition) {
-        that.$element[0].offsetWidth // force reflow
-      }
-
-      that.$element.addClass('in')
-
-      that.enforceFocus()
-
-      var e = $.Event('shown.bs.modal', { relatedTarget: _relatedTarget })
-
-      transition ?
-        that.$dialog // wait for modal to slide in
-          .one('bsTransitionEnd', function () {
-            that.$element.trigger('focus').trigger(e)
-          })
-          .emulateTransitionEnd(Modal.TRANSITION_DURATION) :
-        that.$element.trigger('focus').trigger(e)
-    })
-  }
-
-  Modal.prototype.hide = function (e) {
-    if (e) e.preventDefault()
-
-    e = $.Event('hide.bs.modal')
-
-    this.$element.trigger(e)
-
-    if (!this.isShown || e.isDefaultPrevented()) return
-
-    this.isShown = false
-
-    this.escape()
-    this.resize()
-
-    $(document).off('focusin.bs.modal')
-
-    this.$element
-      .removeClass('in')
-      .off('click.dismiss.bs.modal')
-      .off('mouseup.dismiss.bs.modal')
-
-    this.$dialog.off('mousedown.dismiss.bs.modal')
-
-    $.support.transition && this.$element.hasClass('fade') ?
-      this.$element
-        .one('bsTransitionEnd', $.proxy(this.hideModal, this))
-        .emulateTransitionEnd(Modal.TRANSITION_DURATION) :
-      this.hideModal()
-  }
-
-  Modal.prototype.enforceFocus = function () {
-    $(document)
-      .off('focusin.bs.modal') // guard against infinite focus loop
-      .on('focusin.bs.modal', $.proxy(function (e) {
-        if (document !== e.target &&
-            this.$element[0] !== e.target &&
-            !this.$element.has(e.target).length) {
-          this.$element.trigger('focus')
-        }
-      }, this))
-  }
-
-  Modal.prototype.escape = function () {
-    if (this.isShown && this.options.keyboard) {
-      this.$element.on('keydown.dismiss.bs.modal', $.proxy(function (e) {
-        e.which == 27 && this.hide()
-      }, this))
-    } else if (!this.isShown) {
-      this.$element.off('keydown.dismiss.bs.modal')
-    }
-  }
-
-  Modal.prototype.resize = function () {
-    if (this.isShown) {
-      $(window).on('resize.bs.modal', $.proxy(this.handleUpdate, this))
-    } else {
-      $(window).off('resize.bs.modal')
-    }
-  }
-
-  Modal.prototype.hideModal = function () {
-    var that = this
-    this.$element.hide()
-    this.backdrop(function () {
-      that.$body.removeClass('modal-open')
-      that.resetAdjustments()
-      that.resetScrollbar()
-      that.$element.trigger('hidden.bs.modal')
-    })
-  }
-
-  Modal.prototype.removeBackdrop = function () {
-    this.$backdrop && this.$backdrop.remove()
-    this.$backdrop = null
-  }
-
-  Modal.prototype.backdrop = function (callback) {
-    var that = this
-    var animate = this.$element.hasClass('fade') ? 'fade' : ''
-
-    if (this.isShown && this.options.backdrop) {
-      var doAnimate = $.support.transition && animate
-
-      this.$backdrop = $(document.createElement('div'))
-        .addClass('modal-backdrop ' + animate)
-        .appendTo(this.$body)
-
-      this.$element.on('click.dismiss.bs.modal', $.proxy(function (e) {
-        if (this.ignoreBackdropClick) {
-          this.ignoreBackdropClick = false
-          return
-        }
-        if (e.target !== e.currentTarget) return
-        this.options.backdrop == 'static'
-          ? this.$element[0].focus()
-          : this.hide()
-      }, this))
-
-      if (doAnimate) this.$backdrop[0].offsetWidth // force reflow
-
-      this.$backdrop.addClass('in')
-
-      if (!callback) return
-
-      doAnimate ?
-        this.$backdrop
-          .one('bsTransitionEnd', callback)
-          .emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) :
-        callback()
-
-    } else if (!this.isShown && this.$backdrop) {
-      this.$backdrop.removeClass('in')
-
-      var callbackRemove = function () {
-        that.removeBackdrop()
-        callback && callback()
-      }
-      $.support.transition && this.$element.hasClass('fade') ?
-        this.$backdrop
-          .one('bsTransitionEnd', callbackRemove)
-          .emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) :
-        callbackRemove()
-
-    } else if (callback) {
-      callback()
-    }
-  }
-
-  // these following methods are used to handle overflowing modals
-
-  Modal.prototype.handleUpdate = function () {
-    this.adjustDialog()
-  }
-
-  Modal.prototype.adjustDialog = function () {
-    var modalIsOverflowing = this.$element[0].scrollHeight > document.documentElement.clientHeight
-
-    this.$element.css({
-      paddingLeft:  !this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '',
-      paddingRight: this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : ''
-    })
-  }
-
-  Modal.prototype.resetAdjustments = function () {
-    this.$element.css({
-      paddingLeft: '',
-      paddingRight: ''
-    })
-  }
-
-  Modal.prototype.checkScrollbar = function () {
-    var fullWindowWidth = window.innerWidth
-    if (!fullWindowWidth) { // workaround for missing window.innerWidth in IE8
-      var documentElementRect = document.documentElement.getBoundingClientRect()
-      fullWindowWidth = documentElementRect.right - Math.abs(documentElementRect.left)
-    }
-    this.bodyIsOverflowing = document.body.clientWidth < fullWindowWidth
-    this.scrollbarWidth = this.measureScrollbar()
-  }
-
-  Modal.prototype.setScrollbar = function () {
-    var bodyPad = parseInt((this.$body.css('padding-right') || 0), 10)
-    this.originalBodyPad = document.body.style.paddingRight || ''
-    if (this.bodyIsOverflowing) this.$body.css('padding-right', bodyPad + this.scrollbarWidth)
-  }
-
-  Modal.prototype.resetScrollbar = function () {
-    this.$body.css('padding-right', this.originalBodyPad)
-  }
-
-  Modal.prototype.measureScrollbar = function () { // thx walsh
-    var scrollDiv = document.createElement('div')
-    scrollDiv.className = 'modal-scrollbar-measure'
-    this.$body.append(scrollDiv)
-    var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth
-    this.$body[0].removeChild(scrollDiv)
-    return scrollbarWidth
-  }
-
-
-  // MODAL PLUGIN DEFINITION
-  // =======================
-
-  function Plugin(option, _relatedTarget) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.modal')
-      var options = $.extend({}, Modal.DEFAULTS, $this.data(), typeof option == 'object' && option)
-
-      if (!data) $this.data('bs.modal', (data = new Modal(this, options)))
-      if (typeof option == 'string') data[option](_relatedTarget)
-      else if (options.show) data.show(_relatedTarget)
-    })
-  }
-
-  var old = $.fn.modal
-
-  $.fn.modal             = Plugin
-  $.fn.modal.Constructor = Modal
-
-
-  // MODAL NO CONFLICT
-  // =================
-
-  $.fn.modal.noConflict = function () {
-    $.fn.modal = old
-    return this
-  }
-
-
-  // MODAL DATA-API
-  // ==============
-
-  $(document).on('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
-    var $this   = $(this)
-    var href    = $this.attr('href')
-    var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))) // strip for ie7
-    var option  = $target.data('bs.modal') ? 'toggle' : $.extend({ remote: !/#/.test(href) && href }, $target.data(), $this.data())
-
-    if ($this.is('a')) e.preventDefault()
-
-    $target.one('show.bs.modal', function (showEvent) {
-      if (showEvent.isDefaultPrevented()) return // only register focus restorer if modal will actually get shown
-      $target.one('hidden.bs.modal', function () {
-        $this.is(':visible') && $this.trigger('focus')
-      })
-    })
-    Plugin.call($target, option, this)
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: tooltip.js v3.3.7
- * http://getbootstrap.com/javascript/#tooltip
- * Inspired by the original jQuery.tipsy by Jason Frame
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // TOOLTIP PUBLIC CLASS DEFINITION
-  // ===============================
-
-  var Tooltip = function (element, options) {
-    this.type       = null
-    this.options    = null
-    this.enabled    = null
-    this.timeout    = null
-    this.hoverState = null
-    this.$element   = null
-    this.inState    = null
-
-    this.init('tooltip', element, options)
-  }
-
-  Tooltip.VERSION  = '3.3.7'
-
-  Tooltip.TRANSITION_DURATION = 150
-
-  Tooltip.DEFAULTS = {
-    animation: true,
-    placement: 'top',
-    selector: false,
-    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
-    trigger: 'hover focus',
-    title: '',
-    delay: 0,
-    html: false,
-    container: false,
-    viewport: {
-      selector: 'body',
-      padding: 0
-    }
-  }
-
-  Tooltip.prototype.init = function (type, element, options) {
-    this.enabled   = true
-    this.type      = type
-    this.$element  = $(element)
-    this.options   = this.getOptions(options)
-    this.$viewport = this.options.viewport && $($.isFunction(this.options.viewport) ? this.options.viewport.call(this, this.$element) : (this.options.viewport.selector || this.options.viewport))
-    this.inState   = { click: false, hover: false, focus: false }
-
-    if (this.$element[0] instanceof document.constructor && !this.options.selector) {
-      throw new Error('`selector` option must be specified when initializing ' + this.type + ' on the window.document object!')
-    }
-
-    var triggers = this.options.trigger.split(' ')
-
-    for (var i = triggers.length; i--;) {
-      var trigger = triggers[i]
-
-      if (trigger == 'click') {
-        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
-      } else if (trigger != 'manual') {
-        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
-        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
-
-        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
-        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
-      }
-    }
-
-    this.options.selector ?
-      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
-      this.fixTitle()
-  }
-
-  Tooltip.prototype.getDefaults = function () {
-    return Tooltip.DEFAULTS
-  }
-
-  Tooltip.prototype.getOptions = function (options) {
-    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
-
-    if (options.delay && typeof options.delay == 'number') {
-      options.delay = {
-        show: options.delay,
-        hide: options.delay
-      }
-    }
-
-    return options
-  }
-
-  Tooltip.prototype.getDelegateOptions = function () {
-    var options  = {}
-    var defaults = this.getDefaults()
-
-    this._options && $.each(this._options, function (key, value) {
-      if (defaults[key] != value) options[key] = value
-    })
-
-    return options
-  }
-
-  Tooltip.prototype.enter = function (obj) {
-    var self = obj instanceof this.constructor ?
-      obj : $(obj.currentTarget).data('bs.' + this.type)
-
-    if (!self) {
-      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
-      $(obj.currentTarget).data('bs.' + this.type, self)
-    }
-
-    if (obj instanceof $.Event) {
-      self.inState[obj.type == 'focusin' ? 'focus' : 'hover'] = true
-    }
-
-    if (self.tip().hasClass('in') || self.hoverState == 'in') {
-      self.hoverState = 'in'
-      return
-    }
-
-    clearTimeout(self.timeout)
-
-    self.hoverState = 'in'
-
-    if (!self.options.delay || !self.options.delay.show) return self.show()
-
-    self.timeout = setTimeout(function () {
-      if (self.hoverState == 'in') self.show()
-    }, self.options.delay.show)
-  }
-
-  Tooltip.prototype.isInStateTrue = function () {
-    for (var key in this.inState) {
-      if (this.inState[key]) return true
-    }
-
-    return false
-  }
-
-  Tooltip.prototype.leave = function (obj) {
-    var self = obj instanceof this.constructor ?
-      obj : $(obj.currentTarget).data('bs.' + this.type)
-
-    if (!self) {
-      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
-      $(obj.currentTarget).data('bs.' + this.type, self)
-    }
-
-    if (obj instanceof $.Event) {
-      self.inState[obj.type == 'focusout' ? 'focus' : 'hover'] = false
-    }
-
-    if (self.isInStateTrue()) return
-
-    clearTimeout(self.timeout)
-
-    self.hoverState = 'out'
-
-    if (!self.options.delay || !self.options.delay.hide) return self.hide()
-
-    self.timeout = setTimeout(function () {
-      if (self.hoverState == 'out') self.hide()
-    }, self.options.delay.hide)
-  }
-
-  Tooltip.prototype.show = function () {
-    var e = $.Event('show.bs.' + this.type)
-
-    if (this.hasContent() && this.enabled) {
-      this.$element.trigger(e)
-
-      var inDom = $.contains(this.$element[0].ownerDocument.documentElement, this.$element[0])
-      if (e.isDefaultPrevented() || !inDom) return
-      var that = this
-
-      var $tip = this.tip()
-
-      var tipId = this.getUID(this.type)
-
-      this.setContent()
-      $tip.attr('id', tipId)
-      this.$element.attr('aria-describedby', tipId)
-
-      if (this.options.animation) $tip.addClass('fade')
-
-      var placement = typeof this.options.placement == 'function' ?
-        this.options.placement.call(this, $tip[0], this.$element[0]) :
-        this.options.placement
-
-      var autoToken = /\s?auto?\s?/i
-      var autoPlace = autoToken.test(placement)
-      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
-
-      $tip
-        .detach()
-        .css({ top: 0, left: 0, display: 'block' })
-        .addClass(placement)
-        .data('bs.' + this.type, this)
-
-      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
-      this.$element.trigger('inserted.bs.' + this.type)
-
-      var pos          = this.getPosition()
-      var actualWidth  = $tip[0].offsetWidth
-      var actualHeight = $tip[0].offsetHeight
-
-      if (autoPlace) {
-        var orgPlacement = placement
-        var viewportDim = this.getPosition(this.$viewport)
-
-        placement = placement == 'bottom' && pos.bottom + actualHeight > viewportDim.bottom ? 'top'    :
-                    placement == 'top'    && pos.top    - actualHeight < viewportDim.top    ? 'bottom' :
-                    placement == 'right'  && pos.right  + actualWidth  > viewportDim.width  ? 'left'   :
-                    placement == 'left'   && pos.left   - actualWidth  < viewportDim.left   ? 'right'  :
-                    placement
-
-        $tip
-          .removeClass(orgPlacement)
-          .addClass(placement)
-      }
-
-      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
-
-      this.applyPlacement(calculatedOffset, placement)
-
-      var complete = function () {
-        var prevHoverState = that.hoverState
-        that.$element.trigger('shown.bs.' + that.type)
-        that.hoverState = null
-
-        if (prevHoverState == 'out') that.leave(that)
-      }
-
-      $.support.transition && this.$tip.hasClass('fade') ?
-        $tip
-          .one('bsTransitionEnd', complete)
-          .emulateTransitionEnd(Tooltip.TRANSITION_DURATION) :
-        complete()
-    }
-  }
-
-  Tooltip.prototype.applyPlacement = function (offset, placement) {
-    var $tip   = this.tip()
-    var width  = $tip[0].offsetWidth
-    var height = $tip[0].offsetHeight
-
-    // manually read margins because getBoundingClientRect includes difference
-    var marginTop = parseInt($tip.css('margin-top'), 10)
-    var marginLeft = parseInt($tip.css('margin-left'), 10)
-
-    // we must check for NaN for ie 8/9
-    if (isNaN(marginTop))  marginTop  = 0
-    if (isNaN(marginLeft)) marginLeft = 0
-
-    offset.top  += marginTop
-    offset.left += marginLeft
-
-    // $.fn.offset doesn't round pixel values
-    // so we use setOffset directly with our own function B-0
-    $.offset.setOffset($tip[0], $.extend({
-      using: function (props) {
-        $tip.css({
-          top: Math.round(props.top),
-          left: Math.round(props.left)
-        })
-      }
-    }, offset), 0)
-
-    $tip.addClass('in')
-
-    // check to see if placing tip in new offset caused the tip to resize itself
-    var actualWidth  = $tip[0].offsetWidth
-    var actualHeight = $tip[0].offsetHeight
-
-    if (placement == 'top' && actualHeight != height) {
-      offset.top = offset.top + height - actualHeight
-    }
-
-    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
-
-    if (delta.left) offset.left += delta.left
-    else offset.top += delta.top
-
-    var isVertical          = /top|bottom/.test(placement)
-    var arrowDelta          = isVertical ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
-    var arrowOffsetPosition = isVertical ? 'offsetWidth' : 'offsetHeight'
-
-    $tip.offset(offset)
-    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], isVertical)
-  }
-
-  Tooltip.prototype.replaceArrow = function (delta, dimension, isVertical) {
-    this.arrow()
-      .css(isVertical ? 'left' : 'top', 50 * (1 - delta / dimension) + '%')
-      .css(isVertical ? 'top' : 'left', '')
-  }
-
-  Tooltip.prototype.setContent = function () {
-    var $tip  = this.tip()
-    var title = this.getTitle()
-
-    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
-    $tip.removeClass('fade in top bottom left right')
-  }
-
-  Tooltip.prototype.hide = function (callback) {
-    var that = this
-    var $tip = $(this.$tip)
-    var e    = $.Event('hide.bs.' + this.type)
-
-    function complete() {
-      if (that.hoverState != 'in') $tip.detach()
-      if (that.$element) { // TODO: Check whether guarding this code with this `if` is really necessary.
-        that.$element
-          .removeAttr('aria-describedby')
-          .trigger('hidden.bs.' + that.type)
-      }
-      callback && callback()
-    }
-
-    this.$element.trigger(e)
-
-    if (e.isDefaultPrevented()) return
-
-    $tip.removeClass('in')
-
-    $.support.transition && $tip.hasClass('fade') ?
-      $tip
-        .one('bsTransitionEnd', complete)
-        .emulateTransitionEnd(Tooltip.TRANSITION_DURATION) :
-      complete()
-
-    this.hoverState = null
-
-    return this
-  }
-
-  Tooltip.prototype.fixTitle = function () {
-    var $e = this.$element
-    if ($e.attr('title') || typeof $e.attr('data-original-title') != 'string') {
-      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
-    }
-  }
-
-  Tooltip.prototype.hasContent = function () {
-    return this.getTitle()
-  }
-
-  Tooltip.prototype.getPosition = function ($element) {
-    $element   = $element || this.$element
-
-    var el     = $element[0]
-    var isBody = el.tagName == 'BODY'
-
-    var elRect    = el.getBoundingClientRect()
-    if (elRect.width == null) {
-      // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
-      elRect = $.extend({}, elRect, { width: elRect.right - elRect.left, height: elRect.bottom - elRect.top })
-    }
-    var isSvg = window.SVGElement && el instanceof window.SVGElement
-    // Avoid using $.offset() on SVGs since it gives incorrect results in jQuery 3.
-    // See https://github.com/twbs/bootstrap/issues/20280
-    var elOffset  = isBody ? { top: 0, left: 0 } : (isSvg ? null : $element.offset())
-    var scroll    = { scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop() }
-    var outerDims = isBody ? { width: $(window).width(), height: $(window).height() } : null
-
-    return $.extend({}, elRect, scroll, outerDims, elOffset)
-  }
-
-  Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
-    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2 } :
-           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2 } :
-           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
-        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width }
-
-  }
-
-  Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
-    var delta = { top: 0, left: 0 }
-    if (!this.$viewport) return delta
-
-    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
-    var viewportDimensions = this.getPosition(this.$viewport)
-
-    if (/right|left/.test(placement)) {
-      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
-      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
-      if (topEdgeOffset < viewportDimensions.top) { // top overflow
-        delta.top = viewportDimensions.top - topEdgeOffset
-      } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
-        delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset
-      }
-    } else {
-      var leftEdgeOffset  = pos.left - viewportPadding
-      var rightEdgeOffset = pos.left + viewportPadding + actualWidth
-      if (leftEdgeOffset < viewportDimensions.left) { // left overflow
-        delta.left = viewportDimensions.left - leftEdgeOffset
-      } else if (rightEdgeOffset > viewportDimensions.right) { // right overflow
-        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
-      }
-    }
-
-    return delta
-  }
-
-  Tooltip.prototype.getTitle = function () {
-    var title
-    var $e = this.$element
-    var o  = this.options
-
-    title = $e.attr('data-original-title')
-      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
-
-    return title
-  }
-
-  Tooltip.prototype.getUID = function (prefix) {
-    do prefix += ~~(Math.random() * 1000000)
-    while (document.getElementById(prefix))
-    return prefix
-  }
-
-  Tooltip.prototype.tip = function () {
-    if (!this.$tip) {
-      this.$tip = $(this.options.template)
-      if (this.$tip.length != 1) {
-        throw new Error(this.type + ' `template` option must consist of exactly 1 top-level element!')
-      }
-    }
-    return this.$tip
-  }
-
-  Tooltip.prototype.arrow = function () {
-    return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'))
-  }
-
-  Tooltip.prototype.enable = function () {
-    this.enabled = true
-  }
-
-  Tooltip.prototype.disable = function () {
-    this.enabled = false
-  }
-
-  Tooltip.prototype.toggleEnabled = function () {
-    this.enabled = !this.enabled
-  }
-
-  Tooltip.prototype.toggle = function (e) {
-    var self = this
-    if (e) {
-      self = $(e.currentTarget).data('bs.' + this.type)
-      if (!self) {
-        self = new this.constructor(e.currentTarget, this.getDelegateOptions())
-        $(e.currentTarget).data('bs.' + this.type, self)
-      }
-    }
-
-    if (e) {
-      self.inState.click = !self.inState.click
-      if (self.isInStateTrue()) self.enter(self)
-      else self.leave(self)
-    } else {
-      self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
-    }
-  }
-
-  Tooltip.prototype.destroy = function () {
-    var that = this
-    clearTimeout(this.timeout)
-    this.hide(function () {
-      that.$element.off('.' + that.type).removeData('bs.' + that.type)
-      if (that.$tip) {
-        that.$tip.detach()
-      }
-      that.$tip = null
-      that.$arrow = null
-      that.$viewport = null
-      that.$element = null
-    })
-  }
-
-
-  // TOOLTIP PLUGIN DEFINITION
-  // =========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.tooltip')
-      var options = typeof option == 'object' && option
-
-      if (!data && /destroy|hide/.test(option)) return
-      if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.tooltip
-
-  $.fn.tooltip             = Plugin
-  $.fn.tooltip.Constructor = Tooltip
-
-
-  // TOOLTIP NO CONFLICT
-  // ===================
-
-  $.fn.tooltip.noConflict = function () {
-    $.fn.tooltip = old
-    return this
-  }
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: popover.js v3.3.7
- * http://getbootstrap.com/javascript/#popovers
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // POPOVER PUBLIC CLASS DEFINITION
-  // ===============================
-
-  var Popover = function (element, options) {
-    this.init('popover', element, options)
-  }
-
-  if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
-
-  Popover.VERSION  = '3.3.7'
-
-  Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
-    placement: 'right',
-    trigger: 'click',
-    content: '',
-    template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
-  })
-
-
-  // NOTE: POPOVER EXTENDS tooltip.js
-  // ================================
-
-  Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
-
-  Popover.prototype.constructor = Popover
-
-  Popover.prototype.getDefaults = function () {
-    return Popover.DEFAULTS
-  }
-
-  Popover.prototype.setContent = function () {
-    var $tip    = this.tip()
-    var title   = this.getTitle()
-    var content = this.getContent()
-
-    $tip.find('.popover-title')[this.options.html ? 'html' : 'text'](title)
-    $tip.find('.popover-content').children().detach().end()[ // we use append for html objects to maintain js events
-      this.options.html ? (typeof content == 'string' ? 'html' : 'append') : 'text'
-    ](content)
-
-    $tip.removeClass('fade top bottom left right in')
-
-    // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
-    // this manually by checking the contents.
-    if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
-  }
-
-  Popover.prototype.hasContent = function () {
-    return this.getTitle() || this.getContent()
-  }
-
-  Popover.prototype.getContent = function () {
-    var $e = this.$element
-    var o  = this.options
-
-    return $e.attr('data-content')
-      || (typeof o.content == 'function' ?
-            o.content.call($e[0]) :
-            o.content)
-  }
-
-  Popover.prototype.arrow = function () {
-    return (this.$arrow = this.$arrow || this.tip().find('.arrow'))
-  }
-
-
-  // POPOVER PLUGIN DEFINITION
-  // =========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.popover')
-      var options = typeof option == 'object' && option
-
-      if (!data && /destroy|hide/.test(option)) return
-      if (!data) $this.data('bs.popover', (data = new Popover(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.popover
-
-  $.fn.popover             = Plugin
-  $.fn.popover.Constructor = Popover
-
-
-  // POPOVER NO CONFLICT
-  // ===================
-
-  $.fn.popover.noConflict = function () {
-    $.fn.popover = old
-    return this
-  }
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: scrollspy.js v3.3.7
- * http://getbootstrap.com/javascript/#scrollspy
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // SCROLLSPY CLASS DEFINITION
-  // ==========================
-
-  function ScrollSpy(element, options) {
-    this.$body          = $(document.body)
-    this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
-    this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
-    this.selector       = (this.options.target || '') + ' .nav li > a'
-    this.offsets        = []
-    this.targets        = []
-    this.activeTarget   = null
-    this.scrollHeight   = 0
-
-    this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
-    this.refresh()
-    this.process()
-  }
-
-  ScrollSpy.VERSION  = '3.3.7'
-
-  ScrollSpy.DEFAULTS = {
-    offset: 10
-  }
-
-  ScrollSpy.prototype.getScrollHeight = function () {
-    return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
-  }
-
-  ScrollSpy.prototype.refresh = function () {
-    var that          = this
-    var offsetMethod  = 'offset'
-    var offsetBase    = 0
-
-    this.offsets      = []
-    this.targets      = []
-    this.scrollHeight = this.getScrollHeight()
-
-    if (!$.isWindow(this.$scrollElement[0])) {
-      offsetMethod = 'position'
-      offsetBase   = this.$scrollElement.scrollTop()
-    }
-
-    this.$body
-      .find(this.selector)
-      .map(function () {
-        var $el   = $(this)
-        var href  = $el.data('target') || $el.attr('href')
-        var $href = /^#./.test(href) && $(href)
-
-        return ($href
-          && $href.length
-          && $href.is(':visible')
-          && [[$href[offsetMethod]().top + offsetBase, href]]) || null
-      })
-      .sort(function (a, b) { return a[0] - b[0] })
-      .each(function () {
-        that.offsets.push(this[0])
-        that.targets.push(this[1])
-      })
-  }
-
-  ScrollSpy.prototype.process = function () {
-    var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
-    var scrollHeight = this.getScrollHeight()
-    var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
-    var offsets      = this.offsets
-    var targets      = this.targets
-    var activeTarget = this.activeTarget
-    var i
-
-    if (this.scrollHeight != scrollHeight) {
-      this.refresh()
-    }
-
-    if (scrollTop >= maxScroll) {
-      return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
-    }
-
-    if (activeTarget && scrollTop < offsets[0]) {
-      this.activeTarget = null
-      return this.clear()
-    }
-
-    for (i = offsets.length; i--;) {
-      activeTarget != targets[i]
-        && scrollTop >= offsets[i]
-        && (offsets[i + 1] === undefined || scrollTop < offsets[i + 1])
-        && this.activate(targets[i])
-    }
-  }
-
-  ScrollSpy.prototype.activate = function (target) {
-    this.activeTarget = target
-
-    this.clear()
-
-    var selector = this.selector +
-      '[data-target="' + target + '"],' +
-      this.selector + '[href="' + target + '"]'
-
-    var active = $(selector)
-      .parents('li')
-      .addClass('active')
-
-    if (active.parent('.dropdown-menu').length) {
-      active = active
-        .closest('li.dropdown')
-        .addClass('active')
-    }
-
-    active.trigger('activate.bs.scrollspy')
-  }
-
-  ScrollSpy.prototype.clear = function () {
-    $(this.selector)
-      .parentsUntil(this.options.target, '.active')
-      .removeClass('active')
-  }
-
-
-  // SCROLLSPY PLUGIN DEFINITION
-  // ===========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.scrollspy')
-      var options = typeof option == 'object' && option
-
-      if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.scrollspy
-
-  $.fn.scrollspy             = Plugin
-  $.fn.scrollspy.Constructor = ScrollSpy
-
-
-  // SCROLLSPY NO CONFLICT
-  // =====================
-
-  $.fn.scrollspy.noConflict = function () {
-    $.fn.scrollspy = old
-    return this
-  }
-
-
-  // SCROLLSPY DATA-API
-  // ==================
-
-  $(window).on('load.bs.scrollspy.data-api', function () {
-    $('[data-spy="scroll"]').each(function () {
-      var $spy = $(this)
-      Plugin.call($spy, $spy.data())
-    })
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: tab.js v3.3.7
- * http://getbootstrap.com/javascript/#tabs
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // TAB CLASS DEFINITION
-  // ====================
-
-  var Tab = function (element) {
-    // jscs:disable requireDollarBeforejQueryAssignment
-    this.element = $(element)
-    // jscs:enable requireDollarBeforejQueryAssignment
-  }
-
-  Tab.VERSION = '3.3.7'
-
-  Tab.TRANSITION_DURATION = 150
-
-  Tab.prototype.show = function () {
-    var $this    = this.element
-    var $ul      = $this.closest('ul:not(.dropdown-menu)')
-    var selector = $this.data('target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
-    }
-
-    if ($this.parent('li').hasClass('active')) return
-
-    var $previous = $ul.find('.active:last a')
-    var hideEvent = $.Event('hide.bs.tab', {
-      relatedTarget: $this[0]
-    })
-    var showEvent = $.Event('show.bs.tab', {
-      relatedTarget: $previous[0]
-    })
-
-    $previous.trigger(hideEvent)
-    $this.trigger(showEvent)
-
-    if (showEvent.isDefaultPrevented() || hideEvent.isDefaultPrevented()) return
-
-    var $target = $(selector)
-
-    this.activate($this.closest('li'), $ul)
-    this.activate($target, $target.parent(), function () {
-      $previous.trigger({
-        type: 'hidden.bs.tab',
-        relatedTarget: $this[0]
-      })
-      $this.trigger({
-        type: 'shown.bs.tab',
-        relatedTarget: $previous[0]
-      })
-    })
-  }
-
-  Tab.prototype.activate = function (element, container, callback) {
-    var $active    = container.find('> .active')
-    var transition = callback
-      && $.support.transition
-      && ($active.length && $active.hasClass('fade') || !!container.find('> .fade').length)
-
-    function next() {
-      $active
-        .removeClass('active')
-        .find('> .dropdown-menu > .active')
-          .removeClass('active')
-        .end()
-        .find('[data-toggle="tab"]')
-          .attr('aria-expanded', false)
-
-      element
-        .addClass('active')
-        .find('[data-toggle="tab"]')
-          .attr('aria-expanded', true)
-
-      if (transition) {
-        element[0].offsetWidth // reflow for transition
-        element.addClass('in')
-      } else {
-        element.removeClass('fade')
-      }
-
-      if (element.parent('.dropdown-menu').length) {
-        element
-          .closest('li.dropdown')
-            .addClass('active')
-          .end()
-          .find('[data-toggle="tab"]')
-            .attr('aria-expanded', true)
-      }
-
-      callback && callback()
-    }
-
-    $active.length && transition ?
-      $active
-        .one('bsTransitionEnd', next)
-        .emulateTransitionEnd(Tab.TRANSITION_DURATION) :
-      next()
-
-    $active.removeClass('in')
-  }
-
-
-  // TAB PLUGIN DEFINITION
-  // =====================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.tab')
-
-      if (!data) $this.data('bs.tab', (data = new Tab(this)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.tab
-
-  $.fn.tab             = Plugin
-  $.fn.tab.Constructor = Tab
-
-
-  // TAB NO CONFLICT
-  // ===============
-
-  $.fn.tab.noConflict = function () {
-    $.fn.tab = old
-    return this
-  }
-
-
-  // TAB DATA-API
-  // ============
-
-  var clickHandler = function (e) {
-    e.preventDefault()
-    Plugin.call($(this), 'show')
-  }
-
-  $(document)
-    .on('click.bs.tab.data-api', '[data-toggle="tab"]', clickHandler)
-    .on('click.bs.tab.data-api', '[data-toggle="pill"]', clickHandler)
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: affix.js v3.3.7
- * http://getbootstrap.com/javascript/#affix
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // AFFIX CLASS DEFINITION
-  // ======================
-
-  var Affix = function (element, options) {
-    this.options = $.extend({}, Affix.DEFAULTS, options)
-
-    this.$target = $(this.options.target)
-      .on('scroll.bs.affix.data-api', $.proxy(this.checkPosition, this))
-      .on('click.bs.affix.data-api',  $.proxy(this.checkPositionWithEventLoop, this))
-
-    this.$element     = $(element)
-    this.affixed      = null
-    this.unpin        = null
-    this.pinnedOffset = null
-
-    this.checkPosition()
-  }
-
-  Affix.VERSION  = '3.3.7'
-
-  Affix.RESET    = 'affix affix-top affix-bottom'
-
-  Affix.DEFAULTS = {
-    offset: 0,
-    target: window
-  }
-
-  Affix.prototype.getState = function (scrollHeight, height, offsetTop, offsetBottom) {
-    var scrollTop    = this.$target.scrollTop()
-    var position     = this.$element.offset()
-    var targetHeight = this.$target.height()
-
-    if (offsetTop != null && this.affixed == 'top') return scrollTop < offsetTop ? 'top' : false
-
-    if (this.affixed == 'bottom') {
-      if (offsetTop != null) return (scrollTop + this.unpin <= position.top) ? false : 'bottom'
-      return (scrollTop + targetHeight <= scrollHeight - offsetBottom) ? false : 'bottom'
-    }
-
-    var initializing   = this.affixed == null
-    var colliderTop    = initializing ? scrollTop : position.top
-    var colliderHeight = initializing ? targetHeight : height
-
-    if (offsetTop != null && scrollTop <= offsetTop) return 'top'
-    if (offsetBottom != null && (colliderTop + colliderHeight >= scrollHeight - offsetBottom)) return 'bottom'
-
-    return false
-  }
-
-  Affix.prototype.getPinnedOffset = function () {
-    if (this.pinnedOffset) return this.pinnedOffset
-    this.$element.removeClass(Affix.RESET).addClass('affix')
-    var scrollTop = this.$target.scrollTop()
-    var position  = this.$element.offset()
-    return (this.pinnedOffset = position.top - scrollTop)
-  }
-
-  Affix.prototype.checkPositionWithEventLoop = function () {
-    setTimeout($.proxy(this.checkPosition, this), 1)
-  }
-
-  Affix.prototype.checkPosition = function () {
-    if (!this.$element.is(':visible')) return
-
-    var height       = this.$element.height()
-    var offset       = this.options.offset
-    var offsetTop    = offset.top
-    var offsetBottom = offset.bottom
-    var scrollHeight = Math.max($(document).height(), $(document.body).height())
-
-    if (typeof offset != 'object')         offsetBottom = offsetTop = offset
-    if (typeof offsetTop == 'function')    offsetTop    = offset.top(this.$element)
-    if (typeof offsetBottom == 'function') offsetBottom = offset.bottom(this.$element)
-
-    var affix = this.getState(scrollHeight, height, offsetTop, offsetBottom)
-
-    if (this.affixed != affix) {
-      if (this.unpin != null) this.$element.css('top', '')
-
-      var affixType = 'affix' + (affix ? '-' + affix : '')
-      var e         = $.Event(affixType + '.bs.affix')
-
-      this.$element.trigger(e)
-
-      if (e.isDefaultPrevented()) return
-
-      this.affixed = affix
-      this.unpin = affix == 'bottom' ? this.getPinnedOffset() : null
-
-      this.$element
-        .removeClass(Affix.RESET)
-        .addClass(affixType)
-        .trigger(affixType.replace('affix', 'affixed') + '.bs.affix')
-    }
-
-    if (affix == 'bottom') {
-      this.$element.offset({
-        top: scrollHeight - height - offsetBottom
-      })
-    }
-  }
-
-
-  // AFFIX PLUGIN DEFINITION
-  // =======================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.affix')
-      var options = typeof option == 'object' && option
-
-      if (!data) $this.data('bs.affix', (data = new Affix(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.affix
-
-  $.fn.affix             = Plugin
-  $.fn.affix.Constructor = Affix
-
-
-  // AFFIX NO CONFLICT
-  // =================
-
-  $.fn.affix.noConflict = function () {
-    $.fn.affix = old
-    return this
-  }
-
-
-  // AFFIX DATA-API
-  // ==============
-
-  $(window).on('load', function () {
-    $('[data-spy="affix"]').each(function () {
-      var $spy = $(this)
-      var data = $spy.data()
-
-      data.offset = data.offset || {}
-
-      if (data.offsetBottom != null) data.offset.bottom = data.offsetBottom
-      if (data.offsetTop    != null) data.offset.top    = data.offsetTop
-
-      Plugin.call($spy, data)
-    })
-  })
-
-}(jQuery);
-
-
-/***/ }),
+/* 30 */,
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -41494,6 +39103,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
@@ -41502,7 +39123,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(41)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 50 */
@@ -41548,9 +39169,24 @@ module.exports = Component.exports
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "chat"
-  }, [_c('chat-messages'), _vm._v(" "), _c('form', {})], 1)
-},staticRenderFns: []}
+    staticClass: "uk-card uk-card-default uk-card-hover"
+  }, [_c('div', {
+    staticClass: "uk-card-body"
+  }, [_c('chat-messages'), _vm._v(" "), _vm._m(0)], 1)])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('form', {
+    staticClass: "uk-form"
+  }, [_c('textarea', {
+    staticClass: "uk-textarea",
+    attrs: {
+      "id": "body",
+      "rows": "8",
+      "cols": "80"
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "uk-text-meta"
+  }, [_vm._v("\n                Hit return to send or Ctrl + Return for a new line\n            ")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -41905,7 +39541,7 @@ module.exports = Component.exports
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "chat__messages"
+    staticClass: "uk-margin"
   }, [_c('chat-message')], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -41954,23 +39590,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
 /***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(41)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
+/* 61 */,
 /* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(64)
+__webpack_require__(73)
 
 var Component = __webpack_require__(35)(
   /* script */
@@ -41978,7 +39623,7 @@ var Component = __webpack_require__(35)(
   /* template */
   __webpack_require__(63),
   /* scopeId */
-  null,
+  "data-v-7f5fa1aa",
   /* cssModules */
   null
 )
@@ -42007,10 +39652,34 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "chat__message"
-  }, [_vm._v("\n    message\n")])
-},staticRenderFns: []}
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('article', {
+    staticClass: "uk-comment uk-comment-primary"
+  }, [_c('header', {
+    staticClass: "uk-comment-header uk-grid-medium uk-flex-middle",
+    attrs: {
+      "uk-grid": ""
+    }
+  }, [_c('div', {
+    staticClass: "uk-width-expand"
+  }, [_c('h4', {
+    staticClass: "uk-comment-title uk-margin-remove"
+  }, [_c('a', {
+    staticClass: "uk-link-reset",
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Author")])]), _vm._v(" "), _c('ul', {
+    staticClass: "uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top"
+  }, [_c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("12 days ago")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "uk-comment-body"
+  }, [_c('p', [_vm._v("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n\njusto duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.")])])])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -42020,32 +39689,7 @@ if (false) {
 }
 
 /***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(61);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(53)("5577c0d0", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-7f5fa1aa\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Message.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-7f5fa1aa\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Message.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 64 */,
 /* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -42095,6 +39739,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
@@ -42103,15 +39760,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(41)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {}, [_vm._v("\n    Users from vue.js\n")])
-},staticRenderFns: []}
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "uk-card uk-card-default uk-card-hover"
+  }, [_c('div', {
+    staticClass: "uk-card-body"
+  }, [_c('ul', {
+    staticClass: "uk-list uk-list-divider"
+  }, [_c('li', [_c('h4', [_c('span', [_vm._v("\n                    1 user online\n                  ")])])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("César Ramírez")])])])])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -42138,6 +39807,7895 @@ if(false) {
  if(!content.locals) {
    module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-12dd30a8\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Users.vue", function() {
      var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-12dd30a8\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Users.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! UIkit 3.0.0-beta.24 | http://www.getuikit.com | (c) 2014 - 2017 YOOtheme | MIT License */
+
+(function (global, factory) {
+	 true ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define('uikiticons', factory) :
+	(global.UIkitIcons = factory());
+}(this, (function () { 'use strict';
+
+var album = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"5\" y=\"2\" width=\"10\" height=\"1\"></rect><rect x=\"3\" y=\"4\" width=\"14\" height=\"1\"></rect><rect fill=\"none\" stroke=\"#000\" x=\"1.5\" y=\"6.5\" width=\"17\" height=\"11\"></rect></svg>";
+var ban = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"10\" cy=\"10\" r=\"9\"></circle><line fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" x1=\"4\" y1=\"3.5\" x2=\"16\" y2=\"16.5\"></line></svg>";
+var behance = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M9.5,10.6c-0.4-0.5-0.9-0.9-1.6-1.1c1.7-1,2.2-3.2,0.7-4.7C7.8,4,6.3,4,5.2,4C3.5,4,1.7,4,0,4v12c1.7,0,3.4,0,5.2,0 c1,0,2.1,0,3.1-0.5C10.2,14.6,10.5,12.3,9.5,10.6L9.5,10.6z M5.6,6.1c1.8,0,1.8,2.7-0.1,2.7c-1,0-2,0-2.9,0V6.1H5.6z M2.6,13.8v-3.1 c1.1,0,2.1,0,3.2,0c2.1,0,2.1,3.2,0.1,3.2L2.6,13.8z\"></path><path d=\"M19.9,10.9C19.7,9.2,18.7,7.6,17,7c-4.2-1.3-7.3,3.4-5.3,7.1c0.9,1.7,2.8,2.3,4.7,2.1c1.7-0.2,2.9-1.3,3.4-2.9h-2.2 c-0.4,1.3-2.4,1.5-3.5,0.6c-0.4-0.4-0.6-1.1-0.6-1.7H20C20,11.7,19.9,10.9,19.9,10.9z M13.5,10.6c0-1.6,2.3-2.7,3.5-1.4 c0.4,0.4,0.5,0.9,0.6,1.4H13.5L13.5,10.6z\"></path><rect x=\"13\" y=\"4\" width=\"5\" height=\"1.4\"></rect></svg>";
+var bell = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M17,15.5 L3,15.5 C2.99,14.61 3.79,13.34 4.1,12.51 C4.58,11.3 4.72,10.35 5.19,7.01 C5.54,4.53 5.89,3.2 7.28,2.16 C8.13,1.56 9.37,1.5 9.81,1.5 L9.96,1.5 C9.96,1.5 11.62,1.41 12.67,2.17 C14.08,3.2 14.42,4.54 14.77,7.02 C15.26,10.35 15.4,11.31 15.87,12.52 C16.2,13.34 17.01,14.61 17,15.5 L17,15.5 Z\"></path><path fill=\"none\" stroke=\"#000\" d=\"M12.39,16 C12.39,17.37 11.35,18.43 9.91,18.43 C8.48,18.43 7.42,17.37 7.42,16\"></path></svg>";
+var bold = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5,15.3 C5.66,15.3 5.9,15 5.9,14.53 L5.9,5.5 C5.9,4.92 5.56,4.7 5,4.7 L5,4 L8.95,4 C12.6,4 13.7,5.37 13.7,6.9 C13.7,7.87 13.14,9.17 10.86,9.59 L10.86,9.7 C13.25,9.86 14.29,11.28 14.3,12.54 C14.3,14.47 12.94,16 9,16 L5,16 L5,15.3 Z M9,9.3 C11.19,9.3 11.8,8.5 11.85,7 C11.85,5.65 11.3,4.8 9,4.8 L7.67,4.8 L7.67,9.3 L9,9.3 Z M9.185,15.22 C11.97,15 12.39,14 12.4,12.58 C12.4,11.15 11.39,10 9,10 L7.67,10 L7.67,15 L9.18,15 Z\"></path></svg>";
+var bolt = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M4.74,20 L7.73,12 L3,12 L15.43,1 L12.32,9 L17.02,9 L4.74,20 L4.74,20 L4.74,20 Z M9.18,11 L7.1,16.39 L14.47,10 L10.86,10 L12.99,4.67 L5.61,11 L9.18,11 L9.18,11 L9.18,11 Z\"></path></svg>";
+var bookmark = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon fill=\"none\" stroke=\"#000\" points=\"5.5 1.5 15.5 1.5 15.5 17.5 10.5 12.5 5.5 17.5\"></polygon></svg>";
+var calendar = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M 2,3 2,17 18,17 18,3 2,3 Z M 17,16 3,16 3,8 17,8 17,16 Z M 17,7 3,7 3,4 17,4 17,7 Z\"></path><rect width=\"1\" height=\"3\" x=\"6\" y=\"2\"></rect><rect width=\"1\" height=\"3\" x=\"13\" y=\"2\"></rect></svg>";
+var camera = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"10\" cy=\"10.8\" r=\"3.8\"></circle><path fill=\"none\" stroke=\"#000\" d=\"M1,4.5 C0.7,4.5 0.5,4.7 0.5,5 L0.5,17 C0.5,17.3 0.7,17.5 1,17.5 L19,17.5 C19.3,17.5 19.5,17.3 19.5,17 L19.5,5 C19.5,4.7 19.3,4.5 19,4.5 L13.5,4.5 L13.5,2.9 C13.5,2.6 13.3,2.5 13,2.5 L7,2.5 C6.7,2.5 6.5,2.6 6.5,2.9 L6.5,4.5 L1,4.5 L1,4.5 Z\"></path></svg>";
+var cart = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"7.3\" cy=\"17.3\" r=\"1.4\"></circle><circle cx=\"13.3\" cy=\"17.3\" r=\"1.4\"></circle><polyline fill=\"none\" stroke=\"#000\" points=\"0 2 3.2 4 5.3 12.5 16 12.5 18 6.5 8 6.5\"></polyline></svg>";
+var check = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" points=\"4,10 8,15 17,4\"></polyline></svg>";
+var clock = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"10\" cy=\"10\" r=\"9\"></circle><rect x=\"9\" y=\"4\" width=\"1\" height=\"7\"></rect><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M13.018,14.197 L9.445,10.625\"></path></svg>";
+var close = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.06\" d=\"M16,16 L4,4\"></path><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.06\" d=\"M16,4 L4,16\"></path></svg>";
+var code = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.01\" points=\"13,4 19,10 13,16\"></polyline><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.01\" points=\"7,4 1,10 7,16\"></polyline></svg>";
+var cog = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" cx=\"9.997\" cy=\"10\" r=\"3.31\"></circle><path fill=\"none\" stroke=\"#000\" d=\"M18.488,12.285 L16.205,16.237 C15.322,15.496 14.185,15.281 13.303,15.791 C12.428,16.289 12.047,17.373 12.246,18.5 L7.735,18.5 C7.938,17.374 7.553,16.299 6.684,15.791 C5.801,15.27 4.655,15.492 3.773,16.237 L1.5,12.285 C2.573,11.871 3.317,10.999 3.317,9.991 C3.305,8.98 2.573,8.121 1.5,7.716 L3.765,3.784 C4.645,4.516 5.794,4.738 6.687,4.232 C7.555,3.722 7.939,2.637 7.735,1.5 L12.263,1.5 C12.072,2.637 12.441,3.71 13.314,4.22 C14.206,4.73 15.343,4.516 16.225,3.794 L18.487,7.714 C17.404,8.117 16.661,8.988 16.67,10.009 C16.672,11.018 17.415,11.88 18.488,12.285 L18.488,12.285 Z\"></path></svg>";
+var comment = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6,18.71 L6,14 L1,14 L1,1 L19,1 L19,14 L10.71,14 L6,18.71 L6,18.71 Z M2,13 L7,13 L7,16.29 L10.29,13 L18,13 L18,2 L2,2 L2,13 L2,13 Z\"></path></svg>";
+var commenting = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon fill=\"none\" stroke=\"#000\" points=\"1.5,1.5 18.5,1.5 18.5,13.5 10.5,13.5 6.5,17.5 6.5,13.5 1.5,13.5\"></polygon><circle cx=\"10\" cy=\"8\" r=\"1\"></circle><circle cx=\"6\" cy=\"8\" r=\"1\"></circle><circle cx=\"14\" cy=\"8\" r=\"1\"></circle></svg>";
+var comments = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" points=\"2 0.5 19.5 0.5 19.5 13\"></polyline><path d=\"M5,19.71 L5,15 L0,15 L0,2 L18,2 L18,15 L9.71,15 L5,19.71 L5,19.71 L5,19.71 Z M1,14 L6,14 L6,17.29 L9.29,14 L17,14 L17,3 L1,3 L1,14 L1,14 L1,14 Z\"></path></svg>";
+var copy = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect fill=\"none\" stroke=\"#000\" x=\"3.5\" y=\"2.5\" width=\"12\" height=\"16\"></rect><polyline fill=\"none\" stroke=\"#000\" points=\"5 0.5 17.5 0.5 17.5 17\"></polyline></svg>";
+var database = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><ellipse fill=\"none\" stroke=\"#000\" cx=\"10\" cy=\"4.64\" rx=\"7.5\" ry=\"3.14\"></ellipse><path fill=\"none\" stroke=\"#000\" d=\"M17.5,8.11 C17.5,9.85 14.14,11.25 10,11.25 C5.86,11.25 2.5,9.84 2.5,8.11\"></path><path fill=\"none\" stroke=\"#000\" d=\"M17.5,11.25 C17.5,12.99 14.14,14.39 10,14.39 C5.86,14.39 2.5,12.98 2.5,11.25\"></path><path fill=\"none\" stroke=\"#000\" d=\"M17.49,4.64 L17.5,14.36 C17.5,16.1 14.14,17.5 10,17.5 C5.86,17.5 2.5,16.09 2.5,14.36 L2.5,4.64\"></path></svg>";
+var desktop = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"8\" y=\"15\" width=\"1\" height=\"2\"></rect><rect x=\"11\" y=\"15\" width=\"1\" height=\"2\"></rect><rect x=\"5\" y=\"16\" width=\"10\" height=\"1\"></rect><rect fill=\"none\" stroke=\"#000\" x=\"1.5\" y=\"3.5\" width=\"17\" height=\"11\"></rect></svg>";
+var download = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" points=\"14,10 9.5,14.5 5,10\"></polyline><rect x=\"3\" y=\"17\" width=\"13\" height=\"1\"></rect><line fill=\"none\" stroke=\"#000\" x1=\"9.5\" y1=\"13.91\" x2=\"9.5\" y2=\"3\"></line></svg>";
+var dribbble = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.4\" d=\"M1.3,8.9c0,0,5,0.1,8.6-1c1.4-0.4,2.6-0.9,4-1.9 c1.4-1.1,2.5-2.5,2.5-2.5\"></path><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.4\" d=\"M3.9,16.6c0,0,1.7-2.8,3.5-4.2 c1.8-1.3,4-2,5.7-2.2C16,10,19,10.6,19,10.6\"></path><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.4\" d=\"M6.9,1.6c0,0,3.3,4.6,4.2,6.8 c0.4,0.9,1.3,3.1,1.9,5.2c0.6,2,0.9,4.4,0.9,4.4\"></path><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.4\" cx=\"10\" cy=\"10\" r=\"9\"></circle></svg>";
+var expand = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"13 2 18 2 18 7 17 7 17 3 13 3\"></polygon><polygon points=\"2 13 3 13 3 17 7 17 7 18 2 18\"></polygon><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M11,9 L17,3\"></path><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M3,17 L9,11\"></path></svg>";
+var facebook = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M11,10h2.6l0.4-3H11V5.3c0-0.9,0.2-1.5,1.5-1.5H14V1.1c-0.3,0-1-0.1-2.1-0.1C9.6,1,8,2.4,8,5v2H5.5v3H8v8h3V10z\"></path></svg>";
+var file = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect fill=\"none\" stroke=\"#000\" x=\"3.5\" y=\"1.5\" width=\"13\" height=\"17\"></rect></svg>";
+var flickr = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"5.5\" cy=\"9.5\" r=\"3.5\"></circle><circle cx=\"14.5\" cy=\"9.5\" r=\"3.5\"></circle></svg>";
+var folder = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon fill=\"none\" stroke=\"#000\" points=\"9.5 5.5 8.5 3.5 1.5 3.5 1.5 16.5 18.5 16.5 18.5 5.5\"></polygon></svg>";
+var forward = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2.47,13.11 C4.02,10.02 6.27,7.85 9.04,6.61 C9.48,6.41 10.27,6.13 11,5.91 L11,2 L18.89,9 L11,16 L11,12.13 C9.25,12.47 7.58,13.19 6.02,14.25 C3.03,16.28 1.63,18.54 1.63,18.54 C1.63,18.54 1.38,15.28 2.47,13.11 L2.47,13.11 Z M5.3,13.53 C6.92,12.4 9.04,11.4 12,10.92 L12,13.63 L17.36,9 L12,4.25 L12,6.8 C11.71,6.86 10.86,7.02 9.67,7.49 C6.79,8.65 4.58,10.96 3.49,13.08 C3.18,13.7 2.68,14.87 2.49,16 C3.28,15.05 4.4,14.15 5.3,13.53 L5.3,13.53 Z\"></path></svg>";
+var foursquare = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M15.23,2 C15.96,2 16.4,2.41 16.5,2.86 C16.57,3.15 16.56,3.44 16.51,3.73 C16.46,4.04 14.86,11.72 14.75,12.03 C14.56,12.56 14.16,12.82 13.61,12.83 C13.03,12.84 11.09,12.51 10.69,13 C10.38,13.38 7.79,16.39 6.81,17.53 C6.61,17.76 6.4,17.96 6.08,17.99 C5.68,18.04 5.29,17.87 5.17,17.45 C5.12,17.28 5.1,17.09 5.1,16.91 C5.1,12.4 4.86,7.81 5.11,3.31 C5.17,2.5 5.81,2.12 6.53,2 L15.23,2 L15.23,2 Z M9.76,11.42 C9.94,11.19 10.17,11.1 10.45,11.1 L12.86,11.1 C13.12,11.1 13.31,10.94 13.36,10.69 C13.37,10.64 13.62,9.41 13.74,8.83 C13.81,8.52 13.53,8.28 13.27,8.28 C12.35,8.29 11.42,8.28 10.5,8.28 C9.84,8.28 9.83,7.69 9.82,7.21 C9.8,6.85 10.13,6.55 10.5,6.55 C11.59,6.56 12.67,6.55 13.76,6.55 C14.03,6.55 14.23,6.4 14.28,6.14 C14.34,5.87 14.67,4.29 14.67,4.29 C14.67,4.29 14.82,3.74 14.19,3.74 L7.34,3.74 C7,3.75 6.84,4.02 6.84,4.33 C6.84,7.58 6.85,14.95 6.85,14.99 C6.87,15 8.89,12.51 9.76,11.42 L9.76,11.42 Z\"></path></svg>";
+var future = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline points=\"19 2 18 2 18 6 14 6 14 7 19 7 19 2\"></polyline><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M18,6.548 C16.709,3.29 13.354,1 9.6,1 C4.6,1 0.6,5 0.6,10 C0.6,15 4.6,19 9.6,19 C14.6,19 18.6,15 18.6,10\"></path><rect x=\"9\" y=\"4\" width=\"1\" height=\"7\"></rect><path d=\"M13.018,14.197 L9.445,10.625\" fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\"></path></svg>";
+var github = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10,1 C5.03,1 1,5.03 1,10 C1,13.98 3.58,17.35 7.16,18.54 C7.61,18.62 7.77,18.34 7.77,18.11 C7.77,17.9 7.76,17.33 7.76,16.58 C5.26,17.12 4.73,15.37 4.73,15.37 C4.32,14.33 3.73,14.05 3.73,14.05 C2.91,13.5 3.79,13.5 3.79,13.5 C4.69,13.56 5.17,14.43 5.17,14.43 C5.97,15.8 7.28,15.41 7.79,15.18 C7.87,14.6 8.1,14.2 8.36,13.98 C6.36,13.75 4.26,12.98 4.26,9.53 C4.26,8.55 4.61,7.74 5.19,7.11 C5.1,6.88 4.79,5.97 5.28,4.73 C5.28,4.73 6.04,4.49 7.75,5.65 C8.47,5.45 9.24,5.35 10,5.35 C10.76,5.35 11.53,5.45 12.25,5.65 C13.97,4.48 14.72,4.73 14.72,4.73 C15.21,5.97 14.9,6.88 14.81,7.11 C15.39,7.74 15.73,8.54 15.73,9.53 C15.73,12.99 13.63,13.75 11.62,13.97 C11.94,14.25 12.23,14.8 12.23,15.64 C12.23,16.84 12.22,17.81 12.22,18.11 C12.22,18.35 12.38,18.63 12.84,18.54 C16.42,17.35 19,13.98 19,10 C19,5.03 14.97,1 10,1 L10,1 Z\"></path></svg>";
+var gitter = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"3.5\" y=\"1\" width=\"1.531\" height=\"11.471\"></rect><rect x=\"7.324\" y=\"4.059\" width=\"1.529\" height=\"15.294\"></rect><rect x=\"11.148\" y=\"4.059\" width=\"1.527\" height=\"15.294\"></rect><rect x=\"14.971\" y=\"4.059\" width=\"1.529\" height=\"8.412\"></rect></svg>";
+var google = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M17.86,9.09 C18.46,12.12 17.14,16.05 13.81,17.56 C9.45,19.53 4.13,17.68 2.47,12.87 C0.68,7.68 4.22,2.42 9.5,2.03 C11.57,1.88 13.42,2.37 15.05,3.65 C15.22,3.78 15.37,3.93 15.61,4.14 C14.9,4.81 14.23,5.45 13.5,6.14 C12.27,5.08 10.84,4.72 9.28,4.98 C8.12,5.17 7.16,5.76 6.37,6.63 C4.88,8.27 4.62,10.86 5.76,12.82 C6.95,14.87 9.17,15.8 11.57,15.25 C13.27,14.87 14.76,13.33 14.89,11.75 L10.51,11.75 L10.51,9.09 L17.86,9.09 L17.86,9.09 Z\"></path></svg>";
+var grid = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"2\" width=\"3\" height=\"3\"></rect><rect x=\"8\" y=\"2\" width=\"3\" height=\"3\"></rect><rect x=\"14\" y=\"2\" width=\"3\" height=\"3\"></rect><rect x=\"2\" y=\"8\" width=\"3\" height=\"3\"></rect><rect x=\"8\" y=\"8\" width=\"3\" height=\"3\"></rect><rect x=\"14\" y=\"8\" width=\"3\" height=\"3\"></rect><rect x=\"2\" y=\"14\" width=\"3\" height=\"3\"></rect><rect x=\"8\" y=\"14\" width=\"3\" height=\"3\"></rect><rect x=\"14\" y=\"14\" width=\"3\" height=\"3\"></rect></svg>";
+var happy = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"13\" cy=\"7\" r=\"1\"></circle><circle cx=\"7\" cy=\"7\" r=\"1\"></circle><circle fill=\"none\" stroke=\"#000\" cx=\"10\" cy=\"10\" r=\"8.5\"></circle><path fill=\"none\" stroke=\"#000\" d=\"M14.6,11.4 C13.9,13.3 12.1,14.5 10,14.5 C7.9,14.5 6.1,13.3 5.4,11.4\"></path></svg>";
+var hashtag = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M15.431,8 L15.661,7 L12.911,7 L13.831,3 L12.901,3 L11.98,7 L9.29,7 L10.21,3 L9.281,3 L8.361,7 L5.23,7 L5,8 L8.13,8 L7.21,12 L4.23,12 L4,13 L6.98,13 L6.061,17 L6.991,17 L7.911,13 L10.601,13 L9.681,17 L10.611,17 L11.531,13 L14.431,13 L14.661,12 L11.76,12 L12.681,8 L15.431,8 Z M10.831,12 L8.141,12 L9.061,8 L11.75,8 L10.831,12 Z\"></path></svg>";
+var heart = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.03\" d=\"M10,4 C10,4 8.1,2 5.74,2 C3.38,2 1,3.55 1,6.73 C1,8.84 2.67,10.44 2.67,10.44 L10,18 L17.33,10.44 C17.33,10.44 19,8.84 19,6.73 C19,3.55 16.62,2 14.26,2 C11.9,2 10,4 10,4 L10,4 Z\"></path></svg>";
+var history = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"#000\" points=\"1 2 2 2 2 6 6 6 6 7 1 7 1 2\"></polyline><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M2.1,6.548 C3.391,3.29 6.746,1 10.5,1 C15.5,1 19.5,5 19.5,10 C19.5,15 15.5,19 10.5,19 C5.5,19 1.5,15 1.5,10\"></path><rect x=\"9\" y=\"4\" width=\"1\" height=\"7\"></rect><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M13.018,14.197 L9.445,10.625\" id=\"Shape\"></path></svg>";
+var home = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"18.65 11.35 10 2.71 1.35 11.35 0.65 10.65 10 1.29 19.35 10.65\"></polygon><polygon points=\"15 4 18 4 18 7 17 7 17 5 15 5\"></polygon><polygon points=\"3 11 4 11 4 18 7 18 7 12 12 12 12 18 16 18 16 11 17 11 17 19 11 19 11 13 8 13 8 19 3 19\"></polygon></svg>";
+var image = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"16.1\" cy=\"6.1\" r=\"1.1\"></circle><rect fill=\"none\" stroke=\"#000\" x=\"0.5\" y=\"2.5\" width=\"19\" height=\"15\"></rect><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.01\" points=\"4,13 8,9 13,14\"></polyline><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.01\" points=\"11,12 12.5,10.5 16,14\"></polyline></svg>";
+var info = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12.13,11.59 C11.97,12.84 10.35,14.12 9.1,14.16 C6.17,14.2 9.89,9.46 8.74,8.37 C9.3,8.16 10.62,7.83 10.62,8.81 C10.62,9.63 10.12,10.55 9.88,11.32 C8.66,15.16 12.13,11.15 12.14,11.18 C12.16,11.21 12.16,11.35 12.13,11.59 C12.08,11.95 12.16,11.35 12.13,11.59 L12.13,11.59 Z M11.56,5.67 C11.56,6.67 9.36,7.15 9.36,6.03 C9.36,5 11.56,4.54 11.56,5.67 L11.56,5.67 Z\"></path><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"10\" cy=\"10\" r=\"9\"></circle></svg>";
+var instagram = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M13.55,1H6.46C3.45,1,1,3.44,1,6.44v7.12c0,3,2.45,5.44,5.46,5.44h7.08c3.02,0,5.46-2.44,5.46-5.44V6.44 C19.01,3.44,16.56,1,13.55,1z M17.5,14c0,1.93-1.57,3.5-3.5,3.5H6c-1.93,0-3.5-1.57-3.5-3.5V6c0-1.93,1.57-3.5,3.5-3.5h8 c1.93,0,3.5,1.57,3.5,3.5V14z\"></path><circle cx=\"14.87\" cy=\"5.26\" r=\"1.09\"></circle><path d=\"M10.03,5.45c-2.55,0-4.63,2.06-4.63,4.6c0,2.55,2.07,4.61,4.63,4.61c2.56,0,4.63-2.061,4.63-4.61 C14.65,7.51,12.58,5.45,10.03,5.45L10.03,5.45L10.03,5.45z M10.08,13c-1.66,0-3-1.34-3-2.99c0-1.65,1.34-2.99,3-2.99s3,1.34,3,2.99 C13.08,11.66,11.74,13,10.08,13L10.08,13L10.08,13z\"></path></svg>";
+var italic = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12.63,5.48 L10.15,14.52 C10,15.08 10.37,15.25 11.92,15.3 L11.72,16 L6,16 L6.2,15.31 C7.78,15.26 8.19,15.09 8.34,14.53 L10.82,5.49 C10.97,4.92 10.63,4.76 9.09,4.71 L9.28,4 L15,4 L14.81,4.69 C13.23,4.75 12.78,4.91 12.63,5.48 L12.63,5.48 Z\"></path></svg>";
+var joomla = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7.8,13.4l1.7-1.7L5.9,8c-0.6-0.5-0.6-1.5,0-2c0.6-0.6,1.4-0.6,2,0l1.7-1.7c-1-1-2.3-1.3-3.6-1C5.8,2.2,4.8,1.4,3.7,1.4 c-1.3,0-2.3,1-2.3,2.3c0,1.1,0.8,2,1.8,2.3c-0.4,1.3-0.1,2.8,1,3.8L7.8,13.4L7.8,13.4z\"></path><path d=\"M10.2,4.3c1-1,2.5-1.4,3.8-1c0.2-1.1,1.1-2,2.3-2c1.3,0,2.3,1,2.3,2.3c0,1.2-0.9,2.2-2,2.3c0.4,1.3,0,2.8-1,3.8L13.9,8 c0.6-0.5,0.6-1.5,0-2c-0.5-0.6-1.5-0.6-2,0L8.2,9.7L6.5,8\"></path><path d=\"M14.1,16.8c-1.3,0.4-2.8,0.1-3.8-1l1.7-1.7c0.6,0.6,1.5,0.6,2,0c0.5-0.6,0.6-1.5,0-2l-3.7-3.7L12,6.7l3.7,3.7 c1,1,1.3,2.4,1,3.6c1.1,0.2,2,1.1,2,2.3c0,1.3-1,2.3-2.3,2.3C15.2,18.6,14.3,17.8,14.1,16.8\"></path><path d=\"M13.2,12.2l-3.7,3.7c-1,1-2.4,1.3-3.6,1c-0.2,1-1.2,1.8-2.2,1.8c-1.3,0-2.3-1-2.3-2.3c0-1.1,0.8-2,1.8-2.3 c-0.3-1.3,0-2.7,1-3.7l1.7,1.7c-0.6,0.6-0.6,1.5,0,2c0.6,0.6,1.4,0.6,2,0l3.7-3.7\"></path></svg>";
+var laptop = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect y=\"16\" width=\"20\" height=\"1\"></rect><rect fill=\"none\" stroke=\"#000\" x=\"2.5\" y=\"4.5\" width=\"15\" height=\"10\"></rect></svg>";
+var lifesaver = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10,0.5 C4.76,0.5 0.5,4.76 0.5,10 C0.5,15.24 4.76,19.5 10,19.5 C15.24,19.5 19.5,15.24 19.5,10 C19.5,4.76 15.24,0.5 10,0.5 L10,0.5 Z M10,1.5 C11.49,1.5 12.89,1.88 14.11,2.56 L11.85,4.82 C11.27,4.61 10.65,4.5 10,4.5 C9.21,4.5 8.47,4.67 7.79,4.96 L5.58,2.75 C6.87,1.95 8.38,1.5 10,1.5 L10,1.5 Z M4.96,7.8 C4.67,8.48 4.5,9.21 4.5,10 C4.5,10.65 4.61,11.27 4.83,11.85 L2.56,14.11 C1.88,12.89 1.5,11.49 1.5,10 C1.5,8.38 1.95,6.87 2.75,5.58 L4.96,7.79 L4.96,7.8 L4.96,7.8 Z M10,18.5 C8.25,18.5 6.62,17.97 5.27,17.06 L7.46,14.87 C8.22,15.27 9.08,15.5 10,15.5 C10.79,15.5 11.53,15.33 12.21,15.04 L14.42,17.25 C13.13,18.05 11.62,18.5 10,18.5 L10,18.5 Z M10,14.5 C7.52,14.5 5.5,12.48 5.5,10 C5.5,7.52 7.52,5.5 10,5.5 C12.48,5.5 14.5,7.52 14.5,10 C14.5,12.48 12.48,14.5 10,14.5 L10,14.5 Z M15.04,12.21 C15.33,11.53 15.5,10.79 15.5,10 C15.5,9.08 15.27,8.22 14.87,7.46 L17.06,5.27 C17.97,6.62 18.5,8.25 18.5,10 C18.5,11.62 18.05,13.13 17.25,14.42 L15.04,12.21 L15.04,12.21 Z\"></path></svg>";
+var link = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M10.625,12.375 L7.525,15.475 C6.825,16.175 5.925,16.175 5.225,15.475 L4.525,14.775 C3.825,14.074 3.825,13.175 4.525,12.475 L7.625,9.375\"></path><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M9.325,7.375 L12.425,4.275 C13.125,3.575 14.025,3.575 14.724,4.275 L15.425,4.975 C16.125,5.675 16.125,6.575 15.425,7.275 L12.325,10.375\"></path><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M7.925,11.875 L11.925,7.975\"></path></svg>";
+var linkedin = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5.77,17.89 L5.77,7.17 L2.21,7.17 L2.21,17.89 L5.77,17.89 L5.77,17.89 Z M3.99,5.71 C5.23,5.71 6.01,4.89 6.01,3.86 C5.99,2.8 5.24,2 4.02,2 C2.8,2 2,2.8 2,3.85 C2,4.88 2.77,5.7 3.97,5.7 L3.99,5.7 L3.99,5.71 L3.99,5.71 Z\"></path><path d=\"M7.75,17.89 L11.31,17.89 L11.31,11.9 C11.31,11.58 11.33,11.26 11.43,11.03 C11.69,10.39 12.27,9.73 13.26,9.73 C14.55,9.73 15.06,10.71 15.06,12.15 L15.06,17.89 L18.62,17.89 L18.62,11.74 C18.62,8.45 16.86,6.92 14.52,6.92 C12.6,6.92 11.75,7.99 11.28,8.73 L11.3,8.73 L11.3,7.17 L7.75,7.17 C7.79,8.17 7.75,17.89 7.75,17.89 L7.75,17.89 L7.75,17.89 Z\"></path></svg>";
+var list = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"6\" y=\"4\" width=\"12\" height=\"1\"></rect><rect x=\"6\" y=\"9\" width=\"12\" height=\"1\"></rect><rect x=\"6\" y=\"14\" width=\"12\" height=\"1\"></rect><rect x=\"2\" y=\"4\" width=\"2\" height=\"1\"></rect><rect x=\"2\" y=\"9\" width=\"2\" height=\"1\"></rect><rect x=\"2\" y=\"14\" width=\"2\" height=\"1\"></rect></svg>";
+var location = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.01\" d=\"M10,0.5 C6.41,0.5 3.5,3.39 3.5,6.98 C3.5,11.83 10,19 10,19 C10,19 16.5,11.83 16.5,6.98 C16.5,3.39 13.59,0.5 10,0.5 L10,0.5 Z\"></path><circle fill=\"none\" stroke=\"#000\" cx=\"10\" cy=\"6.8\" r=\"2.3\"></circle></svg>";
+var lock = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect fill=\"none\" stroke=\"#000\" height=\"10\" width=\"13\" y=\"8.5\" x=\"3.5\"></rect><path fill=\"none\" stroke=\"#000\" d=\"M6.5,8 L6.5,4.88 C6.5,3.01 8.07,1.5 10,1.5 C11.93,1.5 13.5,3.01 13.5,4.88 L13.5,8\"></path></svg>";
+var mail = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" points=\"1.4,6.5 10,11 18.6,6.5\"></polyline><path d=\"M 1,4 1,16 19,16 19,4 1,4 Z M 18,15 2,15 2,5 18,5 18,15 Z\"></path></svg>";
+var menu = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"4\" width=\"16\" height=\"1\"></rect><rect x=\"2\" y=\"9\" width=\"16\" height=\"1\"></rect><rect x=\"2\" y=\"14\" width=\"16\" height=\"1\"></rect></svg>";
+var minus = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect height=\"1\" width=\"18\" y=\"9\" x=\"1\"></rect></svg>";
+var more = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"3\" cy=\"10\" r=\"2\"></circle><circle cx=\"10\" cy=\"10\" r=\"2\"></circle><circle cx=\"17\" cy=\"10\" r=\"2\"></circle></svg>";
+var move = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"4,5 1,5 1,9 2,9 2,6 4,6 \"></polygon><polygon points=\"1,16 2,16 2,18 4,18 4,19 1,19 \"></polygon><polygon points=\"14,16 14,19 11,19 11,18 13,18 13,16 \"></polygon><rect fill=\"none\" stroke=\"#000\" x=\"5.5\" y=\"1.5\" width=\"13\" height=\"13\"></rect><rect x=\"1\" y=\"11\" width=\"1\" height=\"3\"></rect><rect x=\"6\" y=\"18\" width=\"3\" height=\"1\"></rect></svg>";
+var nut = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon fill=\"none\" stroke=\"#000\" points=\"2.5,5.7 10,1.3 17.5,5.7 17.5,14.3 10,18.7 2.5,14.3\"></polygon><circle fill=\"none\" stroke=\"#000\" cx=\"10\" cy=\"10\" r=\"3.5\"></circle></svg>";
+var pagekit = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"3,1 17,1 17,16 10,16 10,13 14,13 14,4 6,4 6,16 10,16 10,19 3,19 \"></polygon></svg>";
+var pencil = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" d=\"M17.25,6.01 L7.12,16.1 L3.82,17.2 L5.02,13.9 L15.12,3.88 C15.71,3.29 16.66,3.29 17.25,3.88 C17.83,4.47 17.83,5.42 17.25,6.01 L17.25,6.01 Z\"></path><path fill=\"none\" stroke=\"#000\" d=\"M15.98,7.268 L13.851,5.148\"></path></svg>";
+var phone = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" d=\"M15.5,17 C15.5,17.8 14.8,18.5 14,18.5 L7,18.5 C6.2,18.5 5.5,17.8 5.5,17 L5.5,3 C5.5,2.2 6.2,1.5 7,1.5 L14,1.5 C14.8,1.5 15.5,2.2 15.5,3 L15.5,17 L15.5,17 L15.5,17 Z\"></path><circle cx=\"10.5\" cy=\"16.5\" r=\"0.8\"></circle></svg>";
+var pinterest = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10.21,1 C5.5,1 3,4.16 3,7.61 C3,9.21 3.85,11.2 5.22,11.84 C5.43,11.94 5.54,11.89 5.58,11.69 C5.62,11.54 5.8,10.8 5.88,10.45 C5.91,10.34 5.89,10.24 5.8,10.14 C5.36,9.59 5,8.58 5,7.65 C5,5.24 6.82,2.91 9.93,2.91 C12.61,2.91 14.49,4.74 14.49,7.35 C14.49,10.3 13,12.35 11.06,12.35 C9.99,12.35 9.19,11.47 9.44,10.38 C9.75,9.08 10.35,7.68 10.35,6.75 C10.35,5.91 9.9,5.21 8.97,5.21 C7.87,5.21 6.99,6.34 6.99,7.86 C6.99,8.83 7.32,9.48 7.32,9.48 C7.32,9.48 6.24,14.06 6.04,14.91 C5.7,16.35 6.08,18.7 6.12,18.9 C6.14,19.01 6.26,19.05 6.33,18.95 C6.44,18.81 7.74,16.85 8.11,15.44 C8.24,14.93 8.79,12.84 8.79,12.84 C9.15,13.52 10.19,14.09 11.29,14.09 C14.58,14.09 16.96,11.06 16.96,7.3 C16.94,3.7 14,1 10.21,1\"></path></svg>";
+var play = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon fill=\"none\" stroke=\"#000\" points=\"6.5,5 14.5,10 6.5,15\"></polygon></svg>";
+var plus = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"9\" y=\"1\" width=\"1\" height=\"17\"></rect><rect x=\"1\" y=\"9\" width=\"17\" height=\"1\"></rect></svg>";
+var pull = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"6.85,8 9.5,10.6 12.15,8 12.85,8.7 9.5,12 6.15,8.7\"></polygon><line fill=\"none\" stroke=\"#000\" x1=\"9.5\" y1=\"11\" x2=\"9.5\" y2=\"2\"></line><polyline fill=\"none\" stroke=\"#000\" points=\"6,5.5 3.5,5.5 3.5,18.5 15.5,18.5 15.5,5.5 13,5.5\"></polyline></svg>";
+var push = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"12.15,4 9.5,1.4 6.85,4 6.15,3.3 9.5,0 12.85,3.3\"></polygon><line fill=\"none\" stroke=\"#000\" x1=\"9.5\" y1=\"10\" x2=\"9.5\" y2=\"1\"></line><polyline fill=\"none\" stroke=\"#000\" points=\"6 5.5 3.5 5.5 3.5 18.5 15.5 18.5 15.5 5.5 13 5.5\"></polyline></svg>";
+var question = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"10\" cy=\"10\" r=\"9\"></circle><circle cx=\"10.44\" cy=\"14.42\" r=\"1.05\"></circle><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.2\" d=\"M8.17,7.79 C8.17,4.75 12.72,4.73 12.72,7.72 C12.72,8.67 11.81,9.15 11.23,9.75 C10.75,10.24 10.51,10.73 10.45,11.4 C10.44,11.53 10.43,11.64 10.43,11.75\"></path></svg>";
+var receiver = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.01\" d=\"M6.189,13.611C8.134,15.525 11.097,18.239 13.867,18.257C16.47,18.275 18.2,16.241 18.2,16.241L14.509,12.551L11.539,13.639L6.189,8.29L7.313,5.355L3.76,1.8C3.76,1.8 1.732,3.537 1.7,6.092C1.667,8.809 4.347,11.738 6.189,13.611\"></path></svg>";
+var refresh = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M17.08,11.15 C17.09,11.31 17.1,11.47 17.1,11.64 C17.1,15.53 13.94,18.69 10.05,18.69 C6.16,18.68 3,15.53 3,11.63 C3,7.74 6.16,4.58 10.05,4.58 C10.9,4.58 11.71,4.73 12.46,5\"></path><polyline fill=\"none\" stroke=\"#000\" points=\"9.9 2 12.79 4.89 9.79 7.9\"></polyline></svg>";
+var reply = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M17.7,13.11 C16.12,10.02 13.84,7.85 11.02,6.61 C10.57,6.41 9.75,6.13 9,5.91 L9,2 L1,9 L9,16 L9,12.13 C10.78,12.47 12.5,13.19 14.09,14.25 C17.13,16.28 18.56,18.54 18.56,18.54 C18.56,18.54 18.81,15.28 17.7,13.11 L17.7,13.11 Z M14.82,13.53 C13.17,12.4 11.01,11.4 8,10.92 L8,13.63 L2.55,9 L8,4.25 L8,6.8 C8.3,6.86 9.16,7.02 10.37,7.49 C13.3,8.65 15.54,10.96 16.65,13.08 C16.97,13.7 17.48,14.86 17.68,16 C16.87,15.05 15.73,14.15 14.82,13.53 L14.82,13.53 Z\"></path></svg>";
+var rss = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"3.12\" cy=\"16.8\" r=\"1.85\"></circle><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M1.5,8.2 C1.78,8.18 2.06,8.16 2.35,8.16 C7.57,8.16 11.81,12.37 11.81,17.57 C11.81,17.89 11.79,18.19 11.76,18.5\"></path><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M1.5,2.52 C1.78,2.51 2.06,2.5 2.35,2.5 C10.72,2.5 17.5,9.24 17.5,17.57 C17.5,17.89 17.49,18.19 17.47,18.5\"></path></svg>";
+var search = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"9\" cy=\"9\" r=\"7\"></circle><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M14,14 L18,18 L14,14 Z\"></path></svg>";
+var server = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"3\" y=\"3\" width=\"1\" height=\"2\"></rect><rect x=\"5\" y=\"3\" width=\"1\" height=\"2\"></rect><rect x=\"7\" y=\"3\" width=\"1\" height=\"2\"></rect><rect x=\"16\" y=\"3\" width=\"1\" height=\"1\"></rect><rect x=\"16\" y=\"10\" width=\"1\" height=\"1\"></rect><circle fill=\"none\" stroke=\"#000\" cx=\"9.9\" cy=\"17.4\" r=\"1.4\"></circle><rect x=\"3\" y=\"10\" width=\"1\" height=\"2\"></rect><rect x=\"5\" y=\"10\" width=\"1\" height=\"2\"></rect><rect x=\"9.5\" y=\"14\" width=\"1\" height=\"2\"></rect><rect x=\"3\" y=\"17\" width=\"6\" height=\"1\"></rect><rect x=\"11\" y=\"17\" width=\"6\" height=\"1\"></rect><rect fill=\"none\" stroke=\"#000\" x=\"1.5\" y=\"1.5\" width=\"17\" height=\"5\"></rect><rect fill=\"none\" stroke=\"#000\" x=\"1.5\" y=\"8.5\" width=\"17\" height=\"5\"></rect></svg>";
+var settings = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><ellipse fill=\"none\" stroke=\"#000\" cx=\"6.11\" cy=\"3.55\" rx=\"2.11\" ry=\"2.15\"></ellipse><ellipse fill=\"none\" stroke=\"#000\" cx=\"6.11\" cy=\"15.55\" rx=\"2.11\" ry=\"2.15\"></ellipse><circle fill=\"none\" stroke=\"#000\" cx=\"13.15\" cy=\"9.55\" r=\"2.15\"></circle><rect x=\"1\" y=\"3\" width=\"3\" height=\"1\"></rect><rect x=\"10\" y=\"3\" width=\"8\" height=\"1\"></rect><rect x=\"1\" y=\"9\" width=\"8\" height=\"1\"></rect><rect x=\"15\" y=\"9\" width=\"3\" height=\"1\"></rect><rect x=\"1\" y=\"15\" width=\"3\" height=\"1\"></rect><rect x=\"10\" y=\"15\" width=\"8\" height=\"1\"></rect></svg>";
+var shrink = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"11 4 12 4 12 8 16 8 16 9 11 9\"></polygon><polygon points=\"4 11 9 11 9 16 8 16 8 12 4 12\"></polygon><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M12,8 L18,2\"></path><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M2,18 L8,12\"></path></svg>";
+var social = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><line fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" x1=\"13.4\" y1=\"14\" x2=\"6.3\" y2=\"10.7\"></line><line fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" x1=\"13.5\" y1=\"5.5\" x2=\"6.5\" y2=\"8.8\"></line><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"15.5\" cy=\"4.6\" r=\"2.3\"></circle><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"15.5\" cy=\"14.8\" r=\"2.3\"></circle><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"4.5\" cy=\"9.8\" r=\"2.3\"></circle></svg>";
+var soundcloud = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M17.2,9.4c-0.4,0-0.8,0.1-1.101,0.2c-0.199-2.5-2.399-4.5-5-4.5c-0.6,0-1.2,0.1-1.7,0.3C9.2,5.5,9.1,5.6,9.1,5.6V15h8 c1.601,0,2.801-1.2,2.801-2.8C20,10.7,18.7,9.4,17.2,9.4L17.2,9.4z\"></path><rect x=\"6\" y=\"6.5\" width=\"1.5\" height=\"8.5\"></rect><rect x=\"3\" y=\"8\" width=\"1.5\" height=\"7\"></rect><rect y=\"10\" width=\"1.5\" height=\"5\"></rect></svg>";
+var star = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon fill=\"none\" stroke=\"#000\" stroke-width=\"1.01\" points=\"10 2 12.63 7.27 18.5 8.12 14.25 12.22 15.25 18 10 15.27 4.75 18 5.75 12.22 1.5 8.12 7.37 7.27\"></polygon></svg>";
+var strikethrough = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6,13.02 L6.65,13.02 C7.64,15.16 8.86,16.12 10.41,16.12 C12.22,16.12 12.92,14.93 12.92,13.89 C12.92,12.55 11.99,12.03 9.74,11.23 C8.05,10.64 6.23,10.11 6.23,7.83 C6.23,5.5 8.09,4.09 10.4,4.09 C11.44,4.09 12.13,4.31 12.72,4.54 L13.33,4 L13.81,4 L13.81,7.59 L13.16,7.59 C12.55,5.88 11.52,4.89 10.07,4.89 C8.84,4.89 7.89,5.69 7.89,7.03 C7.89,8.29 8.89,8.78 10.88,9.45 C12.57,10.03 14.38,10.6 14.38,12.91 C14.38,14.75 13.27,16.93 10.18,16.93 C9.18,16.93 8.17,16.69 7.46,16.39 L6.52,17 L6,17 L6,13.02 L6,13.02 Z\"></path><rect x=\"3\" y=\"10\" width=\"15\" height=\"1\"></rect></svg>";
+var table = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"1\" y=\"3\" width=\"18\" height=\"1\"></rect><rect x=\"1\" y=\"7\" width=\"18\" height=\"1\"></rect><rect x=\"1\" y=\"11\" width=\"18\" height=\"1\"></rect><rect x=\"1\" y=\"15\" width=\"18\" height=\"1\"></rect></svg>";
+var tablet = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" d=\"M5,18.5 C4.2,18.5 3.5,17.8 3.5,17 L3.5,3 C3.5,2.2 4.2,1.5 5,1.5 L16,1.5 C16.8,1.5 17.5,2.2 17.5,3 L17.5,17 C17.5,17.8 16.8,18.5 16,18.5 L5,18.5 L5,18.5 L5,18.5 Z\"></path><circle cx=\"10.5\" cy=\"16.3\" r=\"0.8\"></circle></svg>";
+var tag = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M17.5,3.71 L17.5,7.72 C17.5,7.96 17.4,8.2 17.21,8.39 L8.39,17.2 C7.99,17.6 7.33,17.6 6.93,17.2 L2.8,13.07 C2.4,12.67 2.4,12.01 2.8,11.61 L11.61,2.8 C11.81,2.6 12.08,2.5 12.34,2.5 L16.19,2.5 C16.52,2.5 16.86,2.63 17.11,2.88 C17.35,3.11 17.48,3.4 17.5,3.71 L17.5,3.71 Z\"></path><circle cx=\"14\" cy=\"6\" r=\"1\"></circle></svg>";
+var thumbnails = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect fill=\"none\" stroke=\"#000\" x=\"3.5\" y=\"3.5\" width=\"5\" height=\"5\"></rect><rect fill=\"none\" stroke=\"#000\" x=\"11.5\" y=\"3.5\" width=\"5\" height=\"5\"></rect><rect fill=\"none\" stroke=\"#000\" x=\"11.5\" y=\"11.5\" width=\"5\" height=\"5\"></rect><rect fill=\"none\" stroke=\"#000\" x=\"3.5\" y=\"11.5\" width=\"5\" height=\"5\"></rect></svg>";
+var trash = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" points=\"6.5 3 6.5 1.5 13.5 1.5 13.5 3\"></polyline><polyline fill=\"none\" stroke=\"#000\" points=\"4.5 4 4.5 18.5 15.5 18.5 15.5 4\"></polyline><rect x=\"8\" y=\"7\" width=\"1\" height=\"9\"></rect><rect x=\"11\" y=\"7\" width=\"1\" height=\"9\"></rect><rect x=\"2\" y=\"3\" width=\"16\" height=\"1\"></rect></svg>";
+var tripadvisor = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19.021,7.866C19.256,6.862,20,5.854,20,5.854h-3.346C14.781,4.641,12.504,4,9.98,4C7.363,4,4.999,4.651,3.135,5.876H0\tc0,0,0.738,0.987,0.976,1.988c-0.611,0.837-0.973,1.852-0.973,2.964c0,2.763,2.249,5.009,5.011,5.009\tc1.576,0,2.976-0.737,3.901-1.879l1.063,1.599l1.075-1.615c0.475,0.611,1.1,1.111,1.838,1.451c1.213,0.547,2.574,0.612,3.825,0.15\tc2.589-0.963,3.913-3.852,2.964-6.439c-0.175-0.463-0.4-0.876-0.675-1.238H19.021z M16.38,14.594\tc-1.002,0.371-2.088,0.328-3.06-0.119c-0.688-0.317-1.252-0.817-1.657-1.438c-0.164-0.25-0.313-0.52-0.417-0.811\tc-0.124-0.328-0.186-0.668-0.217-1.014c-0.063-0.689,0.037-1.396,0.339-2.043c0.448-0.971,1.251-1.71,2.25-2.079\tc2.075-0.765,4.375,0.3,5.14,2.366c0.762,2.066-0.301,4.37-2.363,5.134L16.38,14.594L16.38,14.594z M8.322,13.066\tc-0.72,1.059-1.935,1.76-3.309,1.76c-2.207,0-4.001-1.797-4.001-3.996c0-2.203,1.795-4.002,4.001-4.002\tc2.204,0,3.999,1.8,3.999,4.002c0,0.137-0.024,0.261-0.04,0.396c-0.067,0.678-0.284,1.313-0.648,1.853v-0.013H8.322z M2.472,10.775\tc0,1.367,1.112,2.479,2.476,2.479c1.363,0,2.472-1.11,2.472-2.479c0-1.359-1.11-2.468-2.472-2.468\tC3.584,8.306,2.473,9.416,2.472,10.775L2.472,10.775z M12.514,10.775c0,1.367,1.104,2.479,2.471,2.479\tc1.363,0,2.474-1.108,2.474-2.479c0-1.359-1.11-2.468-2.474-2.468c-1.364,0-2.477,1.109-2.477,2.468H12.514z M3.324,10.775\tc0-0.893,0.726-1.618,1.614-1.618c0.889,0,1.625,0.727,1.625,1.618c0,0.898-0.725,1.627-1.625,1.627\tc-0.901,0-1.625-0.729-1.625-1.627H3.324z M13.354,10.775c0-0.893,0.726-1.618,1.627-1.618c0.886,0,1.61,0.727,1.61,1.618\tc0,0.898-0.726,1.627-1.626,1.627s-1.625-0.729-1.625-1.627H13.354z M9.977,4.875c1.798,0,3.425,0.324,4.849,0.968\tc-0.535,0.015-1.061,0.108-1.586,0.3c-1.264,0.463-2.264,1.388-2.815,2.604c-0.262,0.551-0.398,1.133-0.448,1.72\tC9.79,7.905,7.677,5.873,5.076,5.82C6.501,5.208,8.153,4.875,9.94,4.875H9.977z\"></path></svg>";
+var tumblr = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6.885,8.598c0,0,0,3.393,0,4.996c0,0.282,0,0.66,0.094,0.942c0.377,1.509,1.131,2.545,2.545,3.11 c1.319,0.472,2.356,0.472,3.676,0c0.565-0.188,1.132-0.659,1.132-0.659l-0.849-2.263c0,0-1.036,0.378-1.603,0.283 c-0.565-0.094-1.226-0.66-1.226-1.508c0-1.603,0-4.902,0-4.902h2.828V5.771h-2.828V2H8.205c0,0-0.094,0.66-0.188,0.942 C7.828,3.791,7.262,4.733,6.603,5.394C5.848,6.147,5,6.43,5,6.43v2.168H6.885z\"></path></svg>";
+var tv = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"7\" y=\"16\" width=\"6\" height=\"1\"></rect><rect fill=\"none\" stroke=\"#000\" x=\"0.5\" y=\"3.5\" width=\"19\" height=\"11\"></rect></svg>";
+var twitter = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M19,4.74 C18.339,5.029 17.626,5.229 16.881,5.32 C17.644,4.86 18.227,4.139 18.503,3.28 C17.79,3.7 17.001,4.009 16.159,4.17 C15.485,3.45 14.526,3 13.464,3 C11.423,3 9.771,4.66 9.771,6.7 C9.771,6.99 9.804,7.269 9.868,7.539 C6.795,7.38 4.076,5.919 2.254,3.679 C1.936,4.219 1.754,4.86 1.754,5.539 C1.754,6.82 2.405,7.95 3.397,8.61 C2.79,8.589 2.22,8.429 1.723,8.149 L1.723,8.189 C1.723,9.978 2.997,11.478 4.686,11.82 C4.376,11.899 4.049,11.939 3.713,11.939 C3.475,11.939 3.245,11.919 3.018,11.88 C3.49,13.349 4.852,14.419 6.469,14.449 C5.205,15.429 3.612,16.019 1.882,16.019 C1.583,16.019 1.29,16.009 1,15.969 C2.635,17.019 4.576,17.629 6.662,17.629 C13.454,17.629 17.17,12 17.17,7.129 C17.17,6.969 17.166,6.809 17.157,6.649 C17.879,6.129 18.504,5.478 19,4.74\"></path></svg>";
+var uikit = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"14.4,3.1 11.3,5.1 15,7.3 15,12.9 10,15.7 5,12.9 5,8.5 2,6.8 2,14.8 9.9,19.5 18,14.8 18,5.3\"></polygon><polygon points=\"9.8,4.2 6.7,2.4 9.8,0.4 12.9,2.3\"></polygon></svg>";
+var unlock = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect fill=\"none\" stroke=\"#000\" x=\"3.5\" y=\"8.5\" width=\"13\" height=\"10\"></rect><path fill=\"none\" stroke=\"#000\" d=\"M6.5,8.5 L6.5,4.9 C6.5,3 8.1,1.5 10,1.5 C11.9,1.5 13.5,3 13.5,4.9\"></path></svg>";
+var upload = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" points=\"5 8 9.5 3.5 14 8 \"></polyline><rect x=\"3\" y=\"17\" width=\"13\" height=\"1\"></rect><line fill=\"none\" stroke=\"#000\" x1=\"9.5\" y1=\"15\" x2=\"9.5\" y2=\"4\"></line></svg>";
+var user = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"9.9\" cy=\"6.4\" r=\"4.4\"></circle><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M1.5,19 C2.3,14.5 5.8,11.2 10,11.2 C14.2,11.2 17.7,14.6 18.5,19.2\"></path></svg>";
+var users = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"7.7\" cy=\"8.6\" r=\"3.5\"></circle><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M1,18.1 C1.7,14.6 4.4,12.1 7.6,12.1 C10.9,12.1 13.7,14.8 14.3,18.3\"></path><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M11.4,4 C12.8,2.4 15.4,2.8 16.3,4.7 C17.2,6.6 15.7,8.9 13.6,8.9 C16.5,8.9 18.8,11.3 19.2,14.1\"></path></svg>";
+var vimeo = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2.065,7.59C1.84,7.367,1.654,7.082,1.468,6.838c-0.332-0.42-0.137-0.411,0.274-0.772c1.026-0.91,2.004-1.896,3.127-2.688 c1.017-0.713,2.365-1.173,3.286-0.039c0.849,1.045,0.869,2.629,1.084,3.891c0.215,1.309,0.421,2.648,0.88,3.901 c0.127,0.352,0.37,1.018,0.81,1.074c0.567,0.078,1.145-0.917,1.408-1.289c0.684-0.987,1.611-2.317,1.494-3.587 c-0.115-1.349-1.572-1.095-2.482-0.773c0.146-1.514,1.555-3.216,2.912-3.792c1.439-0.597,3.579-0.587,4.302,1.036 c0.772,1.759,0.078,3.802-0.763,5.396c-0.918,1.731-2.1,3.333-3.363,4.829c-1.114,1.329-2.432,2.787-4.093,3.422 c-1.897,0.723-3.021-0.686-3.667-2.318c-0.705-1.777-1.056-3.771-1.565-5.621C4.898,8.726,4.644,7.836,4.136,7.191 C3.473,6.358,2.72,7.141,2.065,7.59C1.977,7.502,2.115,7.551,2.065,7.59L2.065,7.59z\"></path></svg>";
+var warning = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"10\" cy=\"14\" r=\"1\"></circle><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"10\" cy=\"10\" r=\"9\"></circle><path d=\"M10.97,7.72 C10.85,9.54 10.56,11.29 10.56,11.29 C10.51,11.87 10.27,12 9.99,12 C9.69,12 9.49,11.87 9.43,11.29 C9.43,11.29 9.16,9.54 9.03,7.72 C8.96,6.54 9.03,6 9.03,6 C9.03,5.45 9.46,5.02 9.99,5 C10.53,5.01 10.97,5.44 10.97,6 C10.97,6 11.04,6.54 10.97,7.72 L10.97,7.72 Z\"></path></svg>";
+var whatsapp = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M16.7,3.3c-1.8-1.8-4.1-2.8-6.7-2.8c-5.2,0-9.4,4.2-9.4,9.4c0,1.7,0.4,3.3,1.3,4.7l-1.3,4.9l5-1.3c1.4,0.8,2.9,1.2,4.5,1.2 l0,0l0,0c5.2,0,9.4-4.2,9.4-9.4C19.5,7.4,18.5,5,16.7,3.3 M10.1,17.7L10.1,17.7c-1.4,0-2.8-0.4-4-1.1l-0.3-0.2l-3,0.8l0.8-2.9 l-0.2-0.3c-0.8-1.2-1.2-2.7-1.2-4.2c0-4.3,3.5-7.8,7.8-7.8c2.1,0,4.1,0.8,5.5,2.3c1.5,1.5,2.3,3.4,2.3,5.5 C17.9,14.2,14.4,17.7,10.1,17.7 M14.4,11.9c-0.2-0.1-1.4-0.7-1.6-0.8c-0.2-0.1-0.4-0.1-0.5,0.1c-0.2,0.2-0.6,0.8-0.8,0.9 c-0.1,0.2-0.3,0.2-0.5,0.1c-0.2-0.1-1-0.4-1.9-1.2c-0.7-0.6-1.2-1.4-1.3-1.6c-0.1-0.2,0-0.4,0.1-0.5C8,8.8,8.1,8.7,8.2,8.5 c0.1-0.1,0.2-0.2,0.2-0.4c0.1-0.2,0-0.3,0-0.4C8.4,7.6,7.9,6.5,7.7,6C7.5,5.5,7.3,5.6,7.2,5.6c-0.1,0-0.3,0-0.4,0 c-0.2,0-0.4,0.1-0.6,0.3c-0.2,0.2-0.8,0.8-0.8,2c0,1.2,0.8,2.3,1,2.4c0.1,0.2,1.7,2.5,4,3.5c0.6,0.2,1,0.4,1.3,0.5 c0.6,0.2,1.1,0.2,1.5,0.1c0.5-0.1,1.4-0.6,1.6-1.1c0.2-0.5,0.2-1,0.1-1.1C14.8,12.1,14.6,12,14.4,11.9\"></path></svg>";
+var wordpress = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10,0.5c-5.2,0-9.5,4.3-9.5,9.5s4.3,9.5,9.5,9.5c5.2,0,9.5-4.3,9.5-9.5S15.2,0.5,10,0.5L10,0.5L10,0.5z M15.6,3.9h-0.1 c-0.8,0-1.4,0.7-1.4,1.5c0,0.7,0.4,1.3,0.8,1.9c0.3,0.6,0.7,1.3,0.7,2.3c0,0.7-0.3,1.5-0.6,2.7L14.1,15l-3-8.9 c0.5,0,0.9-0.1,0.9-0.1C12.5,6,12.5,5.3,12,5.4c0,0-1.3,0.1-2.2,0.1C9,5.5,7.7,5.4,7.7,5.4C7.2,5.3,7.2,6,7.6,6c0,0,0.4,0.1,0.9,0.1 l1.3,3.5L8,15L5,6.1C5.5,6.1,5.9,6,5.9,6C6.4,6,6.3,5.3,5.9,5.4c0,0-1.3,0.1-2.2,0.1c-0.2,0-0.3,0-0.5,0c1.5-2.2,4-3.7,6.9-3.7 C12.2,1.7,14.1,2.6,15.6,3.9L15.6,3.9L15.6,3.9z M2.5,6.6l3.9,10.8c-2.7-1.3-4.6-4.2-4.6-7.4C1.8,8.8,2,7.6,2.5,6.6L2.5,6.6L2.5,6.6 z M10.2,10.7l2.5,6.9c0,0,0,0.1,0.1,0.1C11.9,18,11,18.2,10,18.2c-0.8,0-1.6-0.1-2.3-0.3L10.2,10.7L10.2,10.7L10.2,10.7z M14.2,17.1 l2.5-7.3c0.5-1.2,0.6-2.1,0.6-2.9c0-0.3,0-0.6-0.1-0.8c0.6,1.2,1,2.5,1,4C18.3,13,16.6,15.7,14.2,17.1L14.2,17.1L14.2,17.1z\"></path></svg>";
+var world = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" d=\"M1,10.5 L19,10.5\"></path><path fill=\"none\" stroke=\"#000\" d=\"M2.35,15.5 L17.65,15.5\"></path><path fill=\"none\" stroke=\"#000\" d=\"M2.35,5.5 L17.523,5.5\"></path><path fill=\"none\" stroke=\"#000\" d=\"M10,19.46 L9.98,19.46 C7.31,17.33 5.61,14.141 5.61,10.58 C5.61,7.02 7.33,3.83 10,1.7 C10.01,1.7 9.99,1.7 10,1.7 L10,1.7 C12.67,3.83 14.4,7.02 14.4,10.58 C14.4,14.141 12.67,17.33 10,19.46 L10,19.46 L10,19.46 L10,19.46 Z\"></path><circle fill=\"none\" stroke=\"#000\" cx=\"10\" cy=\"10.5\" r=\"9\"></circle></svg>";
+var xing = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M4.4,4.56 C4.24,4.56 4.11,4.61 4.05,4.72 C3.98,4.83 3.99,4.97 4.07,5.12 L5.82,8.16 L5.82,8.17 L3.06,13.04 C2.99,13.18 2.99,13.33 3.06,13.44 C3.12,13.55 3.24,13.62 3.4,13.62 L6,13.62 C6.39,13.62 6.57,13.36 6.71,13.12 C6.71,13.12 9.41,8.35 9.51,8.16 C9.49,8.14 7.72,5.04 7.72,5.04 C7.58,4.81 7.39,4.56 6.99,4.56 L4.4,4.56 L4.4,4.56 Z\"></path><path d=\"M15.3,1 C14.91,1 14.74,1.25 14.6,1.5 C14.6,1.5 9.01,11.42 8.82,11.74 C8.83,11.76 12.51,18.51 12.51,18.51 C12.64,18.74 12.84,19 13.23,19 L15.82,19 C15.98,19 16.1,18.94 16.16,18.83 C16.23,18.72 16.23,18.57 16.16,18.43 L12.5,11.74 L12.5,11.72 L18.25,1.56 C18.32,1.42 18.32,1.27 18.25,1.16 C18.21,1.06 18.08,1 17.93,1 L15.3,1 L15.3,1 Z\"></path></svg>";
+var yelp = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M17.175,14.971c-0.112,0.77-1.686,2.767-2.406,3.054c-0.246,0.1-0.487,0.076-0.675-0.069\tc-0.122-0.096-2.446-3.859-2.446-3.859c-0.194-0.293-0.157-0.682,0.083-0.978c0.234-0.284,0.581-0.393,0.881-0.276\tc0.016,0.01,4.21,1.394,4.332,1.482c0.178,0.148,0.263,0.379,0.225,0.646L17.175,14.971L17.175,14.971z M11.464,10.789\tc-0.203-0.307-0.199-0.666,0.009-0.916c0,0,2.625-3.574,2.745-3.657c0.203-0.135,0.452-0.141,0.69-0.025\tc0.691,0.335,2.085,2.405,2.167,3.199v0.027c0.024,0.271-0.082,0.491-0.273,0.623c-0.132,0.083-4.43,1.155-4.43,1.155\tc-0.322,0.096-0.68-0.06-0.882-0.381L11.464,10.789z M9.475,9.563C9.32,9.609,8.848,9.757,8.269,8.817c0,0-3.916-6.16-4.007-6.351\tc-0.057-0.212,0.011-0.455,0.202-0.65C5.047,1.211,8.21,0.327,9.037,0.529c0.27,0.069,0.457,0.238,0.522,0.479\tc0.047,0.266,0.433,5.982,0.488,7.264C10.098,9.368,9.629,9.517,9.475,9.563z M9.927,19.066c-0.083,0.225-0.273,0.373-0.54,0.421\tc-0.762,0.13-3.15-0.751-3.647-1.342c-0.096-0.131-0.155-0.262-0.167-0.394c-0.011-0.095,0-0.189,0.036-0.272\tc0.061-0.155,2.917-3.538,2.917-3.538c0.214-0.272,0.595-0.355,0.952-0.213c0.345,0.13,0.56,0.428,0.536,0.749\tC10.014,14.479,9.977,18.923,9.927,19.066z M3.495,13.912c-0.235-0.009-0.444-0.148-0.568-0.382c-0.089-0.17-0.151-0.453-0.19-0.794\tC2.63,11.701,2.761,10.144,3.07,9.648c0.145-0.226,0.357-0.345,0.592-0.336c0.154,0,4.255,1.667,4.255,1.667\tc0.321,0.118,0.521,0.453,0.5,0.833c-0.023,0.37-0.236,0.655-0.551,0.738L3.495,13.912z\"></path></svg>";
+var youtube = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M15,4.1c1,0.1,2.3,0,3,0.8c0.8,0.8,0.9,2.1,0.9,3.1C19,9.2,19,10.9,19,12c-0.1,1.1,0,2.4-0.5,3.4c-0.5,1.1-1.4,1.5-2.5,1.6 c-1.2,0.1-8.6,0.1-11,0c-1.1-0.1-2.4-0.1-3.2-1c-0.7-0.8-0.7-2-0.8-3C1,11.8,1,10.1,1,8.9c0-1.1,0-2.4,0.5-3.4C2,4.5,3,4.3,4.1,4.2 C5.3,4.1,12.6,4,15,4.1z M8,7.5v6l5.5-3L8,7.5z\"></path></svg>";
+var Icons = {
+	album: album,
+	ban: ban,
+	behance: behance,
+	bell: bell,
+	bold: bold,
+	bolt: bolt,
+	bookmark: bookmark,
+	calendar: calendar,
+	camera: camera,
+	cart: cart,
+	check: check,
+	clock: clock,
+	close: close,
+	code: code,
+	cog: cog,
+	comment: comment,
+	commenting: commenting,
+	comments: comments,
+	copy: copy,
+	database: database,
+	desktop: desktop,
+	download: download,
+	dribbble: dribbble,
+	expand: expand,
+	facebook: facebook,
+	file: file,
+	flickr: flickr,
+	folder: folder,
+	forward: forward,
+	foursquare: foursquare,
+	future: future,
+	github: github,
+	gitter: gitter,
+	google: google,
+	grid: grid,
+	happy: happy,
+	hashtag: hashtag,
+	heart: heart,
+	history: history,
+	home: home,
+	image: image,
+	info: info,
+	instagram: instagram,
+	italic: italic,
+	joomla: joomla,
+	laptop: laptop,
+	lifesaver: lifesaver,
+	link: link,
+	linkedin: linkedin,
+	list: list,
+	location: location,
+	lock: lock,
+	mail: mail,
+	menu: menu,
+	minus: minus,
+	more: more,
+	move: move,
+	nut: nut,
+	pagekit: pagekit,
+	pencil: pencil,
+	phone: phone,
+	pinterest: pinterest,
+	play: play,
+	plus: plus,
+	pull: pull,
+	push: push,
+	question: question,
+	receiver: receiver,
+	refresh: refresh,
+	reply: reply,
+	rss: rss,
+	search: search,
+	server: server,
+	settings: settings,
+	shrink: shrink,
+	social: social,
+	soundcloud: soundcloud,
+	star: star,
+	strikethrough: strikethrough,
+	table: table,
+	tablet: tablet,
+	tag: tag,
+	thumbnails: thumbnails,
+	trash: trash,
+	tripadvisor: tripadvisor,
+	tumblr: tumblr,
+	tv: tv,
+	twitter: twitter,
+	uikit: uikit,
+	unlock: unlock,
+	upload: upload,
+	user: user,
+	users: users,
+	vimeo: vimeo,
+	warning: warning,
+	whatsapp: whatsapp,
+	wordpress: wordpress,
+	world: world,
+	xing: xing,
+	yelp: yelp,
+	youtube: youtube,
+	"arrow-down": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"10.5,16.08 5.63,10.66 6.37,10 10.5,14.58 14.63,10 15.37,10.66\"></polygon><line fill=\"none\" stroke=\"#000\" x1=\"10.5\" y1=\"4\" x2=\"10.5\" y2=\"15\"></line></svg>",
+	"arrow-left": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" points=\"10 14 5 9.5 10 5\"></polyline><line fill=\"none\" stroke=\"#000\" x1=\"16\" y1=\"9.5\" x2=\"5\" y2=\"9.52\"></line></svg>",
+	"arrow-right": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" points=\"10 5 15 9.5 10 14\"></polyline><line fill=\"none\" stroke=\"#000\" x1=\"4\" y1=\"9.5\" x2=\"15\" y2=\"9.5\"></line></svg>",
+	"arrow-up": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"10.5,4 15.37,9.4 14.63,10.08 10.5,5.49 6.37,10.08 5.63,9.4\"></polygon><line fill=\"none\" stroke=\"#000\" x1=\"10.5\" y1=\"16\" x2=\"10.5\" y2=\"5\"></line></svg>",
+	"chevron-down": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.03\" points=\"16 7 10 13 4 7\"></polyline></svg>",
+	"chevron-left": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.03\" points=\"13 16 7 10 13 4\"></polyline></svg>",
+	"chevron-right": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.03\" points=\"7 4 13 10 7 16\"></polyline></svg>",
+	"chevron-up": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.03\" points=\"4 13 10 7 16 13\"></polyline></svg>",
+	"cloud-download": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M6.5,14.61 L3.75,14.61 C1.96,14.61 0.5,13.17 0.5,11.39 C0.5,9.76 1.72,8.41 3.3,8.2 C3.38,5.31 5.75,3 8.68,3 C11.19,3 13.31,4.71 13.89,7.02 C14.39,6.8 14.93,6.68 15.5,6.68 C17.71,6.68 19.5,8.45 19.5,10.64 C19.5,12.83 17.71,14.6 15.5,14.6 L12.5,14.6\"></path><polyline fill=\"none\" stroke=\"#000\" points=\"11.75 16 9.5 18.25 7.25 16\"></polyline><path fill=\"none\" stroke=\"#000\" d=\"M9.5,18 L9.5,9.5\"></path></svg>",
+	"cloud-upload": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M6.5,14.61 L3.75,14.61 C1.96,14.61 0.5,13.17 0.5,11.39 C0.5,9.76 1.72,8.41 3.31,8.2 C3.38,5.31 5.75,3 8.68,3 C11.19,3 13.31,4.71 13.89,7.02 C14.39,6.8 14.93,6.68 15.5,6.68 C17.71,6.68 19.5,8.45 19.5,10.64 C19.5,12.83 17.71,14.6 15.5,14.6 L12.5,14.6\"></path><polyline fill=\"none\" stroke=\"#000\" points=\"7.25 11.75 9.5 9.5 11.75 11.75\"></polyline><path fill=\"none\" stroke=\"#000\" d=\"M9.5,18 L9.5,9.5\"></path></svg>",
+	"credit-card": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect fill=\"none\" stroke=\"#000\" x=\"1.5\" y=\"4.5\" width=\"17\" height=\"12\"></rect><rect x=\"1\" y=\"7\" width=\"18\" height=\"3\"></rect></svg>",
+	"file-edit": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" d=\"M18.65,1.68 C18.41,1.45 18.109,1.33 17.81,1.33 C17.499,1.33 17.209,1.45 16.98,1.68 L8.92,9.76 L8,12.33 L10.55,11.41 L18.651,3.34 C19.12,2.87 19.12,2.15 18.65,1.68 L18.65,1.68 L18.65,1.68 Z\"></path><polyline fill=\"none\" stroke=\"#000\" points=\"16.5 8.482 16.5 18.5 3.5 18.5 3.5 1.5 14.211 1.5\"></polyline></svg>",
+	"git-branch": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.2\" cx=\"7\" cy=\"3\" r=\"2\"></circle><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.2\" cx=\"14\" cy=\"6\" r=\"2\"></circle><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.2\" cx=\"7\" cy=\"17\" r=\"2\"></circle><path fill=\"none\" stroke=\"#000\" stroke-width=\"2\" d=\"M14,8 C14,10.41 12.43,10.87 10.56,11.25 C9.09,11.54 7,12.06 7,15 L7,5\"></path></svg>",
+	"git-fork": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.2\" cx=\"5.79\" cy=\"2.79\" r=\"1.79\"></circle><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.2\" cx=\"14.19\" cy=\"2.79\" r=\"1.79\"></circle><ellipse fill=\"none\" stroke=\"#000\" stroke-width=\"1.2\" cx=\"10.03\" cy=\"16.79\" rx=\"1.79\" ry=\"1.79\"></ellipse><path fill=\"none\" stroke=\"#000\" stroke-width=\"2\" d=\"M5.79,4.57 L5.79,6.56 C5.79,9.19 10.03,10.22 10.03,13.31 C10.03,14.86 10.04,14.55 10.04,14.55 C10.04,14.37 10.04,14.86 10.04,13.31 C10.04,10.22 14.2,9.19 14.2,6.56 L14.2,4.57\"></path></svg>",
+	"github-alt": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10,0.5 C4.75,0.5 0.5,4.76 0.5,10.01 C0.5,15.26 4.75,19.51 10,19.51 C15.24,19.51 19.5,15.26 19.5,10.01 C19.5,4.76 15.25,0.5 10,0.5 L10,0.5 Z M12.81,17.69 C12.81,17.69 12.81,17.7 12.79,17.69 C12.47,17.75 12.35,17.59 12.35,17.36 L12.35,16.17 C12.35,15.45 12.09,14.92 11.58,14.56 C12.2,14.51 12.77,14.39 13.26,14.21 C13.87,13.98 14.36,13.69 14.74,13.29 C15.42,12.59 15.76,11.55 15.76,10.17 C15.76,9.25 15.45,8.46 14.83,7.8 C15.1,7.08 15.07,6.29 14.75,5.44 L14.51,5.42 C14.34,5.4 14.06,5.46 13.67,5.61 C13.25,5.78 12.79,6.03 12.31,6.35 C11.55,6.16 10.81,6.05 10.09,6.05 C9.36,6.05 8.61,6.15 7.88,6.35 C7.28,5.96 6.75,5.68 6.26,5.54 C6.07,5.47 5.9,5.44 5.78,5.44 L5.42,5.44 C5.06,6.29 5.04,7.08 5.32,7.8 C4.7,8.46 4.4,9.25 4.4,10.17 C4.4,11.94 4.96,13.16 6.08,13.84 C6.53,14.13 7.05,14.32 7.69,14.43 C8.03,14.5 8.32,14.54 8.55,14.55 C8.07,14.89 7.82,15.42 7.82,16.16 L7.82,17.51 C7.8,17.69 7.7,17.8 7.51,17.8 C4.21,16.74 1.82,13.65 1.82,10.01 C1.82,5.5 5.49,1.83 10,1.83 C14.5,1.83 18.17,5.5 18.17,10.01 C18.18,13.53 15.94,16.54 12.81,17.69 L12.81,17.69 Z\"></path></svg>",
+	"google-plus": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12.9,9c0,2.7-0.6,5-3.2,6.3c-3.7,1.8-8.1,0.2-9.4-3.6C-1.1,7.6,1.9,3.3,6.1,3c1.7-0.1,3.2,0.3,4.6,1.3 c0.1,0.1,0.3,0.2,0.4,0.4c-0.5,0.5-1.2,1-1.7,1.6c-1-0.8-2.1-1.1-3.5-0.9C5,5.6,4.2,6,3.6,6.7c-1.3,1.3-1.5,3.4-0.5,5 c1,1.7,2.6,2.3,4.6,1.9c1.4-0.3,2.4-1.2,2.6-2.6H6.9V9H12.9z\"></path><polygon points=\"20,9 20,11 18,11 18,13 16,13 16,11 14,11 14,9 16,9 16,7 18,7 18,9 \"></polygon></svg>",
+	"minus-circle": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"9.5\" cy=\"9.5\" r=\"9\"></circle><line fill=\"none\" stroke=\"#000\" x1=\"5\" y1=\"9.5\" x2=\"14\" y2=\"9.5\"></line></svg>",
+	"more-vertical": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"10\" cy=\"3\" r=\"2\"></circle><circle cx=\"10\" cy=\"10\" r=\"2\"></circle><circle cx=\"10\" cy=\"17\" r=\"2\"></circle></svg>",
+	"paint-bucket": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10.21,1 L0,11.21 L8.1,19.31 L18.31,9.1 L10.21,1 L10.21,1 Z M16.89,9.1 L15,11 L1.7,11 L10.21,2.42 L16.89,9.1 Z\"></path><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M6.42,2.33 L11.7,7.61\"></path><path d=\"M18.49,12 C18.49,12 20,14.06 20,15.36 C20,16.28 19.24,17 18.49,17 L18.49,17 C17.74,17 17,16.28 17,15.36 C17,14.06 18.49,12 18.49,12 L18.49,12 Z\"></path></svg>",
+	"phone-landscape": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" d=\"M17,5.5 C17.8,5.5 18.5,6.2 18.5,7 L18.5,14 C18.5,14.8 17.8,15.5 17,15.5 L3,15.5 C2.2,15.5 1.5,14.8 1.5,14 L1.5,7 C1.5,6.2 2.2,5.5 3,5.5 L17,5.5 L17,5.5 L17,5.5 Z\"></path><circle cx=\"3.8\" cy=\"10.5\" r=\"0.8\"></circle></svg>",
+	"play-circle": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" points=\"8.5 7 13.5 10 8.5 13\"></polygon><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"10\" cy=\"10\" r=\"9\"></circle></svg>",
+	"plus-circle": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"9.5\" cy=\"9.5\" r=\"9\"></circle><line fill=\"none\" stroke=\"#000\" x1=\"9.5\" y1=\"5\" x2=\"9.5\" y2=\"14\"></line><line fill=\"none\" stroke=\"#000\" x1=\"5\" y1=\"9.5\" x2=\"14\" y2=\"9.5\"></line></svg>",
+	"quote-right": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M17.27,7.79 C17.27,9.45 16.97,10.43 15.99,12.02 C14.98,13.64 13,15.23 11.56,15.97 L11.1,15.08 C12.34,14.2 13.14,13.51 14.02,11.82 C14.27,11.34 14.41,10.92 14.49,10.54 C14.3,10.58 14.09,10.6 13.88,10.6 C12.06,10.6 10.59,9.12 10.59,7.3 C10.59,5.48 12.06,4 13.88,4 C15.39,4 16.67,5.02 17.05,6.42 C17.19,6.82 17.27,7.27 17.27,7.79 L17.27,7.79 Z\"></path><path d=\"M8.68,7.79 C8.68,9.45 8.38,10.43 7.4,12.02 C6.39,13.64 4.41,15.23 2.97,15.97 L2.51,15.08 C3.75,14.2 4.55,13.51 5.43,11.82 C5.68,11.34 5.82,10.92 5.9,10.54 C5.71,10.58 5.5,10.6 5.29,10.6 C3.47,10.6 2,9.12 2,7.3 C2,5.48 3.47,4 5.29,4 C6.8,4 8.08,5.02 8.46,6.42 C8.6,6.82 8.68,7.27 8.68,7.79 L8.68,7.79 Z\"></path></svg>",
+	"sign-in": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"7 2 17 2 17 17 7 17 7 16 16 16 16 3 7 3\"></polygon><polygon points=\"9.1 13.4 8.5 12.8 11.28 10 4 10 4 9 11.28 9 8.5 6.2 9.1 5.62 13 9.5\"></polygon></svg>",
+	"sign-out": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"13.1 13.4 12.5 12.8 15.28 10 8 10 8 9 15.28 9 12.5 6.2 13.1 5.62 17 9.5\"></polygon><polygon points=\"13 2 3 2 3 17 13 17 13 16 4 16 4 3 13 3\"></polygon></svg>",
+	"tablet-landscape": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill=\"none\" stroke=\"#000\" d=\"M1.5,5 C1.5,4.2 2.2,3.5 3,3.5 L17,3.5 C17.8,3.5 18.5,4.2 18.5,5 L18.5,16 C18.5,16.8 17.8,17.5 17,17.5 L3,17.5 C2.2,17.5 1.5,16.8 1.5,16 L1.5,5 L1.5,5 L1.5,5 Z\"></path><circle cx=\"3.7\" cy=\"10.5\" r=\"0.8\"></circle></svg>",
+	"triangle-down": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"5 7 15 7 10 12\"></polygon></svg>",
+	"triangle-left": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"12 5 7 10 12 15\"></polygon></svg>",
+	"triangle-right": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"8 5 13 10 8 15\"></polygon></svg>",
+	"triangle-up": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"5 13 10 8 15 13\"></polygon></svg>",
+	"video-camera": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><polygon points=\"18,6 18,14 12,10 \"></polygon><rect x=\"2\" y=\"5\" width=\"12\" height=\"10\"></rect></svg>"
+};
+
+function plugin(UIkit) {
+
+    if (plugin.installed) {
+        return;
+    }
+
+    UIkit.icon.add(Icons);
+
+}
+
+if (typeof window !== 'undefined' && window.UIkit) {
+    window.UIkit.use(plugin);
+}
+
+return plugin;
+
+})));
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! UIkit 3.0.0-beta.24 | http://www.getuikit.com | (c) 2014 - 2017 YOOtheme | MIT License */
+
+(function (global, factory) {
+     true ? module.exports = factory(__webpack_require__(31)) :
+    typeof define === 'function' && define.amd ? define('uikit', ['jquery'], factory) :
+    (global.UIkit = factory(global.jQuery));
+}(this, (function ($) { 'use strict';
+
+var $__default = 'default' in $ ? $['default'] : $;
+
+var docEl = document.documentElement;
+var win = $__default(window);
+var doc = $__default(document);
+var docElement = $__default(docEl);
+
+var isRtl = docEl.getAttribute('dir') === 'rtl';
+
+function isReady() {
+    return document.readyState === 'complete' || document.readyState !== 'loading' && !docEl.doScroll;
+}
+
+function ready(fn) {
+
+    var handle = function () {
+        off(document, 'DOMContentLoaded', handle);
+        off(window, 'load', handle);
+        fn();
+    };
+
+    if (isReady()) {
+        fn();
+    } else {
+        on(document, 'DOMContentLoaded', handle);
+        on(window, 'load', handle);
+    }
+
+}
+
+function on(el, type, listener, useCapture) {
+    type.split(' ').forEach(function (type) { return toNode(el).addEventListener(type, listener, useCapture); });
+}
+
+function off(el, type, listener, useCapture) {
+    type.split(' ').forEach(function (type) { return toNode(el).removeEventListener(type, listener, useCapture); });
+}
+
+function transition(element, props, duration, transition) {
+    if ( duration === void 0 ) duration = 400;
+    if ( transition === void 0 ) transition = 'linear';
+
+
+    var p = promise(function (resolve, reject) {
+
+        element = $__default(element);
+
+        for (var name in props) {
+            element.css(name, element.css(name));
+        }
+
+        var timer = setTimeout(function () { return element.trigger(transitionend || 'transitionend'); }, duration);
+
+        element
+            .one(transitionend || 'transitionend', function (e, cancel) {
+
+                e.promise = p;
+
+                clearTimeout(timer);
+                element.removeClass('uk-transition').css('transition', '');
+                if (!cancel) {
+                    resolve();
+                } else {
+                    reject();
+                }
+            })
+            .addClass('uk-transition')
+            .css('transition', ("all " + duration + "ms " + transition))
+            .css(props);
+
+    }).then(null, function () {});
+
+    return p;
+}
+
+var Transition = {
+
+    start: transition,
+
+    stop: function stop(element, cancel) {
+        var e = $.Event(transitionend || 'transitionend');
+        $__default(element).triggerHandler(e, [cancel]);
+        return e.promise || promise.resolve();
+    },
+
+    cancel: function cancel(element) {
+        return this.stop(element, true);
+    },
+
+    inProgress: function inProgress(element) {
+        return $__default(element).hasClass('uk-transition');
+    }
+
+};
+
+function animate(element, animation, duration, origin, out) {
+    if ( duration === void 0 ) duration = 200;
+
+
+    var p = promise(function (resolve) {
+
+        var cls = out ? 'uk-animation-leave' : 'uk-animation-enter';
+
+        element = $__default(element);
+
+        if (animation.lastIndexOf('uk-animation-', 0) === 0) {
+
+            if (origin) {
+                animation += " uk-animation-" + origin;
+            }
+
+            if (out) {
+                animation += ' uk-animation-reverse';
+            }
+
+        }
+
+        reset();
+
+        element
+            .one(animationend || 'animationend', function (e) {
+                e.promise = p;
+                p.then(reset);
+                resolve();
+            })
+            .css('animation-duration', (duration + "ms"))
+            .addClass(animation)
+            .addClass(cls);
+
+
+        if (!animationend) {
+            requestAnimationFrame(function () { return Animation.cancel(element); });
+        }
+
+        function reset() {
+            element.css('animation-duration', '').removeClass((cls + " " + animation));
+        }
+
+    });
+
+    return p;
+}
+
+var Animation = {
+
+    in: function in$1(element, animation, duration, origin) {
+        return animate(element, animation, duration, origin, false);
+    },
+
+    out: function out(element, animation, duration, origin) {
+        return animate(element, animation, duration, origin, true);
+    },
+
+    inProgress: function inProgress(element) {
+        return $__default(element).hasClass('uk-animation-enter') || $__default(element).hasClass('uk-animation-leave');
+    },
+
+    cancel: function cancel(element) {
+        var e = $.Event(animationend || 'animationend');
+        $__default(element).triggerHandler(e);
+        return e.promise || promise.resolve();
+    }
+
+};
+
+function isJQuery(obj) {
+    return obj instanceof $__default;
+}
+
+function isWithin(element, selector) {
+    element = $__default(element);
+    return element.is(selector)
+        ? true
+        : isString(selector)
+            ? element.parents(selector).length
+            : toNode(selector).contains(element[0]);
+}
+
+function attrFilter(element, attr, pattern, replacement) {
+    element = $__default(element);
+    return element.attr(attr, function (i, value) { return value ? value.replace(pattern, replacement) : value; });
+}
+
+function removeClass(element, cls) {
+    return attrFilter(element, 'class', new RegExp(("(^|\\s)" + cls + "(?!\\S)"), 'g'), '');
+}
+
+function createEvent(e, bubbles, cancelable, data) {
+    if ( bubbles === void 0 ) bubbles = true;
+    if ( cancelable === void 0 ) cancelable = false;
+    if ( data === void 0 ) data = false;
+
+    if (isString(e)) {
+        var event = document.createEvent('Event');
+        event.initEvent(e, bubbles, cancelable);
+        e = event;
+    }
+
+    if (data) {
+        assign(e, data);
+    }
+
+    return e;
+}
+
+function isInView(element, offsetTop, offsetLeft) {
+    if ( offsetTop === void 0 ) offsetTop = 0;
+    if ( offsetLeft === void 0 ) offsetLeft = 0;
+
+
+    var rect = toNode(element).getBoundingClientRect();
+
+    return rect.bottom >= -1 * offsetTop
+        && rect.right >= -1 * offsetLeft
+        && rect.top <= window.innerHeight + offsetTop
+        && rect.left <= window.innerWidth + offsetLeft;
+}
+
+function scrolledOver(element) {
+
+    var ref = toNode(element).getBoundingClientRect();
+    var top = ref.top;
+    var height = ref.height;
+    var topOffset = offsetTop(element),
+        vp = window.innerHeight,
+        vh = vp + Math.min(0, topOffset - vp),
+        diff = Math.max(0, vp - (docHeight() - (topOffset + height)));
+
+    return clamp(((vh - top) / ((vh + (height - (diff < vp ? diff : 0)) ) / 100)) / 100);
+}
+
+function clamp(number, min, max) {
+    if ( min === void 0 ) min = 0;
+    if ( max === void 0 ) max = 1;
+
+    return Math.min(Math.max(number, min), max);
+}
+
+function docHeight() {
+    return Math.max(docEl.offsetHeight, docEl.scrollHeight);
+}
+
+function getIndex(index, elements, current) {
+    if ( current === void 0 ) current = 0;
+
+
+    elements = $__default(elements);
+
+    var length = $__default(elements).length;
+
+    index = (isNumber(index)
+        ? index
+        : index === 'next'
+            ? current + 1
+            : index === 'previous'
+                ? current - 1
+                : isString(index)
+                    ? parseInt(index, 10)
+                    : elements.index(index)
+    ) % length;
+
+    return index < 0 ? index + length : index;
+}
+
+var voidElements = {
+    area: true,
+    base: true,
+    br: true,
+    col: true,
+    embed: true,
+    hr: true,
+    img: true,
+    input: true,
+    keygen: true,
+    link: true,
+    menuitem: true,
+    meta: true,
+    param: true,
+    source: true,
+    track: true,
+    wbr: true
+};
+function isVoidElement(element) {
+    return voidElements[toNode(element).tagName.toLowerCase()];
+}
+
+var Dimensions = {
+
+    ratio: function ratio(dimensions, prop, value) {
+
+        var aProp = prop === 'width' ? 'height' : 'width';
+
+        return ( obj = {}, obj[aProp] = Math.round(value * dimensions[aProp] / dimensions[prop]), obj[prop] = value, obj );
+        var obj;
+    },
+
+    fit: function fit(dimensions, maxDimensions) {
+        var this$1 = this;
+
+        dimensions = assign({}, dimensions);
+
+        $.each(dimensions, function (prop) { return dimensions = dimensions[prop] > maxDimensions[prop] ? this$1.ratio(dimensions, prop, maxDimensions[prop]) : dimensions; });
+
+        return dimensions;
+    },
+
+    cover: function cover(dimensions, maxDimensions) {
+        var this$1 = this;
+
+        dimensions = this.fit(dimensions, maxDimensions);
+
+        $.each(dimensions, function (prop) { return dimensions = dimensions[prop] < maxDimensions[prop] ? this$1.ratio(dimensions, prop, maxDimensions[prop]) : dimensions; });
+
+        return dimensions;
+    }
+
+};
+
+function query(selector, context) {
+    var selectors = getContextSelectors(selector);
+    return selectors ? selectors.reduce(function (context, selector) { return toJQuery(selector, context); }, context) : toJQuery(selector);
+}
+
+function bind(fn, context) {
+    return function (a) {
+        var l = arguments.length;
+        return l ? l > 1 ? fn.apply(context, arguments) : fn.call(context, a) : fn.call(context);
+    };
+}
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+function hasOwn(obj, key) {
+    return hasOwnProperty.call(obj, key);
+}
+
+function promise(executor) {
+
+    if (hasPromise) {
+        return new Promise(executor);
+    }
+
+    var def = $__default.Deferred();
+
+    executor(def.resolve, def.reject);
+
+    return def;
+}
+
+promise.resolve = function (value) {
+    return promise(function (resolve) {
+        resolve(value);
+    });
+};
+
+promise.reject = function (value) {
+    return promise(function (_, reject) {
+        reject(value);
+    });
+};
+
+promise.all = function (iterable) {
+    return hasPromise
+        ? Promise.all(iterable)
+        : $__default.when.apply($__default, iterable);
+};
+
+function classify(str) {
+    return str.replace(/(?:^|[-_\/])(\w)/g, function (_, c) { return c ? c.toUpperCase() : ''; });
+}
+
+function hyphenate(str) {
+    return str
+        .replace(/([a-z\d])([A-Z])/g, '$1-$2')
+        .toLowerCase()
+}
+
+var camelizeRE = /-(\w)/g;
+function camelize(str) {
+    return str.replace(camelizeRE, toUpper)
+}
+
+function toUpper(_, c) {
+    return c ? c.toUpperCase() : ''
+}
+
+var isArray = Array.isArray;
+
+function isFunction(obj) {
+    return typeof obj === 'function';
+}
+
+function isObject(obj) {
+    return obj !== null && typeof obj === 'object';
+}
+
+function isPlainObject(obj) {
+    return isObject(obj) && Object.getPrototypeOf(obj) === Object.prototype;
+}
+
+function isString(value) {
+    return typeof value === 'string';
+}
+
+function isNumber(value) {
+    return typeof value === 'number';
+}
+
+function isUndefined(value) {
+    return value === undefined;
+}
+
+function isContextSelector(selector) {
+    return isString(selector) && selector.match(/^[!>+-]/);
+}
+
+function getContextSelectors(selector) {
+    return isContextSelector(selector) && selector.split(/(?=\s[!>+-])/g).map(function (value) { return value.trim(); });
+}
+
+var contextSelectors = {'!': 'closest', '+': 'nextAll', '-': 'prevAll'};
+function toJQuery(element, context) {
+
+    if (element === true) {
+        return null;
+    }
+
+    try {
+
+        if (context && isContextSelector(element) && element[0] !== '>') {
+
+            var fn = contextSelectors[element[0]], selector = element.substr(1);
+
+            context = $__default(context);
+
+            if (fn === 'closest') {
+                context = context.parent();
+                selector = selector || '*';
+            }
+
+            element = context[fn](selector);
+
+        } else {
+            element = $__default(element, context);
+        }
+
+    } catch (e) {
+        return null;
+    }
+
+    return element.length ? element : null;
+}
+
+function toNode(element) {
+    return element && (isJQuery(element) ? element[0] : element);
+}
+
+function toBoolean(value) {
+    return typeof value === 'boolean'
+        ? value
+        : value === 'true' || value === '1' || value === ''
+            ? true
+            : value === 'false' || value === '0'
+                ? false
+                : value;
+}
+
+function toNumber(value) {
+    var number = Number(value);
+    return !isNaN(number) ? number : false;
+}
+
+function toList(value) {
+    return isArray(value)
+        ? value
+        : isString(value)
+            ? value.split(',').map(function (value) { return $.isNumeric(value)
+                ? toNumber(value)
+                : toBoolean(value.trim()); })
+            : [value];
+}
+
+var vars = {};
+function toMedia(value) {
+
+    if (isString(value)) {
+        if (value[0] === '@') {
+            var name = "media-" + (value.substr(1));
+            value = vars[name] || (vars[name] = parseFloat(getCssVar(name)));
+        } else if (value.match(/^\(min-width:/)) {
+            return value;
+        }
+    }
+
+    return value && !isNaN(value) ? ("(min-width: " + value + "px)") : false;
+}
+
+function coerce(type, value, context) {
+
+    if (type === Boolean) {
+        return toBoolean(value);
+    } else if (type === Number) {
+        return toNumber(value);
+    } else if (type === 'jQuery') {
+        return query(value, context);
+    } else if (type === 'list') {
+        return toList(value);
+    } else if (type === 'media') {
+        return toMedia(value);
+    }
+
+    return type ? type(value) : value;
+}
+
+function toMs(time) {
+    return !time
+        ? 0
+        : time.substr(-2) === 'ms'
+            ? parseFloat(time)
+            : parseFloat(time) * 1000;
+}
+
+function swap(value, a, b) {
+    return value.replace(new RegExp((a + "|" + b), 'mg'), function (match) {
+        return match === a ? b : a
+    });
+}
+
+var assign = Object.assign || function (target) {
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+
+    target = Object(target);
+    for (var i = 0; i < args.length; i++) {
+        var source = args[i];
+        if (source !== null) {
+            for (var key in source) {
+                if (hasOwn(source, key)) {
+                    target[key] = source[key];
+                }
+            }
+        }
+    }
+    return target;
+};
+
+var Observer = window.MutationObserver || window.WebKitMutationObserver;
+var requestAnimationFrame = window.requestAnimationFrame || function (fn) { return setTimeout(fn, 1000 / 60); };
+
+var hasPointerEvents = window.PointerEvent;
+var hasPromise = 'Promise' in window;
+var hasTouch = 'ontouchstart' in window
+    || window.DocumentTouch && document instanceof DocumentTouch
+    || navigator.msPointerEnabled && navigator.msMaxTouchPoints // IE 10
+    || navigator.pointerEnabled && navigator.maxTouchPoints; // IE >=11
+
+var pointerDown = !hasTouch ? 'mousedown' : hasPointerEvents ? 'pointerdown' : 'touchstart';
+var pointerMove = !hasTouch ? 'mousemove' : hasPointerEvents ? 'pointermove' : 'touchmove';
+var pointerUp = !hasTouch ? 'mouseup' : hasPointerEvents ? 'pointerup' : 'touchend';
+var pointerEnter = hasTouch && hasPointerEvents ? 'pointerenter' : 'mouseenter';
+var pointerLeave = hasTouch && hasPointerEvents ? 'pointerleave' : 'mouseleave';
+
+var transitionend = prefix('transition', 'transition-end');
+var animationstart = prefix('animation', 'animation-start');
+var animationend = prefix('animation', 'animation-end');
+
+function getStyle(element, property, pseudoElt) {
+    return (window.getComputedStyle(toNode(element), pseudoElt) || {})[property];
+}
+
+function getCssVar(name) {
+
+    /* usage in css:  .var-name:before { content:"xyz" } */
+
+    var val, doc = document.documentElement,
+        element = doc.appendChild(document.createElement('div'));
+
+    element.classList.add(("var-" + name));
+
+    try {
+
+        val = getStyle(element, 'content', ':before').replace(/^["'](.*)["']$/, '$1');
+        val = JSON.parse(val);
+
+    } catch (e) {}
+
+    doc.removeChild(element);
+
+    return val || undefined;
+}
+
+function getImage(src) {
+
+    return promise(function (resolve, reject) {
+        var img = new Image();
+
+        img.onerror = reject;
+        img.onload = function () { return resolve(img); };
+
+        img.src = src;
+    });
+
+}
+
+function prefix(name, event) {
+
+    var ucase = classify(name),
+        lowered = classify(event).toLowerCase(),
+        classified = classify(event),
+        element = document.body || document.documentElement,
+        names = ( obj = {}, obj[("Webkit" + ucase)] = ("webkit" + classified), obj[("Moz" + ucase)] = lowered, obj[("o" + ucase)] = ("o" + classified + " o" + lowered), obj[name] = lowered, obj );
+    var obj;
+
+    for (name in names) {
+        if (element.style[name] !== undefined) {
+            return names[name];
+        }
+    }
+}
+
+/*
+    Based on:
+    Copyright (c) 2016 Wilson Page wilsonpage@me.com
+    https://github.com/wilsonpage/fastdom
+*/
+
+var fastdom = {
+
+    reads: [],
+    writes: [],
+
+    measure: function measure(task) {
+        this.reads.push(task);
+        scheduleFlush(this);
+        return task;
+    },
+
+    mutate: function mutate(task) {
+        this.writes.push(task);
+        scheduleFlush(this);
+        return task;
+    },
+
+    clear: function clear(task) {
+        return remove(this.reads, task) || remove(this.writes, task);
+    },
+
+    flush: function flush() {
+
+        runTasks(this.reads);
+        runTasks(this.writes.splice(0, this.writes.length));
+
+        this.scheduled = false;
+
+        if (this.reads.length || this.writes.length) {
+            scheduleFlush(this);
+        }
+
+    }
+
+};
+
+function scheduleFlush(fastdom) {
+    if (!fastdom.scheduled) {
+        fastdom.scheduled = true;
+        requestAnimationFrame(fastdom.flush.bind(fastdom));
+    }
+}
+
+function runTasks(tasks) {
+    var task;
+    while (task = tasks.shift()) {
+        task();
+    }
+}
+
+function remove(array, item) {
+    var index = array.indexOf(item);
+    return !!~index && !!array.splice(index, 1);
+}
+
+function MouseTracker() {}
+
+MouseTracker.prototype = {
+
+    positions: [],
+    position: null,
+
+    init: function init() {
+        var this$1 = this;
+
+
+        this.positions = [];
+        this.position = null;
+
+        var ticking = false;
+        this.handler = function (e) {
+
+            if (!ticking) {
+                setTimeout(function () {
+
+                    var time = Date.now(), length = this$1.positions.length;
+                    if (length && (time - this$1.positions[length - 1].time > 100)) {
+                        this$1.positions.splice(0, length);
+                    }
+
+                    this$1.positions.push({time: time, x: e.pageX, y: e.pageY});
+
+                    if (this$1.positions.length > 5) {
+                        this$1.positions.shift();
+                    }
+
+                    ticking = false;
+                }, 5);
+            }
+
+            ticking = true;
+        };
+
+        doc.on('mousemove', this.handler);
+
+    },
+
+    cancel: function cancel() {
+        if (this.handler) {
+            doc.off('mousemove', this.handler);
+        }
+    },
+
+    movesTo: function movesTo(target) {
+
+        if (this.positions.length < 2) {
+            return false;
+        }
+
+        var p = getDimensions(target),
+            position = this.positions[this.positions.length - 1],
+            prevPos = this.positions[0];
+
+        if (p.left <= position.x && position.x <= p.right && p.top <= position.y && position.y <= p.bottom) {
+            return false;
+        }
+
+        var points = [
+            [{x: p.left, y: p.top}, {x: p.right, y: p.bottom}],
+            [{x: p.right, y: p.top}, {x: p.left, y: p.bottom}]
+        ];
+
+        if (p.right <= position.x) {
+
+        } else if (p.left >= position.x) {
+            points[0].reverse();
+            points[1].reverse();
+        } else if (p.bottom <= position.y) {
+            points[0].reverse();
+        } else if (p.top >= position.y) {
+            points[1].reverse();
+        }
+
+        return !!points.reduce(function (result, point) {
+            return result + (slope(prevPos, point[0]) < slope(position, point[0]) && slope(prevPos, point[1]) > slope(position, point[1]));
+        }, 0);
+    }
+
+};
+
+function slope(a, b) {
+    return (b.y - a.y) / (b.x - a.x);
+}
+
+var strats = {};
+
+// concat strategy
+strats.args =
+strats.created =
+strats.events =
+strats.init =
+strats.ready =
+strats.connected =
+strats.disconnected =
+strats.destroy = function (parentVal, childVal) {
+
+    parentVal = parentVal && !isArray(parentVal) ? [parentVal] : parentVal;
+
+    return childVal
+        ? parentVal
+            ? parentVal.concat(childVal)
+            : isArray(childVal)
+                ? childVal
+                : [childVal]
+        : parentVal;
+};
+
+// update strategy
+strats.update = function (parentVal, childVal) {
+    return strats.args(parentVal, isFunction(childVal) ? {read: childVal} : childVal);
+};
+
+// property strategy
+strats.props = function (parentVal, childVal) {
+
+    if (isArray(childVal)) {
+        childVal = childVal.reduce(function (value, key) {
+            value[key] = String;
+            return value;
+        }, {});
+    }
+
+    return strats.methods(parentVal, childVal);
+};
+
+// extend strategy
+strats.computed =
+strats.defaults =
+strats.methods = function (parentVal, childVal) {
+    return childVal
+        ? parentVal
+            ? assign({}, parentVal, childVal)
+            : childVal
+        : parentVal;
+};
+
+// default strategy
+var defaultStrat = function (parentVal, childVal) {
+    return isUndefined(childVal) ? parentVal : childVal;
+};
+
+function mergeOptions(parent, child) {
+
+    var options = {}, key;
+
+    if (child.mixins) {
+        for (var i = 0, l = child.mixins.length; i < l; i++) {
+            parent = mergeOptions(parent, child.mixins[i]);
+        }
+    }
+
+    for (key in parent) {
+        mergeKey(key);
+    }
+
+    for (key in child) {
+        if (!hasOwn(parent, key)) {
+            mergeKey(key);
+        }
+    }
+
+    function mergeKey(key) {
+        options[key] = (strats[key] || defaultStrat)(parent[key], child[key]);
+    }
+
+    return options;
+}
+
+var dirs = {
+    x: ['width', 'left', 'right'],
+    y: ['height', 'top', 'bottom']
+};
+
+function position(element, target, attach, targetAttach, offset, targetOffset, flip, boundary) {
+
+    attach = getPos(attach);
+    targetAttach = getPos(targetAttach);
+
+    var flipped = {element: attach, target: targetAttach};
+
+    if (!element) {
+        return flipped;
+    }
+
+    var dim = getDimensions(element),
+        targetDim = getDimensions(target),
+        position = targetDim;
+
+    moveTo(position, attach, dim, -1);
+    moveTo(position, targetAttach, targetDim, 1);
+
+    offset = getOffsets(offset, dim.width, dim.height);
+    targetOffset = getOffsets(targetOffset, targetDim.width, targetDim.height);
+
+    offset['x'] += targetOffset['x'];
+    offset['y'] += targetOffset['y'];
+
+    position.left += offset['x'];
+    position.top += offset['y'];
+
+    boundary = getDimensions(boundary || window);
+
+    if (flip) {
+        $.each(dirs, function (dir, ref) {
+            var prop = ref[0];
+            var align = ref[1];
+            var alignFlip = ref[2];
+
+
+            if (!(flip === true || ~flip.indexOf(dir))) {
+                return;
+            }
+
+            var elemOffset = attach[dir] === align
+                    ? -dim[prop]
+                    : attach[dir] === alignFlip
+                        ? dim[prop]
+                        : 0,
+                targetOffset = targetAttach[dir] === align
+                    ? targetDim[prop]
+                    : targetAttach[dir] === alignFlip
+                        ? -targetDim[prop]
+                        : 0;
+
+            if (position[align] < boundary[align] || position[align] + dim[prop] > boundary[alignFlip]) {
+
+                var centerOffset = dim[prop] / 2,
+                    centerTargetOffset = targetAttach[dir] === 'center' ? -targetDim[prop] / 2 : 0;
+
+                attach[dir] === 'center' && (
+                    apply(centerOffset, centerTargetOffset)
+                    || apply(-centerOffset, -centerTargetOffset)
+                ) || apply(elemOffset, targetOffset);
+
+            }
+
+            function apply(elemOffset, targetOffset) {
+
+                var newVal = position[align] + elemOffset + targetOffset - offset[dir] * 2;
+
+                if (newVal >= boundary[align] && newVal + dim[prop] <= boundary[alignFlip]) {
+                    position[align] = newVal;
+
+                    ['element', 'target'].forEach(function (el) {
+                        flipped[el][dir] = !elemOffset
+                            ? flipped[el][dir]
+                            : flipped[el][dir] === dirs[dir][1]
+                                ? dirs[dir][2]
+                                : dirs[dir][1];
+                    });
+
+                    return true;
+                }
+
+            }
+
+        });
+    }
+
+    $__default(element).offset({left: position.left, top: position.top});
+
+    return flipped;
+}
+
+function getDimensions(element) {
+
+    element = toNode(element);
+
+    var window = getWindow(element), top = window.pageYOffset, left = window.pageXOffset;
+
+    if (!element.ownerDocument) {
+        return {
+            top: top,
+            left: left,
+            height: window.innerHeight,
+            width: window.innerWidth,
+            bottom: top + window.innerHeight,
+            right: left + window.innerWidth,
+        }
+    }
+
+    var display = false;
+    if (!element.offsetHeight) {
+        display = element.style.display;
+        element.style.display = 'block';
+    }
+
+    var rect = element.getBoundingClientRect();
+
+    if (display !== false) {
+        element.style.display = display;
+    }
+
+    return {
+        height: rect.height,
+        width: rect.width,
+        top: rect.top + top,
+        left: rect.left + left,
+        bottom: rect.bottom + top,
+        right: rect.right + left,
+    }
+}
+
+function offsetTop(element) {
+    element = toNode(element);
+    return element.getBoundingClientRect().top + getWindow(element).pageYOffset;
+}
+
+function getWindow(element) {
+    return element && element.ownerDocument ? element.ownerDocument.defaultView : window;
+}
+
+function moveTo(position, attach, dim, factor) {
+    $.each(dirs, function (dir, ref) {
+        var prop = ref[0];
+        var align = ref[1];
+        var alignFlip = ref[2];
+
+        if (attach[dir] === alignFlip) {
+            position[align] += dim[prop] * factor;
+        } else if (attach[dir] === 'center') {
+            position[align] += dim[prop] * factor / 2;
+        }
+    });
+}
+
+function getPos(pos) {
+
+    var x = /left|center|right/, y = /top|center|bottom/;
+
+    pos = (pos || '').split(' ');
+
+    if (pos.length === 1) {
+        pos = x.test(pos[0])
+            ? pos.concat(['center'])
+            : y.test(pos[0])
+                ? ['center'].concat(pos)
+                : ['center', 'center'];
+    }
+
+    return {
+        x: x.test(pos[0]) ? pos[0] : 'center',
+        y: y.test(pos[1]) ? pos[1] : 'center'
+    };
+}
+
+function getOffsets(offsets, width, height) {
+
+    offsets = (offsets || '').split(' ');
+
+    return {
+        x: offsets[0] ? parseFloat(offsets[0]) * (offsets[0][offsets[0].length - 1] === '%' ? width / 100 : 1) : 0,
+        y: offsets[1] ? parseFloat(offsets[1]) * (offsets[1][offsets[1].length - 1] === '%' ? height / 100 : 1) : 0
+    };
+}
+
+function flipPosition(pos) {
+    switch (pos) {
+        case 'left':
+            return 'right';
+        case 'right':
+            return 'left';
+        case 'top':
+            return 'bottom';
+        case 'bottom':
+            return 'top';
+        default:
+            return pos;
+    }
+}
+
+/*
+    Based on:
+    Copyright (c) 2010-2016 Thomas Fuchs
+    http://zeptojs.com/
+*/
+
+var touch = {};
+var touchTimeout;
+var tapTimeout;
+var swipeTimeout;
+var gesture;
+var clicked;
+function swipeDirection(x1, x2, y1, y2) {
+    return Math.abs(x1 - x2) >= Math.abs(y1 - y2) ? (x1 - x2 > 0 ? 'Left' : 'Right') : (y1 - y2 > 0 ? 'Up' : 'Down');
+}
+
+function cancelAll() {
+    if (touchTimeout) { clearTimeout(touchTimeout); }
+    if (tapTimeout) { clearTimeout(tapTimeout); }
+    if (swipeTimeout) { clearTimeout(swipeTimeout); }
+    touchTimeout = tapTimeout = swipeTimeout = null;
+    touch = {};
+}
+
+ready(function () {
+
+    var now, delta, deltaX = 0, deltaY = 0;
+
+    if ('MSGesture' in window) {
+        gesture = new MSGesture();
+        gesture.target = document.body;
+    }
+
+    on(document, 'click', function () { return clicked = true; }, true);
+
+    on(document, 'MSGestureEnd gestureend', function (e) {
+
+        var dir = e.velocityX > 1
+            ? 'Right'
+            : e.velocityX < -1
+                ? 'Left'
+                : e.velocityY > 1
+                    ? 'Down'
+                    : e.velocityY < -1
+                        ? 'Up'
+                        : null;
+
+        if (dir && touch.el !== undefined) {
+            touch.el.trigger('swipe');
+            touch.el.trigger(("swipe" + dir));
+        }
+
+    });
+
+    on(document, 'mousedown pointerdown touchstart', function (e) {
+
+        var ref = e.touches ? e.touches[0] : e;
+        var target = ref.target;
+        var pageX = ref.pageX;
+        var pageY = ref.pageY;
+
+        now = Date.now();
+        delta = now - (touch.last || now);
+        touch.el = $__default('tagName' in target ? target : target.parentNode);
+
+        if (touchTimeout) { clearTimeout(touchTimeout); }
+
+        touch.x1 = pageX;
+        touch.y1 = pageY;
+
+        if (delta > 0 && delta <= 250) { touch.isDoubleTap = true; }
+
+        touch.last = now;
+
+        // adds the current touch contact for IE gesture recognition
+        if (gesture && (e.type === 'pointerdown' || e.type === 'touchstart')) {
+            gesture.addPointer(e.pointerId);
+        }
+
+        clicked = e.button > 0;
+
+    });
+
+    on(document, 'mousemove pointermove touchmove', function (e) {
+
+        var ref = e.touches ? e.touches[0] : e;
+        var pageX = ref.pageX;
+        var pageY = ref.pageY;
+
+        touch.x2 = pageX;
+        touch.y2 = pageY;
+
+        deltaX += Math.abs(touch.x1 - touch.x2);
+        deltaY += Math.abs(touch.y1 - touch.y2);
+    });
+
+    on(document, 'mouseup pointerup touchend', function () {
+
+        // swipe
+        if ((touch.x2 && Math.abs(touch.x1 - touch.x2) > 30) || (touch.y2 && Math.abs(touch.y1 - touch.y2) > 30)) {
+
+            swipeTimeout = setTimeout(function () {
+                if (touch.el !== undefined) {
+                    touch.el.trigger('swipe');
+                    touch.el.trigger(("swipe" + (swipeDirection(touch.x1, touch.x2, touch.y1, touch.y2))));
+                }
+                touch = {};
+            });
+
+            // normal tap
+        } else if ('last' in touch) {
+
+            // don't fire tap when delta position changed by more than 30 pixels,
+            // for instance when moving to a point and back to origin
+            if (isNaN(deltaX) || (deltaX < 30 && deltaY < 30)) {
+                // delay by one tick so we can cancel the 'tap' event if 'scroll' fires
+                // ('tap' fires before 'scroll')
+                tapTimeout = setTimeout(function () {
+
+                    // trigger universal 'tap' with the option to cancelTouch()
+                    // (cancelTouch cancels processing of single vs double taps for faster 'tap' response)
+                    var event = $.Event('tap');
+                    event.cancelTouch = cancelAll;
+
+                    if (touch.el !== undefined) {
+                        touch.el.trigger(event);
+                    }
+
+                    // trigger double tap immediately
+                    if (touch.isDoubleTap) {
+                        if (touch.el !== undefined) { touch.el.trigger('doubleTap'); }
+                        touch = {};
+                    }
+
+                    // trigger single tap after 300ms of inactivity
+                    else {
+                        touchTimeout = setTimeout(function () {
+                            touchTimeout = null;
+                            if (touch.el !== undefined) {
+                                touch.el.trigger('singleTap');
+
+                                if (!clicked) {
+                                    touch.el.trigger('click');
+                                }
+
+                            }
+                            touch = {};
+                        }, 350);
+                    }
+                });
+            } else {
+                touch = {};
+            }
+            deltaX = deltaY = 0;
+        }
+    });
+
+    // when the browser window loses focus,
+    // for example when a modal dialog is shown,
+    // cancel all ongoing events
+    on(document, 'touchcancel', cancelAll);
+
+    // scrolling the window indicates intention of the user
+    // to scroll, not tap or swipe, so cancel all ongoing events
+    on(window, 'scroll', cancelAll);
+});
+
+var touching = false;
+on(document, 'touchstart', function () { return touching = true; }, true);
+on(document, 'click', function () {touching = false});
+on(document, 'touchcancel', function () { return touching = false; }, true);
+
+function isTouch(e) {
+    return touching || (e.originalEvent || e).pointerType === 'touch';
+}
+
+
+
+var util = Object.freeze({
+	win: win,
+	doc: doc,
+	docElement: docElement,
+	isRtl: isRtl,
+	isReady: isReady,
+	ready: ready,
+	on: on,
+	off: off,
+	transition: transition,
+	Transition: Transition,
+	animate: animate,
+	Animation: Animation,
+	isJQuery: isJQuery,
+	isWithin: isWithin,
+	attrFilter: attrFilter,
+	removeClass: removeClass,
+	createEvent: createEvent,
+	isInView: isInView,
+	scrolledOver: scrolledOver,
+	clamp: clamp,
+	docHeight: docHeight,
+	getIndex: getIndex,
+	isVoidElement: isVoidElement,
+	Dimensions: Dimensions,
+	query: query,
+	Observer: Observer,
+	requestAnimationFrame: requestAnimationFrame,
+	hasPromise: hasPromise,
+	hasTouch: hasTouch,
+	pointerDown: pointerDown,
+	pointerMove: pointerMove,
+	pointerUp: pointerUp,
+	pointerEnter: pointerEnter,
+	pointerLeave: pointerLeave,
+	transitionend: transitionend,
+	animationstart: animationstart,
+	animationend: animationend,
+	getStyle: getStyle,
+	getCssVar: getCssVar,
+	getImage: getImage,
+	fastdom: fastdom,
+	$: $__default,
+	bind: bind,
+	hasOwn: hasOwn,
+	promise: promise,
+	classify: classify,
+	hyphenate: hyphenate,
+	camelize: camelize,
+	isArray: isArray,
+	isFunction: isFunction,
+	isObject: isObject,
+	isPlainObject: isPlainObject,
+	isString: isString,
+	isNumber: isNumber,
+	isUndefined: isUndefined,
+	isContextSelector: isContextSelector,
+	getContextSelectors: getContextSelectors,
+	toJQuery: toJQuery,
+	toNode: toNode,
+	toBoolean: toBoolean,
+	toNumber: toNumber,
+	toList: toList,
+	toMedia: toMedia,
+	coerce: coerce,
+	toMs: toMs,
+	swap: swap,
+	assign: assign,
+	ajax: $.ajax,
+	each: $.each,
+	Event: $.Event,
+	isNumeric: $.isNumeric,
+	MouseTracker: MouseTracker,
+	mergeOptions: mergeOptions,
+	position: position,
+	getDimensions: getDimensions,
+	offsetTop: offsetTop,
+	flipPosition: flipPosition,
+	isTouch: isTouch
+});
+
+function boot (UIkit) {
+
+    var doc = document.documentElement;
+    var connect = UIkit.connect;
+    var disconnect = UIkit.disconnect;
+
+    if (Observer) {
+
+        if (document.body) {
+
+            init();
+
+        } else {
+
+            (new Observer(function () {
+
+                if (document.body) {
+                    this.disconnect();
+                    init();
+                }
+
+            })).observe(doc, {childList: true, subtree: true});
+
+        }
+
+    } else {
+
+        ready(function () {
+            apply(document.body, connect);
+            on(doc, 'DOMNodeInserted', function (e) { return apply(e.target, connect); });
+            on(doc, 'DOMNodeRemoved', function (e) { return apply(e.target, disconnect); });
+        });
+
+    }
+
+    function init() {
+
+        apply(document.body, connect);
+
+        fastdom.flush();
+
+        (new Observer(function (mutations) { return mutations.forEach(function (ref) {
+                var addedNodes = ref.addedNodes;
+                var removedNodes = ref.removedNodes;
+                var target = ref.target;
+
+
+                for (var i = 0; i < addedNodes.length; i++) {
+                    apply(addedNodes[i], connect)
+                }
+
+                for (i = 0; i < removedNodes.length; i++) {
+                    apply(removedNodes[i], disconnect)
+                }
+
+                UIkit.update('update', target, true);
+
+            }); }
+        )).observe(doc, {childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['href']});
+
+        UIkit._initialized = true;
+    }
+
+    function apply(node, fn) {
+
+        if (node.nodeType !== Node.ELEMENT_NODE || node.hasAttribute('uk-no-boot')) {
+            return;
+        }
+
+        fn(node);
+        node = node.firstChild;
+        while (node) {
+            var next = node.nextSibling;
+            apply(node, fn);
+            node = next;
+        }
+    }
+
+}
+
+function globalAPI (UIkit) {
+
+    var DATA = UIkit.data;
+
+    UIkit.use = function (plugin) {
+
+        if (plugin.installed) {
+            return;
+        }
+
+        plugin.call(null, this);
+        plugin.installed = true;
+
+        return this;
+    };
+
+    UIkit.mixin = function (mixin, component) {
+        component = (isString(component) ? UIkit.components[component] : component) || this;
+        mixin = mergeOptions({}, mixin);
+        mixin.mixins = component.options.mixins;
+        delete component.options.mixins;
+        component.options = mergeOptions(mixin, component.options);
+    };
+
+    UIkit.extend = function (options) {
+
+        options = options || {};
+
+        var Super = this, name = options.name || Super.options.name;
+        var Sub = createClass(name || 'UIkitComponent');
+
+        Sub.prototype = Object.create(Super.prototype);
+        Sub.prototype.constructor = Sub;
+        Sub.options = mergeOptions(Super.options, options);
+
+        Sub['super'] = Super;
+        Sub.extend = Super.extend;
+
+        return Sub;
+    };
+
+    UIkit.update = function (e, element, parents) {
+        if ( parents === void 0 ) parents = false;
+
+
+        e = createEvent(e || 'update');
+
+        if (!element) {
+
+            update(UIkit.instances, e);
+            return;
+
+        }
+
+        element = toNode(element);
+
+        if (parents) {
+
+            do {
+
+                update(element[DATA], e);
+                element = element.parentNode;
+
+            } while (element)
+
+        } else {
+
+            apply(element, function (element) { return update(element[DATA], e); });
+
+        }
+
+    };
+
+    var container;
+    Object.defineProperty(UIkit, 'container', {
+
+        get: function get() {
+            return container || document.body;
+        },
+
+        set: function set(element) {
+            container = element;
+        }
+
+    });
+
+    function createClass(name) {
+        return new Function(("return function " + (classify(name)) + " (options) { this._init(options); }"))();
+    }
+
+    function apply(node, fn) {
+
+        if (node.nodeType !== Node.ELEMENT_NODE) {
+            return;
+        }
+
+        fn(node);
+        node = node.firstChild;
+        while (node) {
+            apply(node, fn);
+            node = node.nextSibling;
+        }
+    }
+
+    function update(data, e) {
+
+        if (!data) {
+            return;
+        }
+
+        for (var name in data) {
+            if (data[name]._isReady) {
+                data[name]._callUpdate(e);
+            }
+        }
+
+    }
+
+}
+
+function hooksAPI (UIkit) {
+
+    UIkit.prototype._callHook = function (hook) {
+        var this$1 = this;
+
+
+        var handlers = this.$options[hook];
+
+        if (handlers) {
+            handlers.forEach(function (handler) { return handler.call(this$1); });
+        }
+    };
+
+    UIkit.prototype._callReady = function () {
+
+        if (this._isReady) {
+            return;
+        }
+
+        this._isReady = true;
+        this._callHook('ready');
+        this._callUpdate();
+    };
+
+    UIkit.prototype._callConnected = function () {
+        var this$1 = this;
+
+
+        if (this._connected) {
+            return;
+        }
+
+        if (!~UIkit.elements.indexOf(this.$options.el)) {
+            UIkit.elements.push(this.$options.el);
+        }
+
+        UIkit.instances[this._uid] = this;
+
+        this._initEvents();
+
+        this._callHook('connected');
+        this._connected = true;
+
+        this._initObserver();
+
+        if (!this._isReady) {
+            ready(function () { return this$1._callReady(); });
+        }
+
+        this._callUpdate();
+    };
+
+    UIkit.prototype._callDisconnected = function () {
+
+        if (!this._connected) {
+            return;
+        }
+
+        if (this._observer) {
+            this._observer.disconnect();
+            this._observer = null;
+        }
+
+        var index = UIkit.elements.indexOf(this.$options.el);
+
+        if (~index) {
+            UIkit.elements.splice(index, 1);
+        }
+
+        delete UIkit.instances[this._uid];
+
+        this._initEvents(true);
+        this._callHook('disconnected');
+
+        this._connected = false;
+
+    };
+
+    UIkit.prototype._callUpdate = function (e) {
+        var this$1 = this;
+
+
+        e = createEvent(e || 'update');
+
+        if (e.type === 'update') {
+            this._computeds = {};
+        }
+
+        var updates = this.$options.update;
+
+        if (!updates) {
+            return;
+        }
+
+        updates.forEach(function (update, i) {
+
+            if (e.type !== 'update' && (!update.events || !~update.events.indexOf(e.type))) {
+                return;
+            }
+
+            if (e.sync) {
+
+                if (update.read) {
+                    update.read.call(this$1, e);
+                }
+
+                if (update.write) {
+                    update.write.call(this$1, e);
+                }
+
+                return;
+
+            }
+
+            if (update.read && !~fastdom.reads.indexOf(this$1._frames.reads[i])) {
+                this$1._frames.reads[i] = fastdom.measure(function () {
+                    update.read.call(this$1, e);
+                    delete this$1._frames.reads[i];
+                });
+            }
+
+            if (update.write && !~fastdom.writes.indexOf(this$1._frames.writes[i])) {
+                this$1._frames.writes[i] = fastdom.mutate(function () {
+                    update.write.call(this$1, e);
+                    delete this$1._frames.writes[i];
+                });
+            }
+
+        });
+
+    };
+
+}
+
+function stateAPI (UIkit) {
+
+    var uid = 0;
+
+    UIkit.prototype.props = {};
+
+    UIkit.prototype._init = function (options) {
+
+        options = options || {};
+        options = this.$options = mergeOptions(this.constructor.options, options, this);
+
+        this.$el = null;
+        this.$name = UIkit.prefix + hyphenate(this.$options.name);
+        this.$props = {};
+
+        this._frames = {reads: {}, writes: {}};
+
+        this._uid = uid++;
+        this._initData();
+        this._initMethods();
+        this._initComputeds();
+        this._callHook('created');
+
+        if (options.el) {
+            this.$mount(options.el);
+        }
+    };
+
+    UIkit.prototype._initData = function () {
+        var this$1 = this;
+
+
+        var ref = this.$options;
+        var defaults = ref.defaults;
+        var data = ref.data; if ( data === void 0 ) data = {};
+        var args = ref.args; if ( args === void 0 ) args = [];
+        var props = ref.props; if ( props === void 0 ) props = {};
+        var el = ref.el;
+
+        if (args.length && isArray(data)) {
+            data = data.slice(0, args.length).reduce(function (data, value, index) {
+                if (isPlainObject(value)) {
+                    assign(data, value);
+                } else {
+                    data[args[index]] = value;
+                }
+                return data;
+            }, {});
+        }
+
+        for (var key in defaults) {
+            this$1.$props[key] = this$1[key] = hasOwn(data, key) && !isUndefined(data[key])
+                ? coerce(props[key], data[key], el)
+                : isArray(defaults[key])
+                    ? defaults[key].concat()
+                    : defaults[key];
+        }
+    };
+
+    UIkit.prototype._initMethods = function () {
+        var this$1 = this;
+
+
+        var methods = this.$options.methods;
+
+        if (methods) {
+            for (var key in methods) {
+                this$1[key] = bind(methods[key], this$1);
+            }
+        }
+    };
+
+    UIkit.prototype._initComputeds = function () {
+        var this$1 = this;
+
+
+        var computed = this.$options.computed;
+
+        this._computeds = {};
+
+        if (computed) {
+            for (var key in computed) {
+                registerComputed(this$1, key, computed[key]);
+            }
+        }
+    };
+
+    UIkit.prototype._initProps = function (props) {
+        var this$1 = this;
+
+
+        this._computeds = {};
+        assign(this.$props, props || this._getProps());
+
+        var exclude = [this.$options.computed, this.$options.methods];
+        for (var key in this$1.$props) {
+            if (notIn(exclude, key)) {
+                this$1[key] = this$1.$props[key];
+            }
+        }
+    };
+
+    UIkit.prototype._initEvents = function (unbind) {
+        var this$1 = this;
+
+
+        var events = this.$options.events;
+
+        if (events) {
+
+            events.forEach(function (event) {
+
+                if (!hasOwn(event, 'handler')) {
+                    for (var key in event) {
+                        registerEvent(this$1, unbind, event[key], key);
+                    }
+                } else {
+                    registerEvent(this$1, unbind, event);
+                }
+
+            });
+        }
+    };
+
+    UIkit.prototype._initObserver = function () {
+        var this$1 = this;
+
+
+        var ref = this.$options;
+        var attrs = ref.attrs;
+        var props = ref.props;
+        var el = ref.el;
+        if (this._observer || !props || !attrs || !Observer) {
+            return;
+        }
+
+        attrs = isArray(attrs) ? attrs : Object.keys(props).map(function (key) { return hyphenate(key); });
+
+        this._observer = new Observer(function () {
+
+            var data = this$1._getProps();
+            if (attrs.some(function (key) { return !equals(data[key], this$1.$props[key]); })) {
+                this$1.$reset(data);
+            }
+
+        });
+
+        this._observer.observe(el, {attributes: true, attributeFilter: attrs.concat([this.$name, ("data-" + (this.$name))])});
+    };
+
+    UIkit.prototype._getProps = function () {
+
+        var data = {};
+        var ref = this.$options;
+        var args = ref.args; if ( args === void 0 ) args = [];
+        var props = ref.props; if ( props === void 0 ) props = {};
+        var el = ref.el;
+        var options = el.getAttribute(this.$name) || el.getAttribute(("data-" + (this.$name))),
+            key, prop;
+
+        if (!props) {
+            return data;
+        }
+
+        for (key in props) {
+            prop = hyphenate(key);
+            if (el.hasAttribute(prop)) {
+
+                var value = coerce(props[key], el.getAttribute(prop), el);
+
+                if (prop === 'target' && (!value || value.lastIndexOf('_', 0) === 0)) {
+                    continue;
+                }
+
+                data[key] = value;
+            }
+        }
+
+        if (!options) {
+            return data;
+        }
+
+        if (options[0] === '{') {
+            try {
+                options = JSON.parse(options);
+            } catch (e) {
+                console.warn("Invalid JSON.");
+                options = {};
+            }
+        } else if (args.length && !~options.indexOf(':')) {
+            options = (( obj = {}, obj[args[0]] = options, obj ));
+            var obj;
+        } else {
+            var tmp = {};
+            options.split(';').forEach(function (option) {
+                var ref = option.split(/:(.+)/);
+                var key = ref[0];
+                var value = ref[1];
+                if (key && value) {
+                    tmp[key.trim()] = value.trim();
+                }
+            });
+            options = tmp;
+        }
+
+        for (key in options || {}) {
+            prop = camelize(key);
+            if (props[prop] !== undefined) {
+                data[prop] = coerce(props[prop], options[key], el);
+            }
+        }
+
+        return data;
+    };
+
+    function registerComputed(component, key, cb) {
+        Object.defineProperty(component, key, {
+
+            enumerable: true,
+
+            get: function get() {
+
+                if (!hasOwn(component._computeds, key)) {
+                    component._computeds[key] = cb.call(component);
+                }
+
+                return component._computeds[key];
+            },
+
+            set: function set(value) {
+                component._computeds[key] = value;
+            }
+
+        });
+    }
+
+    function registerEvent(component, unbind, event, key) {
+
+        if (!isPlainObject(event)) {
+            event = ({name: key, handler: event});
+        }
+
+        var name = event.name;
+        var el = event.el;
+        var delegate = event.delegate;
+        var self = event.self;
+        var filter = event.filter;
+        var handler = event.handler;
+        var namespace = "." + (component.$options.name) + "." + (component._uid);
+
+        el = el && el.call(component) || component.$el;
+
+        name = name.split(' ').map(function (name) { return (name + "." + namespace); }).join(' ');
+
+        if (unbind) {
+
+            el.off(name);
+
+        } else {
+
+            if (filter && !filter.call(component)) {
+                return;
+            }
+
+            handler = isString(handler) ? component[handler] : bind(handler, component);
+
+            if (self) {
+                handler = selfFilter(handler, component);
+            }
+
+            if (delegate) {
+                el.on(name, isString(delegate) ? delegate : delegate.call(component), handler);
+            } else {
+                el.on(name, handler);
+            }
+        }
+
+    }
+
+    function selfFilter(handler, context) {
+        return function selfHandler (e) {
+            if (e.target === e.currentTarget) {
+                return handler.call(context, e)
+            }
+        }
+    }
+
+    function notIn(options, key) {
+        return options.every(function (arr) { return !arr || !hasOwn(arr, key); });
+    }
+
+    function equals(a, b) {
+        return isUndefined(a) || a === b || isJQuery(a) && isJQuery(b) && a.is(b);
+    }
+
+}
+
+function instanceAPI (UIkit) {
+
+    var DATA = UIkit.data;
+
+    UIkit.prototype.$mount = function (el) {
+
+        var name = this.$options.name;
+
+        if (!el[DATA]) {
+            el[DATA] = {};
+        }
+
+        if (el[DATA][name]) {
+            return;
+        }
+
+        el[DATA][name] = this;
+
+        this.$options.el = this.$options.el || el;
+        this.$el = $__default(el);
+
+        this._initProps();
+
+        this._callHook('init');
+
+        if (document.documentElement.contains(el)) {
+            this._callConnected();
+        }
+    };
+
+    UIkit.prototype.$emit = function (e) {
+        this._callUpdate(e);
+    };
+
+    UIkit.prototype.$emitSync = function (e) {
+        this._callUpdate(createEvent(e || 'update', true, false, {sync: true}));
+    };
+
+    UIkit.prototype.$update = function (e, parents) {
+        UIkit.update(e, this.$options.el, parents);
+    };
+
+    UIkit.prototype.$updateSync = function (e, parents) {
+        this.$update(createEvent(e || 'update', true, false, {sync: true}), parents);
+    };
+
+    UIkit.prototype.$reset = function (data) {
+        this._callDisconnected();
+        this._initProps(data);
+        this._callConnected();
+    };
+
+    UIkit.prototype.$destroy = function (remove) {
+        if ( remove === void 0 ) remove = false;
+
+
+        var ref = this.$options;
+        var el = ref.el;
+        var name = ref.name;
+
+        if (el) {
+            this._callDisconnected();
+        }
+
+        this._callHook('destroy');
+
+        if (!el || !el[DATA]) {
+            return;
+        }
+
+        delete el[DATA][name];
+
+        if (!Object.keys(el[DATA]).length) {
+            delete el[DATA];
+        }
+
+        if (remove) {
+            this.$el.remove();
+        }
+    };
+
+}
+
+function componentAPI (UIkit) {
+
+    var DATA = UIkit.data;
+
+    UIkit.components = {};
+
+    UIkit.component = function (id, options) {
+
+        var name = camelize(id);
+
+        if (isPlainObject(options)) {
+            options.name = name;
+            options = UIkit.extend(options);
+        } else if (isUndefined(options)) {
+            return UIkit.components[name]
+        } else {
+            options.options.name = name;
+        }
+
+        UIkit.components[name] = options;
+
+        UIkit[name] = function (element, data) {
+            var i = arguments.length, argsArray = Array(i);
+            while ( i-- ) argsArray[i] = arguments[i];
+
+
+            if (isPlainObject(element)) {
+                return new UIkit.components[name]({data: element});
+            }
+
+            if (UIkit.components[name].options.functional) {
+                return new UIkit.components[name]({data: [].concat( argsArray )});
+            }
+
+            return element && element.nodeType ? init(element) : $__default(element).toArray().map(init)[0];
+
+            function init(element) {
+                return UIkit.getComponent(element, name) || new UIkit.components[name]({el: element, data: data || {}});
+            }
+
+        };
+
+        if (UIkit._initialized && !options.options.functional) {
+            fastdom.measure(function () { return UIkit[name](("[uk-" + id + "],[data-uk-" + id + "]")); });
+        }
+
+        return UIkit.components[name];
+    };
+
+    UIkit.getComponents = function (element) { return element && (element = isJQuery(element) ? element[0] : element) && element[DATA] || {}; };
+    UIkit.getComponent = function (element, name) { return UIkit.getComponents(element)[name]; };
+
+    UIkit.connect = function (node) {
+
+        var name;
+
+        if (node[DATA]) {
+            for (name in node[DATA]) {
+                node[DATA][name]._callConnected();
+            }
+        }
+
+        for (var i = 0; i < node.attributes.length; i++) {
+
+            name = node.attributes[i].name;
+
+            if (name.lastIndexOf('uk-', 0) === 0 || name.lastIndexOf('data-uk-', 0) === 0) {
+
+                name = camelize(name.replace('data-uk-', '').replace('uk-', ''));
+
+                if (UIkit[name]) {
+                    UIkit[name](node);
+                }
+            }
+        }
+
+    };
+
+    UIkit.disconnect = function (node) {
+        for (var name in node[DATA]) {
+            node[DATA][name]._callDisconnected();
+        }
+    }
+
+}
+
+var supportsMultiple;
+var supportsForce;
+function classAPI (UIkit) {
+
+    UIkit.prototype.$addClass = function () {
+        var args = [], len = arguments.length;
+        while ( len-- ) args[ len ] = arguments[ len ];
+
+        apply(this.$options.el, args, 'add');
+    };
+
+    UIkit.prototype.$removeClass = function () {
+        var args = [], len = arguments.length;
+        while ( len-- ) args[ len ] = arguments[ len ];
+
+        apply(this.$options.el, args, 'remove');
+    };
+
+    UIkit.prototype.$hasClass = function () {
+        var args = [], len = arguments.length;
+        while ( len-- ) args[ len ] = arguments[ len ];
+
+        return (args = getArgs(args, this.$options.el)) && args[0].contains(args[1]);
+    };
+
+    UIkit.prototype.$toggleClass = function () {
+        var args = [], len = arguments.length;
+        while ( len-- ) args[ len ] = arguments[ len ];
+
+        args = getArgs(args, this.$options.el);
+
+        var force = args && !isString(args[args.length - 1]) ? args.pop() : undefined;
+
+        for (var i = 1; i < args.length; i++) {
+            args[0] && supportsForce
+                ? args[0].toggle(args[i], force)
+                : (args[0][(!isUndefined(force) ? force : !args[0].contains(args[i])) ? 'add' : 'remove'](args[i]));
+        }
+    };
+
+    function apply(el, args, fn) {
+        (args = getArgs(args, el)) && (supportsMultiple
+            ? args[0][fn].apply(args[0], args.slice(1))
+            : args.slice(1).forEach(function (cls) { return args[0][fn](cls); }));
+    }
+
+    function getArgs(args, el) {
+
+        isString(args[0]) && args.unshift(el);
+        args[0] = toNode(args[0]).classList;
+
+        args.forEach(function (arg, i) { return i > 0 && isString(arg) && ~arg.indexOf(' ') && Array.prototype.splice.apply(args, [i, 1].concat(args[i].split(' '))); }
+        );
+
+        return args[1] && args.length > 1 ? args : false;
+    }
+
+};
+
+(function() {
+
+    var list = document.createElement('_').classList;
+    list.add('a', 'b');
+    list.toggle('c', false);
+    supportsMultiple = list.contains('b');
+    supportsForce = !list.contains('c');
+    list = null;
+
+})();
+
+var UIkit = function (options) {
+    this._init(options);
+};
+
+UIkit.util = util;
+UIkit.data = '__uikit__';
+UIkit.prefix = 'uk-';
+UIkit.options = {};
+UIkit.instances = {};
+UIkit.elements = [];
+
+globalAPI(UIkit);
+hooksAPI(UIkit);
+stateAPI(UIkit);
+instanceAPI(UIkit);
+componentAPI(UIkit);
+classAPI(UIkit);
+
+var Class = {
+
+    init: function init() {
+        this.$addClass(this.$name);
+    }
+
+}
+
+var Togglable = {
+
+    props: {
+        cls: Boolean,
+        animation: 'list',
+        duration: Number,
+        origin: String,
+        transition: String,
+        queued: Boolean
+    },
+
+    defaults: {
+        cls: false,
+        animation: [false],
+        duration: 200,
+        origin: false,
+        transition: 'linear',
+        queued: false,
+
+        initProps: {
+            overflow: '',
+            height: '',
+            paddingTop: '',
+            paddingBottom: '',
+            marginTop: '',
+            marginBottom: ''
+        },
+
+        hideProps: {
+            overflow: 'hidden',
+            height: 0,
+            paddingTop: 0,
+            paddingBottom: 0,
+            marginTop: 0,
+            marginBottom: 0
+        }
+
+    },
+
+    computed: {
+
+        hasAnimation: function hasAnimation() {
+            return !!this.animation[0];
+        },
+
+        hasTransition: function hasTransition() {
+            return this.hasAnimation && this.animation[0] === true;
+        }
+
+    },
+
+    methods: {
+
+        toggleElement: function toggleElement(targets, show, animate) {
+            var this$1 = this;
+
+
+            var toggles, body = document.body, scroll = body.scrollTop,
+                all = function (targets) { return promise.all(targets.toArray().map(function (el) { return this$1._toggleElement(el, show, animate); })).then(null, function () {}); },
+                delay = function (targets) {
+                    var def = all(targets);
+                    this$1._queued = null;
+                    body.scrollTop = scroll;
+                    return def;
+                };
+
+            targets = $__default(targets);
+
+            if (!this.hasAnimation || !this.queued || targets.length < 2) {
+                return all(targets);
+            }
+
+            if (this._queued) {
+                return delay(targets.not(this._queued));
+            }
+
+            this._queued = targets.not(toggles = targets.filter(function (_, el) { return this$1.isToggled(el); }));
+
+            return all(toggles).then(function () { return this$1._queued && delay(this$1._queued); });
+        },
+
+        toggleNow: function toggleNow(targets, show) {
+            var this$1 = this;
+
+            return promise.all($__default(targets).toArray().map(function (el) { return this$1._toggleElement(el, show, false); })).then(null, function () {});
+        },
+
+        isToggled: function isToggled(el) {
+            el = el && $__default(el) || this.$el;
+            return this.cls ? el.hasClass(this.cls.split(' ')[0]) : !el.attr('hidden');
+        },
+
+        updateAria: function updateAria(el) {
+            if (this.cls === false) {
+                el.attr('aria-hidden', !this.isToggled(el));
+            }
+        },
+
+        _toggleElement: function _toggleElement(el, show, animate) {
+            var this$1 = this;
+
+
+            el = $__default(el);
+
+            if (Animation.inProgress(el)) {
+                return Animation.cancel(el).then(function () { return this$1._toggleElement(el, show, animate); });
+            }
+
+            show = typeof show === 'boolean' ? show : !this.isToggled(el);
+
+            var event = $.Event(("before" + (show ? 'show' : 'hide')));
+            el.trigger(event, [this]);
+
+            if (event.result === false) {
+                return promise.reject();
+            }
+
+            var def = (animate === false || !this.hasAnimation
+                ? this._toggleImmediate
+                : this.hasTransition
+                    ? this._toggleHeight
+                    : this._toggleAnimation
+            )(el, show);
+
+            el.trigger(show ? 'show' : 'hide', [this]);
+            return def.then(function () { return el.trigger(show ? 'shown' : 'hidden', [this$1]); });
+        },
+
+        _toggle: function _toggle(el, toggled) {
+
+            el = $__default(el);
+
+            if (this.cls) {
+                el.toggleClass(this.cls, ~this.cls.indexOf(' ') ? undefined : toggled);
+            } else {
+                el.attr('hidden', !toggled);
+            }
+
+            el.find('[autofocus]:visible').focus();
+
+            this.updateAria(el);
+            UIkit.update(null, el);
+        },
+
+        _toggleImmediate: function _toggleImmediate(el, show) {
+            this._toggle(el, show);
+            return promise.resolve();
+        },
+
+        _toggleHeight: function _toggleHeight(el, show) {
+            var this$1 = this;
+
+
+            var inProgress = Transition.inProgress(el),
+                inner = parseFloat(el.children().first().css('margin-top')) + parseFloat(el.children().last().css('margin-bottom')),
+                height = el[0].offsetHeight ? el.height() + (inProgress ? 0 : inner) : 0,
+                endHeight;
+
+            return Transition.cancel(el).then(function () {
+
+                if (!this$1.isToggled(el)) {
+                    this$1._toggle(el, true);
+                }
+
+                el.height('');
+
+                return promise(function (resolve) { return requestAnimationFrame(function () {
+
+                        endHeight = el.height() + (inProgress ? 0 : inner);
+                        el.height(height);
+
+                        (show
+                            ? Transition.start(el, assign(this$1.initProps, {overflow: 'hidden', height: endHeight}), Math.round(this$1.duration * (1 - height / endHeight)), this$1.transition)
+                            : Transition.start(el, this$1.hideProps, Math.round(this$1.duration * (height / endHeight)), this$1.transition).then(function () {
+                                this$1._toggle(el, false);
+                                el.css(this$1.initProps);
+                            })).then(resolve);
+
+                    }); }
+                );
+
+            });
+
+        },
+
+        _toggleAnimation: function _toggleAnimation(el, show) {
+            var this$1 = this;
+
+
+            if (show) {
+                this._toggle(el, true);
+                return Animation.in(el, this.animation[0], this.duration, this.origin);
+            }
+
+            return Animation.out(el, this.animation[1] || this.animation[0], this.duration, this.origin).then(function () { return this$1._toggle(el, false); });
+        }
+
+    }
+
+};
+
+var active;
+
+var Modal = {
+
+    mixins: [Class, Togglable],
+
+    props: {
+        clsPanel: String,
+        selClose: String,
+        escClose: Boolean,
+        bgClose: Boolean,
+        stack: Boolean,
+        container: Boolean
+    },
+
+    defaults: {
+        cls: 'uk-open',
+        escClose: true,
+        bgClose: true,
+        overlay: true,
+        stack: false,
+        container: true
+    },
+
+    computed: {
+
+        body: function body() {
+            return $__default(document.body);
+        },
+
+        panel: function panel() {
+            return this.$el.find(("." + (this.clsPanel)));
+        },
+
+        container: function container() {
+            var container = this.$props.container === true && UIkit.container || this.$props.container && toJQuery(this.$props.container);
+            return container && toNode(container);
+        },
+
+        transitionElement: function transitionElement() {
+            return this.panel;
+        },
+
+        transitionDuration: function transitionDuration() {
+            return toMs(this.transitionElement.css('transition-duration'));
+        }
+
+    },
+
+    events: [
+
+        {
+
+            name: 'click',
+
+            delegate: function delegate() {
+                return this.selClose;
+            },
+
+            handler: function handler(e) {
+                e.preventDefault();
+                this.hide();
+            }
+
+        },
+
+        {
+
+            name: 'toggle',
+
+            handler: function handler(e) {
+                e.preventDefault();
+                this.toggle();
+            }
+
+        },
+
+        {
+
+            name: 'beforeshow',
+
+            self: true,
+
+            handler: function handler() {
+                var this$1 = this;
+
+
+                if (this.isToggled()) {
+                    return false;
+                }
+
+                var prev = active && active !== this && active;
+
+                active = this;
+
+                if (prev) {
+                    if (this.stack) {
+                        this.prev = prev;
+                    } else {
+                        prev.hide().then(this.show);
+                        return false;
+                    }
+                } else {
+                    requestAnimationFrame(function () { return register(this$1.$options.name); });
+                }
+
+                if (!prev) {
+                    this.scrollbarWidth = window.innerWidth - docElement[0].offsetWidth;
+                    this.body.css('overflow-y', this.scrollbarWidth && this.overlay ? 'scroll' : '');
+                }
+
+                docElement.addClass(this.clsPage);
+
+            }
+
+        },
+
+        {
+
+            name: 'beforehide',
+
+            self: true,
+
+            handler: function handler() {
+
+                if (!this.isToggled()) {
+                    return false;
+                }
+
+                active = active && active !== this && active || this.prev;
+
+                if (!active) {
+                    deregister(this.$options.name);
+                }
+
+            }
+
+        },
+
+        {
+
+            name: 'hidden',
+
+            self: true,
+
+            handler: function handler() {
+                if (!active) {
+                    docElement.removeClass(this.clsPage);
+                    this.body.css('overflow-y', '');
+                }
+            }
+
+        }
+
+    ],
+
+    methods: {
+
+        toggle: function toggle() {
+            return this.isToggled() ? this.hide() : this.show();
+        },
+
+        show: function show() {
+            var this$1 = this;
+
+            if (this.container && !this.$el.parent().is(this.container)) {
+                this.container.appendChild(this.$el[0]);
+                return promise(function (resolve) { return requestAnimationFrame(function () { return resolve(this$1.show()); }
+                    ); }
+                )
+            }
+
+            return this.toggleNow(this.$el, true);
+        },
+
+        hide: function hide() {
+            return this.toggleNow(this.$el, false);
+        },
+
+        getActive: function getActive() {
+            return active;
+        },
+
+        _toggleImmediate: function _toggleImmediate(el, show) {
+            var this$1 = this;
+
+            this._toggle(el, show);
+
+            return this.transitionDuration ? promise(function (resolve, reject) {
+
+                if (this$1._transition) {
+                    this$1.transitionElement.off(transitionend, this$1._transition.handler);
+                    this$1._transition.reject();
+                }
+
+                this$1._transition = {
+                    reject: reject,
+                    handler: function () {
+                        resolve();
+                        this$1._transition = null;
+                    }
+                };
+
+                this$1.transitionElement.one(transitionend, this$1._transition.handler);
+
+            }) : promise.resolve();
+        },
+    }
+
+}
+
+function register(name) {
+    doc.on(( obj = {}, obj[("click." + name)] = function (e) {
+            if (active && active.bgClose && !e.isDefaultPrevented() && !isWithin(e.target, active.panel)) {
+                active.hide();
+            }
+        }, obj[("keydown." + name)] = function (e) {
+            if (e.keyCode === 27 && active && active.escClose) {
+                e.preventDefault();
+                active.hide();
+            }
+        }, obj ));
+    var obj;
+}
+
+function deregister(name) {
+    doc.off(("click." + name)).off(("keydown." + name));
+}
+
+var Position = {
+
+    props: {
+        pos: String,
+        offset: null,
+        flip: Boolean,
+        clsPos: String
+    },
+
+    defaults: {
+        pos: !isRtl ? 'bottom-left' : 'bottom-right',
+        flip: true,
+        offset: false,
+        clsPos: ''
+    },
+
+    computed: {
+
+        pos: function pos() {
+            return (this.$props.pos + (!~this.$props.pos.indexOf('-') ? '-center' : '')).split('-');
+        },
+
+        dir: function dir() {
+            return this.pos[0];
+        },
+
+        align: function align() {
+            return this.pos[1];
+        }
+
+    },
+
+    methods: {
+
+        positionAt: function positionAt(element, target, boundary) {
+
+            removeClass(element, ((this.clsPos) + "-(top|bottom|left|right)(-[a-z]+)?")).css({top: '', left: ''});
+
+            var offset = toNumber(this.offset) || 0,
+                axis = this.getAxis(),
+                flipped = position(
+                    element,
+                    target,
+                    axis === 'x' ? ((flipPosition(this.dir)) + " " + (this.align)) : ((this.align) + " " + (flipPosition(this.dir))),
+                    axis === 'x' ? ((this.dir) + " " + (this.align)) : ((this.align) + " " + (this.dir)),
+                    axis === 'x' ? ("" + (this.dir === 'left' ? -1 * offset : offset)) : (" " + (this.dir === 'top' ? -1 * offset : offset)),
+                    null,
+                    this.flip,
+                    boundary
+                );
+
+            this.dir = axis === 'x' ? flipped.target.x : flipped.target.y;
+            this.align = axis === 'x' ? flipped.target.y : flipped.target.x;
+
+            element.toggleClass(((this.clsPos) + "-" + (this.dir) + "-" + (this.align)), this.offset === false);
+
+        },
+
+        getAxis: function getAxis() {
+            return this.dir === 'top' || this.dir === 'bottom' ? 'y' : 'x';
+        }
+
+    }
+
+}
+
+function mixin (UIkit) {
+
+    UIkit.mixin.class = Class;
+    UIkit.mixin.modal = Modal;
+    UIkit.mixin.position = Position;
+    UIkit.mixin.togglable = Togglable;
+
+}
+
+function Accordion (UIkit) {
+
+    UIkit.component('accordion', {
+
+        mixins: [Class, Togglable],
+
+        props: {
+            targets: String,
+            active: null,
+            collapsible: Boolean,
+            multiple: Boolean,
+            toggle: String,
+            content: String,
+            transition: String
+        },
+
+        defaults: {
+            targets: '> *',
+            active: false,
+            animation: [true],
+            collapsible: true,
+            multiple: false,
+            clsOpen: 'uk-open',
+            toggle: '> .uk-accordion-title',
+            content: '> .uk-accordion-content',
+            transition: 'ease'
+        },
+
+        computed: {
+
+            items: function items() {
+                var this$1 = this;
+
+                var items = $__default(this.targets, this.$el);
+                this._changed = !this._items || items.length !== this._items.length || items.toArray().some(function (el, i) { return el !== this$1._items.get(i); });
+                return this._items = items;
+            }
+
+        },
+
+        events: [
+
+            {
+
+                name: 'click',
+
+                delegate: function delegate() {
+                    return ((this.targets) + " " + (this.$props.toggle));
+                },
+
+                handler: function handler(e) {
+                    e.preventDefault();
+                    this.toggle(this.items.find(this.$props.toggle).index(e.currentTarget));
+                }
+
+            }
+
+        ],
+
+        update: function update() {
+            var this$1 = this;
+
+
+            if (!this.items || !this._changed) {
+                return;
+            }
+
+            this.items.each(function (i, el) {
+                el = $__default(el);
+                this$1.toggleNow(el.find(this$1.content), el.hasClass(this$1.clsOpen));
+            });
+
+            var active = this.active !== false && toJQuery(this.items.eq(Number(this.active))) || !this.collapsible && toJQuery(this.items.eq(0));
+            if (active && !active.hasClass(this.clsOpen)) {
+                this.toggle(active, false);
+            }
+
+        },
+
+        methods: {
+
+            toggle: function toggle(item, animate) {
+                var this$1 = this;
+
+
+                var index = getIndex(item, this.items),
+                    active = this.items.filter(("." + (this.clsOpen)));
+
+                item = this.items.eq(index);
+
+                item.add(!this.multiple && active).each(function (i, el) {
+
+                    el = $__default(el);
+
+                    var isItem = el.is(item), state = isItem && !el.hasClass(this$1.clsOpen);
+
+                    if (!state && isItem && !this$1.collapsible && active.length < 2) {
+                        return;
+                    }
+
+                    el.toggleClass(this$1.clsOpen, state);
+
+                    var content = el[0]._wrapper ? el[0]._wrapper.children().first() : el.find(this$1.content);
+
+                    if (!el[0]._wrapper) {
+                        el[0]._wrapper = content.wrap('<div>').parent().attr('hidden', state);
+                    }
+
+                    this$1._toggleImmediate(content, true);
+                    this$1.toggleElement(el[0]._wrapper, state, animate).then(function () {
+                        if (el.hasClass(this$1.clsOpen) === state) {
+
+                            if (!state) {
+                                this$1._toggleImmediate(content, false);
+                            }
+
+                            el[0]._wrapper = null;
+                            content.unwrap();
+                        }
+                    });
+
+                })
+            }
+
+        }
+
+    });
+
+}
+
+function Alert (UIkit) {
+
+    UIkit.component('alert', {
+
+        mixins: [Class, Togglable],
+
+        args: 'animation',
+
+        props: {
+            close: String
+        },
+
+        defaults: {
+            animation: [true],
+            close: '.uk-alert-close',
+            duration: 150,
+            hideProps: {opacity: 0}
+        },
+
+        events: [
+
+            {
+
+                name: 'click',
+
+                delegate: function delegate() {
+                    return this.close;
+                },
+
+                handler: function handler(e) {
+                    e.preventDefault();
+                    this.closeAlert();
+                }
+
+            }
+
+        ],
+
+        methods: {
+
+            closeAlert: function closeAlert() {
+                var this$1 = this;
+
+                this.toggleElement(this.$el).then(function () { return this$1.$destroy(true); });
+            }
+
+        }
+
+    });
+
+}
+
+function Cover (UIkit) {
+
+    UIkit.component('cover', {
+
+        mixins: [Class],
+
+        props: {
+            automute: Boolean,
+            width: Number,
+            height: Number
+        },
+
+        defaults: {automute: true},
+
+        computed: {
+
+            el: function el() {
+                return this.$el[0];
+            },
+
+            parent: function parent() {
+                return this.el.parentNode;
+            }
+
+        },
+
+        ready: function ready() {
+
+            if (!this.$el.is('iframe')) {
+                return;
+            }
+
+            this.$el.css('pointerEvents', 'none');
+
+            if (this.automute) {
+
+                var src = this.$el.attr('src');
+
+                this.$el
+                    .attr('src', ("" + src + (~src.indexOf('?') ? '&' : '?') + "enablejsapi=1&api=1"))
+                    .on('load', function (ref) {
+                        var target = ref.target;
+
+                        return target.contentWindow.postMessage('{"event": "command", "func": "mute", "method":"setVolume", "value":0}', '*');
+                });
+            }
+        },
+
+        update: {
+
+            write: function write() {
+
+                if (this.el.offsetHeight === 0) {
+                    return;
+                }
+
+                this.$el
+                    .css({width: '', height: ''})
+                    .css(Dimensions.cover(
+                        {width: this.width || this.el.clientWidth, height: this.height || this.el.clientHeight},
+                        {width: this.parent.offsetWidth, height: this.parent.offsetHeight}
+                    ));
+
+            },
+
+            events: ['load', 'resize']
+
+        },
+
+        events: {
+
+            loadedmetadata: function loadedmetadata() {
+                this.$emit();
+            }
+
+        }
+
+    });
+
+}
+
+function Drop (UIkit) {
+
+    var active;
+
+    UIkit.component('drop', {
+
+        mixins: [Position, Togglable],
+
+        args: 'pos',
+
+        props: {
+            mode: 'list',
+            toggle: Boolean,
+            boundary: 'jQuery',
+            boundaryAlign: Boolean,
+            delayShow: Number,
+            delayHide: Number,
+            clsDrop: String
+        },
+
+        defaults: {
+            mode: ['click', 'hover'],
+            toggle: '- :first',
+            boundary: window,
+            boundaryAlign: false,
+            delayShow: 0,
+            delayHide: 800,
+            clsDrop: false,
+            hoverIdle: 200,
+            animation: ['uk-animation-fade'],
+            cls: 'uk-open'
+        },
+
+        init: function init() {
+            this.tracker = new MouseTracker();
+            this.clsDrop = this.clsDrop || ("uk-" + (this.$options.name));
+            this.clsPos = this.clsDrop;
+
+            this.$addClass(this.clsDrop);
+        },
+
+        ready: function ready() {
+
+            this.updateAria(this.$el);
+
+            if (this.toggle) {
+                this.toggle = UIkit.toggle(query(this.toggle, this.$el), {target: this.$el, mode: this.mode});
+            }
+
+        },
+
+        events: [
+
+            {
+
+                name: 'click',
+
+                delegate: function delegate() {
+                    return ("." + (this.clsDrop) + "-close");
+                },
+
+                handler: function handler(e) {
+                    e.preventDefault();
+                    this.hide(false);
+                }
+
+            },
+
+            {
+
+                name: 'click',
+
+                delegate: function delegate() {
+                    return 'a[href^="#"]';
+                },
+
+                handler: function handler(e) {
+
+                    if (e.isDefaultPrevented()) {
+                        return;
+                    }
+
+                    var id = $__default(e.target).attr('href');
+
+                    if (id.length === 1) {
+                        e.preventDefault();
+                    }
+
+                    if (id.length === 1 || !isWithin(id, this.$el)) {
+                        this.hide(false);
+                    }
+                }
+
+            },
+
+            {
+
+                name: 'toggle',
+
+                handler: function handler(e, toggle) {
+
+                    if (toggle && !this.$el.is(toggle.target)) {
+                        return;
+                    }
+
+                    e.preventDefault();
+
+                    if (this.isToggled()) {
+                        this.hide(false);
+                    } else {
+                        this.show(toggle, false);
+                    }
+                }
+
+            },
+
+            {
+
+                name: pointerEnter,
+
+                filter: function filter() {
+                    return ~this.mode.indexOf('hover');
+                },
+
+                handler: function handler(e) {
+
+                    if (isTouch(e)) {
+                        return;
+                    }
+
+                    if (active
+                        && active !== this
+                        && active.toggle
+                        && ~active.toggle.mode.indexOf('hover')
+                        && !isWithin(e.target, active.$el)
+                        && !isWithin(e.target, active.toggle.$el)
+                    ) {
+                        active.hide(false);
+                    }
+
+                    e.preventDefault();
+                    this.show(this.toggle);
+                }
+
+            },
+
+            {
+
+                name: 'toggleshow',
+
+                handler: function handler(e, toggle) {
+
+                    if (toggle && !this.$el.is(toggle.target)) {
+                        return;
+                    }
+
+                    e.preventDefault();
+                    this.show(toggle || this.toggle);
+                }
+
+            },
+
+            {
+
+                name: ("togglehide " + pointerLeave),
+
+                handler: function handler(e, toggle) {
+
+                    if (isTouch(e) || toggle && !this.$el.is(toggle.target)) {
+                        return;
+                    }
+
+                    e.preventDefault();
+
+                    if (this.toggle && ~this.toggle.mode.indexOf('hover')) {
+                        this.hide();
+                    }
+                }
+
+            },
+
+            {
+
+                name: 'beforeshow',
+
+                self: true,
+
+                handler: function handler() {
+                    this.clearTimers();
+                }
+
+            },
+
+            {
+
+                name: 'show',
+
+                self: true,
+
+                handler: function handler() {
+                    this.tracker.init();
+                    this.toggle.$el.addClass(this.cls).attr('aria-expanded', 'true');
+                    registerEvent();
+                }
+
+            },
+
+            {
+
+                name: 'beforehide',
+
+                self: true,
+
+                handler: function handler() {
+                    this.clearTimers();
+                }
+
+            },
+
+            {
+
+                name: 'hide',
+
+                handler: function handler(ref) {
+                    var target = ref.target;
+
+
+                    if (!this.$el.is(target)) {
+                        active = active === null && isWithin(target, this.$el) && this.isToggled() ? this : active;
+                        return;
+                    }
+
+                    active = this.isActive() ? null : active;
+                    this.toggle.$el.removeClass(this.cls).attr('aria-expanded', 'false').blur().find('a, button').blur();
+                    this.tracker.cancel();
+                }
+
+            }
+
+        ],
+
+        update: {
+
+            write: function write() {
+
+                if (this.isToggled() && !Animation.inProgress(this.$el)) {
+                    this.position();
+                }
+
+            },
+
+            events: ['resize']
+
+        },
+
+        methods: {
+
+            show: function show(toggle, delay) {
+                var this$1 = this;
+                if ( delay === void 0 ) delay = true;
+
+
+                var show = function () {
+                        if (!this$1.isToggled()) {
+                            this$1.position();
+                            this$1.toggleElement(this$1.$el, true);
+                        }
+                    },
+                    tryShow = function () {
+
+                        this$1.toggle = toggle || this$1.toggle;
+
+                        this$1.clearTimers();
+
+                        if (this$1.isActive()) {
+                            return;
+                        } else if (delay && active && active !== this$1 && active.isDelaying) {
+                            this$1.showTimer = setTimeout(this$1.show, 10);
+                            return;
+                        } else if (this$1.isParentOf(active)) {
+
+                            if (active.hideTimer) {
+                                active.hide(false);
+                            } else {
+                                return;
+                            }
+
+                        } else if (active && !this$1.isChildOf(active) && !this$1.isParentOf(active)) {
+                            var prev;
+                            while (active && active !== prev) {
+                                prev = active;
+                                active.hide(false);
+                            }
+                        }
+
+                        if (delay && this$1.delayShow) {
+                            this$1.showTimer = setTimeout(show, this$1.delayShow);
+                        } else {
+                            show();
+                        }
+
+                        active = this$1;
+                    };
+
+                if (toggle && this.toggle && !this.toggle.$el.is(toggle.$el)) {
+
+                    this.$el.one('hide', tryShow);
+                    this.hide(false);
+
+                } else {
+                    tryShow();
+                }
+            },
+
+            hide: function hide(delay) {
+                var this$1 = this;
+                if ( delay === void 0 ) delay = true;
+
+
+                var hide = function () { return this$1.toggleNow(this$1.$el, false); };
+
+                this.clearTimers();
+
+                this.isDelaying = this.tracker.movesTo(this.$el);
+
+                if (delay && this.isDelaying) {
+                    this.hideTimer = setTimeout(this.hide, this.hoverIdle);
+                } else if (delay && this.delayHide) {
+                    this.hideTimer = setTimeout(hide, this.delayHide);
+                } else {
+                    hide();
+                }
+            },
+
+            clearTimers: function clearTimers() {
+                clearTimeout(this.showTimer);
+                clearTimeout(this.hideTimer);
+                this.showTimer = null;
+                this.hideTimer = null;
+                this.isDelaying = false;
+            },
+
+            isActive: function isActive() {
+                return active === this;
+            },
+
+            isChildOf: function isChildOf(drop) {
+                return drop && drop !== this && isWithin(this.$el, drop.$el);
+            },
+
+            isParentOf: function isParentOf(drop) {
+                return drop && drop !== this && isWithin(drop.$el, this.$el);
+            },
+
+            position: function position() {
+
+                removeClass(this.$el, ((this.clsDrop) + "-(stack|boundary)")).css({top: '', left: ''});
+
+                this.$el.show().toggleClass(((this.clsDrop) + "-boundary"), this.boundaryAlign);
+
+                var boundary = getDimensions(this.boundary), alignTo = this.boundaryAlign ? boundary : getDimensions(this.toggle.$el);
+
+                if (this.align === 'justify') {
+                    var prop = this.getAxis() === 'y' ? 'width' : 'height';
+                    this.$el.css(prop, alignTo[prop]);
+                } else if (this.$el.outerWidth() > Math.max(boundary.right - alignTo.left, alignTo.right - boundary.left)) {
+                    this.$addClass(((this.clsDrop) + "-stack"));
+                    this.$el.trigger('stack', [this]);
+                }
+
+                this.positionAt(this.$el, this.boundaryAlign ? this.boundary : this.toggle.$el, this.boundary);
+
+                this.$el[0].style.display = '';
+
+            }
+
+        }
+
+    });
+
+    UIkit.drop.getActive = function () { return active; };
+
+    var registered;
+    function registerEvent() {
+
+        if (registered) {
+            return;
+        }
+
+        registered = true;
+        doc.on('click', function (e) {
+            var prev;
+            while (active && active !== prev && !isWithin(e.target, active.$el) && !(active.toggle && isWithin(e.target, active.toggle.$el))) {
+                prev = active;
+                active.hide(false);
+            }
+        });
+    }
+
+}
+
+function Dropdown (UIkit) {
+
+    UIkit.component('dropdown', UIkit.components.drop.extend({name: 'dropdown'}));
+
+}
+
+function FormCustom (UIkit) {
+
+    UIkit.component('form-custom', {
+
+        mixins: [Class],
+
+        args: 'target',
+
+        props: {
+            target: Boolean
+        },
+
+        defaults: {
+            target: false
+        },
+
+        computed: {
+
+            input: function input() {
+                return this.$el.find(':input:first');
+            },
+
+            state: function state() {
+                return this.input.next();
+            },
+
+            target: function target() {
+                return this.$props.target && query(this.$props.target === true ? '> :input:first + :first' : this.$props.target, this.$el)
+            }
+
+        },
+
+        connected: function connected() {
+            this.input.trigger('change');
+        },
+
+        events: [
+
+            {
+
+                name: 'focusin focusout mouseenter mouseleave',
+
+                delegate: ':input:first',
+
+                handler: function handler(ref) {
+                    var type = ref.type;
+
+                    this.state.toggleClass(("uk-" + (~type.indexOf('focus') ? 'focus' : 'hover')), ~['focusin', 'mouseenter'].indexOf(type));
+                }
+
+            },
+
+            {
+
+                name: 'change',
+
+                handler: function handler() {
+                    this.target && this.target[this.target.is(':input') ? 'val' : 'text'](
+                        this.input[0].files && this.input[0].files[0]
+                            ? this.input[0].files[0].name
+                            : this.input.is('select')
+                                ? this.input.find('option:selected').text()
+                                : this.input.val()
+                    );
+                }
+
+            }
+
+        ]
+
+    });
+
+}
+
+function Gif (UIkit) {
+
+    UIkit.component('gif', {
+
+        update: {
+
+            read: function read() {
+
+                var inview = isInView(this.$el);
+
+                if (!this.isInView && inview) {
+                    this.$el[0].src = this.$el[0].src;
+                }
+
+                this.isInView = inview;
+            },
+
+            events: ['scroll', 'load', 'resize']
+        }
+
+    });
+
+}
+
+function Grid (UIkit) {
+
+    UIkit.component('grid', UIkit.components.margin.extend({
+
+        mixins: [Class],
+
+        name: 'grid',
+
+        defaults: {
+            margin: 'uk-grid-margin',
+            clsStack: 'uk-grid-stack'
+        },
+
+        update: {
+
+            write: function write() {
+
+                this.$toggleClass(this.clsStack, this.stacks);
+
+            },
+
+            events: ['load', 'resize']
+
+        }
+
+    }));
+
+}
+
+function HeightMatch (UIkit) {
+
+    UIkit.component('height-match', {
+
+        args: 'target',
+
+        props: {
+            target: String,
+            row: Boolean
+        },
+
+        defaults: {
+            target: '> *',
+            row: true
+        },
+
+        computed: {
+
+            elements: function elements() {
+                return $__default(this.target, this.$el);
+            }
+
+        },
+
+        update: {
+
+            read: function read() {
+                var this$1 = this;
+
+
+                var lastOffset = false;
+
+                this.elements.css('minHeight', '');
+
+                this.rows = !this.row
+                    ? [this.match(this.elements)]
+                    : this.elements.toArray().reduce(function (rows, el) {
+
+                        if (lastOffset !== el.offsetTop) {
+                            rows.push([el]);
+                        } else {
+                            rows[rows.length - 1].push(el);
+                        }
+
+                        lastOffset = el.offsetTop;
+
+                        return rows;
+
+                    }, []).map(function (elements) { return this$1.match($__default(elements)); });
+            },
+
+            write: function write() {
+
+                this.rows.forEach(function (ref) {
+                        var height = ref.height;
+                        var elements = ref.elements;
+
+                        return elements && elements.each(function (_, el) { return el.style.minHeight = height + "px"; }
+                    );
+                }
+                );
+
+            },
+
+            events: ['load', 'resize']
+
+        },
+
+        methods: {
+
+            match: function match(elements) {
+
+                if (elements.length < 2) {
+                    return {};
+                }
+
+                var max = 0, heights = [];
+
+                elements = elements
+                    .each(function (_, el) {
+
+                        var $el, style, hidden;
+
+                        if (el.offsetHeight === 0) {
+                            $el = $__default(el);
+                            style = $el.attr('style') || null;
+                            hidden = $el.attr('hidden') || null;
+
+                            $el.attr({
+                                style: (style + ";display:block !important;"),
+                                hidden: null
+                            });
+                        }
+
+                        max = Math.max(max, el.offsetHeight);
+                        heights.push(el.offsetHeight);
+
+                        if ($el) {
+                            $el.attr({style: style, hidden: hidden});
+                        }
+
+                    })
+                    .filter(function (i) { return heights[i] < max; });
+
+                return {height: max, elements: elements};
+            }
+        }
+
+    });
+
+}
+
+function HeightViewport (UIkit) {
+
+    UIkit.component('height-viewport', {
+
+        props: {
+            expand: Boolean,
+            offsetTop: Boolean,
+            offsetBottom: Boolean
+        },
+
+        defaults: {
+            expand: false,
+            offsetTop: false,
+            offsetBottom: false
+        },
+
+        update: {
+
+            write: function write() {
+
+                this.$el.css('boxSizing', 'border-box');
+
+                var viewport = window.innerHeight, height, offset = 0;
+
+                if (this.expand) {
+
+                    this.$el.css({height: '', minHeight: ''});
+
+                    var diff = viewport - document.documentElement.offsetHeight;
+
+                    if (diff > 0) {
+                        this.$el.css('min-height', height = this.$el.outerHeight() + diff)
+                    }
+
+                } else {
+
+                    var top = offsetTop(this.$el);
+
+                    if (top < viewport && this.offsetTop) {
+                        offset += top;
+                    }
+
+                    if (this.offsetBottom === true) {
+
+                        offset += this.$el.next().outerHeight() || 0;
+
+                    } else if ($.isNumeric(this.offsetBottom)) {
+
+                        offset += (viewport / 100) * this.offsetBottom;
+
+                    } else if (this.offsetBottom && this.offsetBottom.substr(-2) === 'px') {
+
+                        offset += parseFloat(this.offsetBottom);
+
+                    } else if (isString(this.offsetBottom)) {
+
+                        var el = query(this.offsetBottom, this.$el);
+                        offset += el && el.outerHeight() || 0;
+
+                    }
+
+                    this.$el.css('min-height', height = offset ? ("calc(100vh - " + offset + "px)") : '100vh');
+
+                }
+
+                // IE 10-11 fix (min-height on a flex container won't apply to its flex items)
+                this.$el.height('');
+                if (height && viewport - offset >= this.$el.outerHeight()) {
+                    this.$el.css('height', height);
+                }
+
+            },
+
+            events: ['load', 'resize']
+
+        }
+
+    });
+
+}
+
+function Hover (UIkit) {
+
+    ready(function () {
+
+        if (!hasTouch) {
+            return;
+        }
+
+        var cls = 'uk-hover';
+
+        docElement.on('tap', function (ref) {
+            var target = ref.target;
+
+            return $__default(("." + cls)).filter(function (_, el) { return !isWithin(target, el); }).removeClass(cls);
+        });
+
+        Object.defineProperty(UIkit, 'hoverSelector', {
+
+            set: function set(selector) {
+                docElement.on('tap', selector, function (ref) {
+                    var currentTarget = ref.currentTarget;
+
+                    return currentTarget.classList.add(cls);
+                });
+            }
+
+        });
+
+        UIkit.hoverSelector = '.uk-animation-toggle, .uk-transition-toggle, [uk-hover]';
+
+    });
+
+}
+
+var closeIcon = "<svg width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" xmlns=\"http://www.w3.org/2000/svg\"><line fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" x1=\"1\" y1=\"1\" x2=\"13\" y2=\"13\"></line><line fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" x1=\"13\" y1=\"1\" x2=\"1\" y2=\"13\"></line></svg>";
+
+var closeLarge = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><line fill=\"none\" stroke=\"#000\" stroke-width=\"1.4\" x1=\"1\" y1=\"1\" x2=\"19\" y2=\"19\"></line><line fill=\"none\" stroke=\"#000\" stroke-width=\"1.4\" x1=\"19\" y1=\"1\" x2=\"1\" y2=\"19\"></line></svg>";
+
+var marker = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"9\" y=\"4\" width=\"1\" height=\"11\"></rect><rect x=\"4\" y=\"9\" width=\"11\" height=\"1\"></rect></svg>";
+
+var navbarToggleIcon = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><rect y=\"9\" width=\"20\" height=\"2\"></rect><rect y=\"3\" width=\"20\" height=\"2\"></rect><rect y=\"15\" width=\"20\" height=\"2\"></rect></svg>";
+
+var overlayIcon = "<svg width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"19\" y=\"0\" width=\"1\" height=\"40\"></rect><rect x=\"0\" y=\"19\" width=\"40\" height=\"1\"></rect></svg>";
+
+var paginationNext = "<svg width=\"7\" height=\"12\" viewBox=\"0 0 7 12\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.2\" points=\"1 1 6 6 1 11\"></polyline></svg>";
+
+var paginationPrevious = "<svg width=\"7\" height=\"12\" viewBox=\"0 0 7 12\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.2\" points=\"6 1 1 6 6 11\"></polyline></svg>";
+
+var searchIcon = "<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"9\" cy=\"9\" r=\"7\"></circle><path fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" d=\"M14,14 L18,18 L14,14 Z\"></path></svg>";
+
+var searchLarge = "<svg width=\"40\" height=\"40\" viewBox=\"0 0 40 40\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.8\" cx=\"17.5\" cy=\"17.5\" r=\"16.5\"></circle><line fill=\"none\" stroke=\"#000\" stroke-width=\"1.8\" x1=\"38\" y1=\"39\" x2=\"29\" y2=\"30\"></line></svg>";
+
+var searchNavbar = "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" cx=\"10.5\" cy=\"10.5\" r=\"9.5\"/><line fill=\"none\" stroke=\"#000\" stroke-width=\"1.1\" x1=\"23\" y1=\"23\" x2=\"17\" y2=\"17\"/></svg>";
+
+var slidenavNext = "<svg width=\"11\" height=\"20\" viewBox=\"0 0 11 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.2\" points=\"1 1 10 10 1 19\"></polyline></svg>";
+
+var slidenavNextLarge = "<svg width=\"18\" height=\"34\" viewBox=\"0 0 18 34\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.4\" points=\"1 1 17 17 1 33\"></polyline></svg>";
+
+var slidenavPrevious = "<svg width=\"11\" height=\"20\" viewBox=\"0 0 11 20\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.2\" points=\"10 1 1 10 10 19\"></polyline></svg>";
+
+var slidenavPreviousLarge = "<svg width=\"18\" height=\"34\" viewBox=\"0 0 18 34\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.4\" points=\"17 1 1 17 17 33\"></polyline></svg>";
+
+var spinner = "<svg width=\"30\" height=\"30\" viewBox=\"0 0 30 30\" xmlns=\"http://www.w3.org/2000/svg\"><circle fill=\"none\" stroke=\"#000\" cx=\"15\" cy=\"15\" r=\"14\"></circle></svg>";
+
+var totop = "<svg width=\"18\" height=\"10\" viewBox=\"0 0 18 10\" xmlns=\"http://www.w3.org/2000/svg\"><polyline fill=\"none\" stroke=\"#000\" stroke-width=\"1.2\" points=\"1 9 9 1 17 9 \"></polyline></svg>";
+
+function Icon (UIkit) {
+
+    var parsed = {},
+        icons = {
+            spinner: spinner,
+            totop: totop,
+            marker: marker,
+            'close-icon': closeIcon,
+            'close-large': closeLarge,
+            'navbar-toggle-icon': navbarToggleIcon,
+            'overlay-icon': overlayIcon,
+            'pagination-next': paginationNext,
+            'pagination-previous': paginationPrevious,
+            'search-icon': searchIcon,
+            'search-large': searchLarge,
+            'search-navbar': searchNavbar,
+            'slidenav-next': slidenavNext,
+            'slidenav-next-large': slidenavNextLarge,
+            'slidenav-previous': slidenavPrevious,
+            'slidenav-previous-large': slidenavPreviousLarge
+        };
+
+    UIkit.component('icon', UIkit.components.svg.extend({
+
+        attrs: ['icon', 'ratio'],
+
+        mixins: [Class],
+
+        name: 'icon',
+
+        args: 'icon',
+
+        props: ['icon'],
+
+        defaults: {exclude: ['id', 'style', 'class', 'src', 'icon']},
+
+        init: function init() {
+            this.$addClass('uk-icon');
+
+            if (isRtl) {
+                this.icon = swap(swap(this.icon, 'left', 'right'), 'previous', 'next');
+            }
+        },
+
+        update: {
+
+            read: function read() {
+
+                if (this.delay) {
+                    var icon = this.getIcon();
+
+                    if (icon) {
+                        this.delay(icon);
+                    }
+                }
+            },
+
+            events: ['load']
+
+        },
+
+        methods: {
+
+            getSvg: function getSvg() {
+                var this$1 = this;
+
+
+                var icon = this.getIcon();
+
+                if (!icon) {
+
+                    if (document.readyState !== 'complete') {
+                        return promise(function (resolve) {
+                            this$1.delay = resolve;
+                        });
+                    }
+
+                    return promise.reject('Icon not found.');
+
+                }
+
+                return promise.resolve(icon);
+            },
+
+            getIcon: function getIcon() {
+
+                if (!icons[this.icon]) {
+                    return null;
+                }
+
+                if (!parsed[this.icon]) {
+                    parsed[this.icon] = this.parse(icons[this.icon]);
+                }
+
+                return parsed[this.icon];
+            }
+
+        }
+
+    }));
+
+    [
+        'marker',
+        'navbar-toggle-icon',
+        'overlay-icon',
+        'pagination-previous',
+        'pagination-next',
+        'totop'
+    ].forEach(function (name) { return registerComponent(name); });
+
+    [
+        'slidenav-previous',
+        'slidenav-next'
+    ].forEach(function (name) { return registerComponent(name, {
+
+        init: function init() {
+            this.$addClass('uk-slidenav');
+
+            if (this.$hasClass('uk-slidenav-large')) {
+                this.icon += '-large';
+            }
+        }
+
+    }); });
+
+    registerComponent('search-icon', {
+
+        init: function init() {
+            if (this.$hasClass('uk-search-icon') && this.$el.parents('.uk-search-large').length) {
+                this.icon = 'search-large';
+            } else if (this.$el.parents('.uk-search-navbar').length) {
+                this.icon = 'search-navbar';
+            }
+        }
+
+    });
+
+    registerComponent('close', {
+
+        init: function init() {
+            this.icon = "close-" + (this.$hasClass('uk-close-large') ? 'large' : 'icon');
+        }
+
+    });
+
+    registerComponent('spinner', {
+
+        connected: function connected() {
+            var this$1 = this;
+
+
+            this.height = this.width = this.$el.width();
+
+            this.svg.then(function (svg) {
+
+                var circle = $__default(svg).find('circle'),
+                    diameter = Math.floor(this$1.width / 2);
+
+                svg.setAttribute('viewBox', ("0 0 " + (this$1.width) + " " + (this$1.width)));
+
+                circle.attr({cx: diameter, cy: diameter, r: diameter - parseFloat(circle.css('stroke-width') || 0)});
+            });
+        }
+
+    });
+
+    UIkit.icon.add = function (added) { return assign(icons, added); };
+
+    function registerComponent(name, mixin) {
+
+        UIkit.component(name, UIkit.components.icon.extend({
+
+            name: name,
+
+            mixins: mixin ? [mixin] : [],
+
+            defaults: {
+                icon: name
+            }
+
+        }));
+    }
+
+}
+
+function Margin (UIkit) {
+
+    UIkit.component('margin', {
+
+        props: {
+            margin: String,
+            firstColumn: Boolean
+        },
+
+        defaults: {
+            margin: 'uk-margin-small-top',
+            firstColumn: 'uk-first-column'
+        },
+
+        computed: {
+
+            items: function items() {
+                return this.$el[0].children;
+            }
+
+        },
+
+        update: {
+
+            read: function read() {
+                var this$1 = this;
+
+
+                if (!this.items.length || this.$el[0].offsetHeight === 0) {
+                    this.rows = false;
+                    return;
+                }
+
+                this.stacks = true;
+
+                var rows = [[]];
+
+                for (var i = 0; i < this.items.length; i++) {
+
+                    var el = this$1.items[i],
+                        dim = el.getBoundingClientRect();
+
+                    if (!dim.height) {
+                        return;
+                    }
+
+                    for (var j = rows.length - 1; j >= 0; j--) {
+
+                        var row = rows[j];
+
+                        if (!row[0]) {
+                            row.push(el);
+                            break;
+                        }
+
+                        var leftDim = row[0].getBoundingClientRect();
+
+                        if (dim.top >= leftDim.bottom) {
+                            rows.push([el]);
+                            break;
+                        }
+
+                        if (dim.bottom > leftDim.top) {
+
+                            this$1.stacks = false;
+
+                            if (dim.left < leftDim.left) {
+                                row.unshift(el);
+                                break;
+                            }
+
+                            row.push(el);
+                            break;
+                        }
+
+                        if (j === 0) {
+                            rows.unshift([el]);
+                            break;
+                        }
+
+                    }
+
+                }
+
+                this.rows = rows;
+
+            },
+
+            write: function write() {
+                var this$1 = this;
+
+
+                this.rows && this.rows.forEach(function (row, i) { return row.forEach(function (el, j) {
+                        this$1.$toggleClass(el, this$1.margin, i !== 0);
+                        this$1.$toggleClass(el, this$1.firstColumn, j === 0);
+                    }); }
+                )
+
+            },
+
+            events: ['load', 'resize']
+
+        }
+
+    });
+
+}
+
+function Modal$1 (UIkit) {
+
+    UIkit.component('modal', {
+
+        mixins: [Modal],
+
+        props: {
+            center: Boolean
+        },
+
+        defaults: {
+            center: false,
+            clsPage: 'uk-modal-page',
+            clsPanel: 'uk-modal-dialog',
+            selClose: '.uk-modal-close, .uk-modal-close-default, .uk-modal-close-outside, .uk-modal-close-full'
+        },
+
+        update: {
+
+            write: function write() {
+
+                if (this.$el.css('display') === 'block' && this.center) {
+                    this.$el
+                        .removeClass('uk-flex uk-flex-center uk-flex-middle')
+                        .css('display', 'block')
+                        .toggleClass('uk-flex uk-flex-center uk-flex-middle', window.innerHeight > this.panel.outerHeight(true))
+                        .css('display', this.$el.hasClass('uk-flex') ? '' : 'block');
+                }
+
+            },
+
+            events: ['resize']
+
+        },
+
+        events: [
+
+            {
+                name: 'beforeshow',
+
+                self: true,
+
+                handler: function handler() {
+                    this.$el.css('display', 'block').height();
+                }
+            },
+
+            {
+                name: 'hidden',
+
+                self: true,
+
+                handler: function handler() {
+                    this.$el.css('display', '').removeClass('uk-flex uk-flex-center uk-flex-middle');
+                }
+            }
+
+        ]
+
+    });
+
+    UIkit.component('overflow-auto', {
+
+        mixins: [Class],
+
+        computed: {
+
+            panel: function panel() {
+                return this.$el.closest('.uk-modal-dialog');
+            }
+
+        },
+
+        connected: function connected() {
+            this.$el.css('min-height', 150);
+        },
+
+        update: {
+
+            write: function write() {
+                var current = this.$el.css('max-height');
+                this.$el.css('max-height', 150).css('max-height', Math.max(150, 150 - (this.panel.outerHeight(true) - window.innerHeight)));
+                if (current !== this.$el.css('max-height')) {
+                    this.$el.trigger('resize');
+                }
+            },
+
+            events: ['load', 'resize']
+
+        }
+
+    });
+
+    UIkit.modal.dialog = function (content, options) {
+
+        var dialog = UIkit.modal(
+            ("<div class=\"uk-modal\">\n                <div class=\"uk-modal-dialog\">" + content + "</div>\n             </div>")
+        , options);
+
+        dialog.$el.on('hidden', function (e) {
+            if (e.target === e.currentTarget) {
+                dialog.$destroy(true);
+            }
+        });
+        dialog.show();
+
+        return dialog;
+    };
+
+    UIkit.modal.alert = function (message, options) {
+
+        options = assign({bgClose: false, escClose: false, labels: UIkit.modal.labels}, options);
+
+        return promise(
+            function (resolve) { return UIkit.modal.dialog(("\n                <div class=\"uk-modal-body\">" + (isString(message) ? message : $__default(message).html()) + "</div>\n                <div class=\"uk-modal-footer uk-text-right\">\n                    <button class=\"uk-button uk-button-primary uk-modal-close\" autofocus>" + (options.labels.ok) + "</button>\n                </div>\n            "), options).$el.on('hide', resolve); }
+        );
+    };
+
+    UIkit.modal.confirm = function (message, options) {
+
+        options = assign({bgClose: false, escClose: false, labels: UIkit.modal.labels}, options);
+
+        return promise(
+            function (resolve, reject) { return UIkit.modal.dialog(("\n                <div class=\"uk-modal-body\">" + (isString(message) ? message : $__default(message).html()) + "</div>\n                <div class=\"uk-modal-footer uk-text-right\">\n                    <button class=\"uk-button uk-button-default uk-modal-close\">" + (options.labels.cancel) + "</button>\n                    <button class=\"uk-button uk-button-primary uk-modal-close\" autofocus>" + (options.labels.ok) + "</button>\n                </div>\n            "), options).$el.on('click', '.uk-modal-footer button', function (e) { return $__default(e.target).index() === 0 ? reject() : resolve(); }); }
+        );
+    };
+
+    UIkit.modal.prompt = function (message, value, options) {
+
+        options = assign({bgClose: false, escClose: false, labels: UIkit.modal.labels}, options);
+
+        return promise(function (resolve) {
+
+            var resolved = false,
+                prompt = UIkit.modal.dialog(("\n                <form class=\"uk-form-stacked\">\n                    <div class=\"uk-modal-body\">\n                        <label>" + (isString(message) ? message : $__default(message).html()) + "</label>\n                        <input class=\"uk-input\" type=\"text\" autofocus>\n                    </div>\n                    <div class=\"uk-modal-footer uk-text-right\">\n                        <button class=\"uk-button uk-button-default uk-modal-close\" type=\"button\">" + (options.labels.cancel) + "</button>\n                        <button class=\"uk-button uk-button-primary\" type=\"submit\">" + (options.labels.ok) + "</button>\n                    </div>\n                </form>\n            "), options),
+                input = prompt.$el.find('input').val(value);
+
+            prompt.$el
+                .on('submit', 'form', function (e) {
+                    e.preventDefault();
+                    resolve(input.val());
+                    resolved = true;
+                    prompt.hide()
+                })
+                .on('hide', function () {
+                    if (!resolved) {
+                        resolve(null);
+                    }
+                });
+
+        });
+    };
+
+    UIkit.modal.labels = {
+        ok: 'Ok',
+        cancel: 'Cancel'
+    }
+
+}
+
+function Nav (UIkit) {
+
+    UIkit.component('nav', UIkit.components.accordion.extend({
+
+        name: 'nav',
+
+        defaults: {
+            targets: '> .uk-parent',
+            toggle: '> a',
+            content: 'ul:first'
+        }
+
+    }));
+
+}
+
+function Navbar (UIkit) {
+
+    UIkit.component('navbar', {
+
+        mixins: [Class],
+
+        props: {
+            dropdown: String,
+            mode: 'list',
+            align: String,
+            offset: Number,
+            boundary: Boolean,
+            boundaryAlign: Boolean,
+            clsDrop: String,
+            delayShow: Number,
+            delayHide: Number,
+            dropbar: Boolean,
+            dropbarMode: String,
+            dropbarAnchor: 'jQuery',
+            duration: Number
+        },
+
+        defaults: {
+            dropdown: '.uk-navbar-nav > li',
+            align: !isRtl ? 'left' : 'right',
+            clsDrop: 'uk-navbar-dropdown',
+            mode: undefined,
+            offset: undefined,
+            delayShow: undefined,
+            delayHide: undefined,
+            boundaryAlign: undefined,
+            flip: 'x',
+            boundary: true,
+            dropbar: false,
+            dropbarMode: 'slide',
+            dropbarAnchor: false,
+            duration: 200,
+        },
+
+        computed: {
+
+            boundary: function boundary() {
+                return (this.$props.boundary === true || this.boundaryAlign) ? this.$el : this.$props.boundary
+            },
+
+            pos: function pos() {
+                return ("bottom-" + (this.align));
+            }
+
+        },
+
+        ready: function ready() {
+
+            if (this.dropbar) {
+                UIkit.navbarDropbar(
+                    query(this.dropbar, this.$el) || $__default('<div></div>').insertAfter(this.dropbarAnchor || this.$el),
+                    {clsDrop: this.clsDrop, mode: this.dropbarMode, duration: this.duration, navbar: this}
+                );
+            }
+
+        },
+
+        update: function update() {
+
+            UIkit.drop($__default(((this.dropdown) + " ." + (this.clsDrop)), this.$el), assign({}, this.$props, {boundary: this.boundary, pos: this.pos}));
+
+        },
+
+        events: [
+
+            {
+                name: pointerEnter,
+
+                delegate: function delegate() {
+                    return this.dropdown;
+                },
+
+                handler: function handler(ref) {
+                    var currentTarget = ref.currentTarget;
+
+                    var active = this.getActive();
+                    if (active && active.toggle && !isWithin(active.toggle.$el, currentTarget) && !active.tracker.movesTo(active.$el)) {
+                        active.hide(false);
+                    }
+                }
+
+            }
+
+        ],
+
+        methods: {
+
+            getActive: function getActive() {
+                var active = UIkit.drop.getActive();
+                return active && active.mode !== 'click' && isWithin(active.toggle.$el, this.$el) && active;
+            }
+
+        }
+
+    });
+
+    UIkit.component('navbar-dropbar', {
+
+        mixins: [Class],
+
+        defaults: {
+            clsDrop: '',
+            mode: 'slide',
+            navbar: null,
+            duration: 200
+        },
+
+        init: function init() {
+
+            if (this.mode === 'slide') {
+                this.$addClass('uk-navbar-dropbar-slide');
+            }
+
+        },
+
+        events: [
+
+            {
+                name: 'beforeshow',
+
+                el: function el() {
+                    return this.navbar.$el;
+                },
+
+                handler: function handler(_, drop) {
+                    var $el = drop.$el;
+                    var dir = drop.dir;
+                    if (dir === 'bottom' && !isWithin($el, this.$el)) {
+                        $el.appendTo(this.$el);
+                        drop.show();
+                        return false;
+                    }
+                }
+            },
+
+            {
+                name: 'mouseleave',
+
+                handler: function handler() {
+                    var active = this.navbar.getActive();
+
+                    if (active && !this.$el.is(':hover')) {
+                        active.hide();
+                    }
+                }
+            },
+
+            {
+                name: 'beforeshow',
+
+                handler: function handler(e, ref) {
+                    var $el = ref.$el;
+
+                    this.clsDrop && $el.addClass(((this.clsDrop) + "-dropbar"));
+                    this.transitionTo($el.outerHeight(true));
+                }
+            },
+
+            {
+                name: 'beforehide',
+
+                handler: function handler(e, ref) {
+                    var $el = ref.$el;
+
+
+                    var active = this.navbar.getActive();
+
+                    if (this.$el.is(':hover') && active && active.$el.is($el)) {
+                        return false;
+                    }
+                }
+            },
+
+            {
+                name: 'hide',
+
+                handler: function handler(e, ref) {
+                    var $el = ref.$el;
+
+
+                    var active = this.navbar.getActive();
+
+                    if (!active || active && active.$el.is($el)) {
+                        this.transitionTo(0);
+                    }
+                }
+            }
+
+        ],
+
+        methods: {
+
+            transitionTo: function transitionTo(height) {
+                var this$1 = this;
+
+                this.$el.height(this.$el[0].offsetHeight ? this.$el.height() : 0);
+                return Transition.cancel(this.$el).then(function () { return Transition.start(this$1.$el, {height: height}, this$1.duration); });
+            }
+
+        }
+
+    });
+
+}
+
+var scroll;
+
+function Offcanvas (UIkit) {
+
+    UIkit.component('offcanvas', {
+
+        mixins: [Modal],
+
+        args: 'mode',
+
+        props: {
+            content: String,
+            mode: String,
+            flip: Boolean,
+            overlay: Boolean
+        },
+
+        defaults: {
+            content: '.uk-offcanvas-content:first',
+            mode: 'slide',
+            flip: false,
+            overlay: false,
+            clsPage: 'uk-offcanvas-page',
+            clsContainer: 'uk-offcanvas-container',
+            clsPanel: 'uk-offcanvas-bar',
+            clsFlip: 'uk-offcanvas-flip',
+            clsContent: 'uk-offcanvas-content',
+            clsContentAnimation: 'uk-offcanvas-content-animation',
+            clsSidebarAnimation: 'uk-offcanvas-bar-animation',
+            clsMode: 'uk-offcanvas',
+            clsOverlay: 'uk-offcanvas-overlay',
+            selClose: '.uk-offcanvas-close'
+        },
+
+        computed: {
+
+            content: function content() {
+                return $__default(query(this.$props.content, this.$el));
+            },
+
+            clsFlip: function clsFlip() {
+                return this.flip ? this.$props.clsFlip : '';
+            },
+
+            clsOverlay: function clsOverlay() {
+                return this.overlay ? this.$props.clsOverlay : '';
+            },
+
+            clsMode: function clsMode() {
+                return ((this.$props.clsMode) + "-" + (this.mode));
+            },
+
+            clsSidebarAnimation: function clsSidebarAnimation() {
+                return this.mode === 'none' || this.mode === 'reveal' ? '' : this.$props.clsSidebarAnimation;
+            },
+
+            clsContentAnimation: function clsContentAnimation() {
+                return this.mode !== 'push' && this.mode !== 'reveal' ? '' : this.$props.clsContentAnimation
+            },
+
+            transitionElement: function transitionElement() {
+                return this.mode === 'reveal' ? this.panel.parent() : this.panel;
+            }
+
+        },
+
+        update: {
+
+            write: function write() {
+
+                if (this.isToggled()) {
+
+                    if (this.overlay || this.clsContentAnimation) {
+                        this.content.width(window.innerWidth - this.scrollbarWidth);
+                    }
+
+                    if (this.overlay) {
+                        this.content.height(window.innerHeight);
+                        scroll && this.content.scrollTop(scroll.y);
+                    }
+
+
+                }
+
+            },
+
+            events: ['resize']
+
+        },
+
+        events: [
+
+            {
+                name: 'beforeshow',
+
+                self: true,
+
+                handler: function handler() {
+
+                    scroll = scroll || {x: window.pageXOffset, y: window.pageYOffset};
+
+                    if (this.mode === 'reveal' && !this.panel.parent().hasClass(this.clsMode)) {
+                        this.panel.wrap('<div>').parent().addClass(this.clsMode);
+                    }
+
+                    docElement.css('overflow-y', (!this.clsContentAnimation || this.flip) && this.scrollbarWidth && this.overlay ? 'scroll' : '');
+
+                    this.body.addClass(((this.clsContainer) + " " + (this.clsFlip) + " " + (this.clsOverlay))).height();
+                    this.content.addClass(this.clsContentAnimation);
+                    this.panel.addClass(((this.clsSidebarAnimation) + " " + (this.mode !== 'reveal' ? this.clsMode : '')));
+                    this.$el.addClass(this.clsOverlay).css('display', 'block').height();
+
+                }
+            },
+
+            {
+                name: 'beforehide',
+
+                self: true,
+
+                handler: function handler() {
+                    this.content.removeClass(this.clsContentAnimation);
+
+                    if (this.mode === 'none' || this.getActive() && this.getActive() !== this) {
+                        this.panel.trigger(transitionend);
+                    }
+                }
+            },
+
+            {
+                name: 'hidden',
+
+                self: true,
+
+                handler: function handler() {
+
+                    if (this.mode === 'reveal') {
+                        this.panel.unwrap();
+                    }
+
+                    if (!this.overlay) {
+                        scroll = {x: window.pageXOffset, y: window.pageYOffset}
+                    }
+
+                    this.panel.removeClass(((this.clsSidebarAnimation) + " " + (this.clsMode)));
+                    this.$el.removeClass(this.clsOverlay).css('display', '');
+                    this.body.removeClass(((this.clsContainer) + " " + (this.clsFlip) + " " + (this.clsOverlay))).scrollTop(scroll.y);
+
+                    docElement.css('overflow-y', '');
+                    this.content.width('').height('');
+
+                    window.scrollTo(scroll.x, scroll.y);
+
+                    scroll = null;
+
+                }
+            },
+
+            {
+                name: 'swipeLeft swipeRight',
+
+                handler: function handler(e) {
+
+                    if (this.isToggled() && isTouch(e) && (e.type === 'swipeLeft' && !this.flip || e.type === 'swipeRight' && this.flip)) {
+                        this.hide();
+                    }
+
+                }
+            }
+
+        ]
+
+    });
+
+}
+
+function Responsive (UIkit) {
+
+    UIkit.component('responsive', {
+
+        props: ['width', 'height'],
+
+        init: function init() {
+            this.$addClass('uk-responsive-width');
+        },
+
+        update: {
+
+            write: function write() {
+                if (this.$el.is(':visible') && this.width && this.height) {
+                    this.$el.height(Dimensions.fit(
+                        {height: this.height, width: this.width},
+                        {width: this.$el.parent().width(), height: this.height || this.$el.height()}
+                    )['height']);
+                }
+            },
+
+            events: ['load', 'resize']
+
+        }
+
+    });
+
+}
+
+function Scroll (UIkit) {
+
+    UIkit.component('scroll', {
+
+        props: {
+            duration: Number,
+            easing: String,
+            offset: Number
+        },
+
+        defaults: {
+            duration: 1000,
+            easing: 'easeOutExpo',
+            offset: 0
+        },
+
+        methods: {
+
+            scrollToElement: function scrollToElement(el) {
+                var this$1 = this;
+
+
+                // get / set parameters
+                var target = offsetTop($__default(el)) - this.offset,
+                    document = docHeight(),
+                    viewport = window.innerHeight;
+
+                if (target + viewport > document) {
+                    target = document - viewport;
+                }
+
+                // animate to target, fire callback when done
+                $__default('html,body')
+                    .stop()
+                    .animate({scrollTop: Math.round(target)}, this.duration, this.easing)
+                    .promise()
+                    .then(function () { return this$1.$el.trigger('scrolled', [this$1]); });
+
+            }
+
+        },
+
+        events: {
+
+            click: function click(e) {
+
+                if (e.isDefaultPrevented()) {
+                    return;
+                }
+
+                e.preventDefault();
+                this.scrollToElement($__default(this.$el[0].hash).length ? this.$el[0].hash : 'body');
+            }
+
+        }
+
+    });
+
+    $__default.easing.easeOutExpo = $__default.easing.easeOutExpo || function (x, t, b, c, d) {
+        return (t === d) ? b + c : c * (-Math.pow(2, -10 * t / d) + 1) + b;
+    };
+
+}
+
+function Scrollspy (UIkit) {
+
+    UIkit.component('scrollspy', {
+
+        args: 'cls',
+
+        props: {
+            cls: 'list',
+            target: String,
+            hidden: Boolean,
+            offsetTop: Number,
+            offsetLeft: Number,
+            repeat: Boolean,
+            delay: Number
+        },
+
+        defaults: {
+            cls: ['uk-scrollspy-inview'],
+            target: false,
+            hidden: true,
+            offsetTop: 0,
+            offsetLeft: 0,
+            repeat: false,
+            delay: 0,
+            inViewClass: 'uk-scrollspy-inview'
+        },
+
+        init: function init() {
+            this.$emitSync();
+        },
+
+        computed: {
+
+            elements: function elements() {
+                return this.target && $__default(this.target, this.$el) || this.$el;
+            }
+
+        },
+
+        update: [
+
+            {
+
+                write: function write() {
+                    if (this.hidden) {
+                        this.elements.filter((":not(." + (this.inViewClass) + ")")).css('visibility', 'hidden');
+                    }
+                }
+
+            },
+
+            {
+
+                read: function read() {
+                    var this$1 = this;
+
+                    this.elements.each(function (_, el) {
+
+                        if (!el._scrollspy) {
+                            var cls = $__default(el).attr('uk-scrollspy-class');
+                            el._scrollspy = {toggles: cls && cls.split(',') || this$1.cls};
+                        }
+
+                        el._scrollspy.show = isInView(el, this$1.offsetTop, this$1.offsetLeft);
+
+                    });
+                },
+
+                write: function write() {
+                    var this$1 = this;
+
+
+                    var index = this.elements.length === 1 ? 1 : 0;
+
+                    this.elements.each(function (i, el) {
+
+                        var $el = $__default(el), data = el._scrollspy, cls = data.toggles[i] || data.toggles[0];
+
+                        if (data.show) {
+
+                            if (!data.inview && !data.timer) {
+
+                                var show = function () {
+                                    $el.css('visibility', '')
+                                        .addClass(this$1.inViewClass)
+                                        .toggleClass(cls)
+                                        .trigger('inview');
+
+                                    data.inview = true;
+                                    delete data.timer;
+                                };
+
+                                if (this$1.delay && index) {
+                                    data.timer = setTimeout(show, this$1.delay * index);
+                                } else {
+                                    show();
+                                }
+
+                                index++;
+
+                            }
+
+                        } else {
+
+                            if (data.inview && this$1.repeat) {
+
+                                if (data.timer) {
+                                    clearTimeout(data.timer);
+                                    delete data.timer;
+                                }
+
+                                $el.removeClass(this$1.inViewClass)
+                                    .toggleClass(cls)
+                                    .css('visibility', this$1.hidden ? 'hidden' : '')
+                                    .trigger('outview');
+
+                                data.inview = false;
+
+                            }
+
+                        }
+
+                    });
+
+                },
+
+                events: ['scroll', 'load', 'resize']
+
+            }
+
+        ]
+
+    });
+
+}
+
+function ScrollspyNav (UIkit) {
+
+    UIkit.component('scrollspy-nav', {
+
+        props: {
+            cls: String,
+            closest: String,
+            scroll: Boolean,
+            overflow: Boolean,
+            offset: Number
+        },
+
+        defaults: {
+            cls: 'uk-active',
+            closest: false,
+            scroll: false,
+            overflow: true,
+            offset: 0
+        },
+
+        computed: {
+
+            links: function links() {
+                return this.$el.find('a[href^="#"]').filter(function (i, el) { return el.hash; });
+            },
+
+            elements: function elements() {
+                return this.closest ? this.links.closest(this.closest) : this.links;
+            },
+
+            targets: function targets() {
+                return $__default(this.links.toArray().map(function (el) { return el.hash; }).join(','));
+            }
+
+        },
+
+        update: [
+
+            {
+
+                read: function read() {
+                    if (this.scroll) {
+                        UIkit.scroll(this.links, {offset: this.offset || 0});
+                    }
+                }
+
+            },
+
+            {
+
+                read: function read() {
+                    var this$1 = this;
+
+
+                    var scroll = window.pageYOffset + this.offset, max = docHeight() - window.innerHeight + this.offset;
+
+                    this.active = false;
+
+                    this.targets.each(function (i, el) {
+
+                        el = $__default(el);
+
+                        var top = offsetTop(el), last = i + 1 === this$1.targets.length;
+                        if (!this$1.overflow && (i === 0 && top > scroll || last && top + el[0].offsetTop < scroll)) {
+                            return false;
+                        }
+
+                        if (!last && offsetTop(this$1.targets.eq(i + 1)) <= scroll) {
+                            return;
+                        }
+
+                        if (scroll >= max) {
+                            for (var j = this$1.targets.length - 1; j > i; j--) {
+                                if (isInView(this$1.targets.eq(j))) {
+                                    el = this$1.targets.eq(j);
+                                    break;
+                                }
+                            }
+                        }
+
+                        return !(this$1.active = toJQuery(this$1.links.filter(("[href=\"#" + (el.attr('id')) + "\"]"))));
+
+                    });
+
+                },
+
+                write: function write() {
+
+                    this.links.blur();
+                    this.elements.removeClass(this.cls);
+
+                    if (this.active) {
+                        this.$el.trigger('active', [
+                            this.active,
+                            (this.closest ? this.active.closest(this.closest) : this.active).addClass(this.cls)
+                        ]);
+                    }
+
+                },
+
+                events: ['scroll', 'load', 'resize']
+
+            }
+
+        ]
+
+    });
+
+}
+
+function Sticky (UIkit) {
+
+    UIkit.component('sticky', {
+
+        mixins: [Class],
+
+        attrs: true,
+
+        props: {
+            top: null,
+            bottom: Boolean,
+            offset: Number,
+            animation: String,
+            clsActive: String,
+            clsInactive: String,
+            clsFixed: String,
+            clsBelow: String,
+            widthElement: 'jQuery',
+            showOnUp: Boolean,
+            media: 'media',
+            target: Number
+        },
+
+        defaults: {
+            top: 0,
+            bottom: false,
+            offset: 0,
+            animation: '',
+            clsActive: 'uk-active',
+            clsInactive: '',
+            clsFixed: 'uk-sticky-fixed',
+            clsBelow: 'uk-sticky-below',
+            widthElement: false,
+            showOnUp: false,
+            media: false,
+            target: false
+        },
+
+        connected: function connected() {
+
+            this.placeholder = $__default('<div class="uk-sticky-placeholder"></div>');
+            this.widthElement = this.$props.widthElement || this.placeholder;
+
+            if (!this.isActive) {
+                this.$addClass(this.clsInactive);
+            }
+        },
+
+        disconnected: function disconnected() {
+
+            if (this.isActive) {
+                this.isActive = false;
+                this.hide();
+                this.$removeClass(this.clsInactive);
+            }
+
+            this.placeholder.remove();
+            this.placeholder = null;
+            this.widthElement = null;
+        },
+
+        ready: function ready() {
+            var this$1 = this;
+
+
+            if (!(this.target && location.hash && window.pageYOffset > 0)) {
+                return;
+            }
+
+            var target = query(location.hash);
+
+            if (target) {
+                requestAnimationFrame(function () {
+
+                    var top = offsetTop(target),
+                        elTop = offsetTop(this$1.$el),
+                        elHeight = this$1.$el[0].offsetHeight;
+
+                    if (elTop + elHeight >= top && elTop <= top + target[0].offsetHeight) {
+                        window.scrollTo(0, top - elHeight - this$1.target - this$1.offset);
+                    }
+
+                });
+            }
+
+        },
+
+        update: [
+
+            {
+
+                write: function write() {
+                    var this$1 = this;
+
+
+                    var outerHeight = (this.isActive ? this.placeholder : this.$el)[0].offsetHeight, el;
+
+                    this.placeholder
+                        .css('height', this.$el.css('position') !== 'absolute' ? outerHeight : '')
+                        .css(this.$el.css(['marginTop', 'marginBottom', 'marginLeft', 'marginRight']));
+
+                    if (!document.documentElement.contains(this.placeholder[0])) {
+                        this.placeholder.insertAfter(this.$el).attr('hidden', true);
+                    }
+
+                    this.width = this.widthElement.attr('hidden', null)[0].offsetWidth;
+                    this.widthElement.attr('hidden', !this.isActive);
+
+                    this.topOffset = offsetTop(this.isActive ? this.placeholder : this.$el);
+                    this.bottomOffset = this.topOffset + outerHeight;
+
+                    ['top', 'bottom'].forEach(function (prop) {
+
+                        this$1[prop] = this$1.$props[prop];
+
+                        if (!this$1[prop]) {
+                            return;
+                        }
+
+                        if ($.isNumeric(this$1[prop])) {
+
+                            this$1[prop] = this$1[(prop + "Offset")] + parseFloat(this$1[prop]);
+
+                        } else {
+
+                            if (isString(this$1[prop]) && this$1[prop].match(/^-?\d+vh$/)) {
+                                this$1[prop] = window.innerHeight * parseFloat(this$1[prop]) / 100;
+                            } else {
+
+                                el = this$1[prop] === true ? this$1.$el.parent() : query(this$1[prop], this$1.$el);
+
+                                if (el) {
+                                    this$1[prop] = offsetTop(el) + el[0].offsetHeight;
+                                }
+
+                            }
+
+                        }
+
+                    });
+
+                    this.top = Math.max(parseFloat(this.top), this.topOffset) - this.offset;
+                    this.bottom = this.bottom && this.bottom - outerHeight;
+                    this.inactive = this.media && !window.matchMedia(this.media).matches;
+
+                    if (this.isActive) {
+                        this.update();
+                    }
+                },
+
+                events: ['load', 'resize']
+
+            },
+
+            {
+
+                read: function read() {
+                    this.offsetTop = offsetTop(this.$el);
+                },
+
+                write: function write(ref) {
+                    var this$1 = this;
+                    if ( ref === void 0 ) ref = {};
+                    var dir = ref.dir;
+
+
+                    var scroll = window.pageYOffset;
+
+                    if (scroll < 0 || !this.$el.is(':visible') || this.disabled || this.showOnUp && !dir) {
+                        return;
+                    }
+
+                    if (this.inactive
+                        || scroll < this.top
+                        || this.showOnUp && (scroll <= this.top || dir ==='down' || dir === 'up' && !this.isActive && scroll <= this.bottomOffset)
+                    ) {
+
+                        if (!this.isActive) {
+                            return;
+                        }
+
+                        this.isActive = false;
+
+                        if (this.animation && scroll > this.topOffset) {
+                            Animation.cancel(this.$el).then(function () { return Animation.out(this$1.$el, this$1.animation).then(function () { return this$1.hide(); }); });
+                        } else {
+                            this.hide();
+                        }
+
+                    } else if (this.isActive) {
+
+                        this.update();
+
+                    } else if (this.animation) {
+
+                        Animation.cancel(this.$el).then(function () {
+                            this$1.show();
+                            Animation.in(this$1.$el, this$1.animation);
+                        });
+
+                    } else {
+                        this.show();
+                    }
+
+                },
+
+                events: ['scroll']
+
+            } ],
+
+        methods: {
+
+            show: function show() {
+
+                this.isActive = true;
+                this.update();
+                this.$el.trigger('active');
+                this.placeholder.attr('hidden', null);
+
+            },
+
+            hide: function hide() {
+
+                this.$addClass(this.clsInactive);
+                this.$removeClass(this.clsFixed, this.clsActive, this.clsBelow);
+                this.$el.css({position: '', top: '', width: ''}).trigger('inactive');
+                this.placeholder.attr('hidden', true);
+
+            },
+
+            update: function update() {
+
+                var top = Math.max(0, this.offset), scroll = window.pageYOffset, active = scroll > this.top;
+
+                if (this.bottom && scroll > this.bottom - this.offset) {
+                    top = this.bottom - scroll;
+                }
+
+                this.$el.css({
+                    position: 'fixed',
+                    top: (top + "px"),
+                    width: this.width
+                });
+
+                this.$addClass(this.clsFixed);
+                this.$toggleClass(this.clsActive, active);
+                this.$toggleClass(this.clsInactive, !active);
+                this.$toggleClass(this.clsBelow, scroll > this.bottomOffset);
+
+            }
+
+        }
+
+    });
+
+}
+
+var svgs = {};
+var parser = new DOMParser();
+function Svg (UIkit) {
+
+    UIkit.component('svg', {
+
+        attrs: true,
+
+        props: {
+            id: String,
+            icon: String,
+            src: String,
+            style: String,
+            width: Number,
+            height: Number,
+            ratio: Number,
+            'class': String
+        },
+
+        defaults: {
+            ratio: 1,
+            id: false,
+            exclude: ['src'],
+            'class': ''
+        },
+
+        init: function init() {
+            this.class += ' uk-svg';
+        },
+
+        connected: function connected() {
+            var this$1 = this;
+
+
+            if (!this.icon && this.src && ~this.src.indexOf('#')) {
+
+                var parts = this.src.split('#');
+
+                if (parts.length > 1) {
+                    this.src = parts[0];
+                    this.icon = parts[1];
+                }
+            }
+
+            this.width = this.$props.width;
+            this.height = this.$props.height;
+
+            this.svg = this.getSvg().then(function (doc) { return promise(function (resolve, reject) { return fastdom.mutate(function () {
+
+                var svg, el;
+
+                if (!doc) {
+                    reject('SVG not found.');
+                    return;
+                }
+
+                if (!this$1.icon) {
+                    el = doc.documentElement.cloneNode(true);
+                } else {
+                    svg = doc.getElementById(this$1.icon);
+
+                    if (!svg) {
+
+                        // fallback if SVG has no symbols
+                        if (!doc.querySelector('symbol')) {
+                            el = doc.documentElement.cloneNode(true);
+                        }
+
+                    } else {
+
+                        var html = svg.outerHTML;
+
+                        // IE workaround
+                        if (!html) {
+                            var div = document.createElement('div');
+                            div.appendChild(svg.cloneNode(true));
+                            html = div.innerHTML;
+                        }
+
+                        html = html
+                            .replace(/<symbol/g, ("<svg" + (!~html.indexOf('xmlns') ? ' xmlns="http://www.w3.org/2000/svg"' : '')))
+                            .replace(/symbol>/g, 'svg>');
+
+                        el = parser.parseFromString(html, 'image/svg+xml').documentElement;
+                    }
+
+                }
+
+                if (!el) {
+                    reject('SVG not found.');
+                    return;
+                }
+
+                var dimensions = el.getAttribute('viewBox'); // jQuery workaround, el.attr('viewBox')
+
+                if (dimensions) {
+                    dimensions = dimensions.split(' ');
+                    this$1.width = this$1.width || dimensions[2];
+                    this$1.height = this$1.height || dimensions[3];
+                }
+
+                this$1.width *= this$1.ratio;
+                this$1.height *= this$1.ratio;
+
+                for (var prop in this$1.$options.props) {
+                    if (this$1[prop] && !~this$1.exclude.indexOf(prop)) {
+                        el.setAttribute(prop, this$1[prop]);
+                    }
+                }
+
+                if (!this$1.id) {
+                    el.removeAttribute('id');
+                }
+
+                if (this$1.width && !this$1.height) {
+                    el.removeAttribute('height');
+                }
+
+                if (this$1.height && !this$1.width) {
+                    el.removeAttribute('width');
+                }
+
+                var root = this$1.$el[0];
+                if (isVoidElement(root) || root.tagName === 'CANVAS') {
+                    this$1.$el.attr({hidden: true, id: null});
+                    if (root.nextSibling) {
+                        root.parentNode.insertBefore(el, root.nextSibling);
+                    } else {
+                        root.parentNode.appendChild(el);
+                    }
+                } else {
+                    root.appendChild(el);
+                }
+
+                resolve(el);
+
+            }); }); }).then(null, function () {});
+
+        },
+
+        disconnected: function disconnected() {
+
+            if (isVoidElement(this.$el)) {
+                this.$el.attr({hidden: null, id: this.id || null});
+            }
+
+            if (this.svg) {
+                this.svg.then(function (svg) { return svg && svg.parentNode && svg.parentNode.removeChild(svg); });
+                this.svg = null;
+            }
+        },
+
+        methods: {
+
+            getSvg: function getSvg() {
+                var this$1 = this;
+
+
+                if (!this.src) {
+                    return promise.reject();
+                }
+
+                if (svgs[this.src]) {
+                    return svgs[this.src];
+                }
+
+                svgs[this.src] = promise(function (resolve, reject) {
+
+                    if (this$1.src.lastIndexOf('data:', 0) === 0) {
+                        resolve(this$1.parse(decodeURIComponent(this$1.src.split(',')[1])));
+                    } else {
+
+                        $.ajax(this$1.src, {dataType: 'html'}).then(function (doc) {
+                            resolve(this$1.parse(doc));
+                        }, function () {
+                            reject('SVG not found.');
+                        });
+
+                    }
+
+                });
+
+                return svgs[this.src];
+
+            },
+
+            parse: function parse(doc) {
+                var parsed = parser.parseFromString(doc, 'image/svg+xml');
+                return parsed.documentElement && parsed.documentElement.nodeName === 'svg' ? parsed : null;
+            }
+
+        }
+
+    });
+
+}
+
+function Switcher (UIkit) {
+
+    UIkit.component('switcher', {
+
+        mixins: [Togglable],
+
+        args: 'connect',
+
+        props: {
+            connect: String,
+            toggle: String,
+            active: Number,
+            swiping: Boolean
+        },
+
+        defaults: {
+            connect: false,
+            toggle: ' > *',
+            active: 0,
+            swiping: true,
+            cls: 'uk-active',
+            clsContainer: 'uk-switcher',
+            attrItem: 'uk-switcher-item',
+            queued: true
+        },
+
+        computed: {
+
+            connects: function connects() {
+                return query(this.connect, this.$el) || $__default(this.$el.next(("." + (this.clsContainer))));
+            },
+
+            toggles: function toggles() {
+                return $__default(this.toggle, this.$el);
+            }
+
+        },
+
+        events: [
+
+            {
+
+                name: 'click',
+
+                delegate: function delegate() {
+                    return ((this.toggle) + ":not(.uk-disabled)");
+                },
+
+                handler: function handler(e) {
+                    e.preventDefault();
+                    this.show(e.currentTarget);
+                }
+
+            },
+
+            {
+                name: 'click',
+
+                el: function el() {
+                    return this.connects;
+                },
+
+                delegate: function delegate() {
+                    return ("[" + (this.attrItem) + "],[data-" + (this.attrItem) + "]");
+                },
+
+                handler: function handler(e) {
+                    e.preventDefault();
+                    this.show($__default(e.currentTarget)[e.currentTarget.hasAttribute(this.attrItem) ? 'attr' : 'data'](this.attrItem));
+                }
+            },
+
+            {
+                name: 'swipeRight swipeLeft',
+
+                filter: function filter() {
+                    return this.swiping;
+                },
+
+                el: function el() {
+                    return this.connects;
+                },
+
+                handler: function handler(e) {
+                    if (!isTouch(e)) {
+                        return;
+                    }
+
+                    e.preventDefault();
+                    if (!window.getSelection().toString()) {
+                        this.show(e.type === 'swipeLeft' ? 'next' : 'previous');
+                    }
+                }
+            }
+
+        ],
+
+        update: function update() {
+
+            this.updateAria(this.connects.children());
+            this.show(toJQuery(this.toggles.filter(("." + (this.cls) + ":first"))) || toJQuery(this.toggles.eq(this.active)) || this.toggles.first());
+
+        },
+
+        methods: {
+
+            show: function show(item) {
+                var this$1 = this;
+
+
+                var length = this.toggles.length,
+                    prev = this.connects.children(("." + (this.cls))).index(),
+                    hasPrev = prev >= 0,
+                    index = getIndex(item, this.toggles, prev),
+                    dir = item === 'previous' ? -1 : 1,
+                    toggle;
+
+                for (var i = 0; i < length; i++, index = (index + dir + length) % length) {
+                    if (!this$1.toggles.eq(index).is('.uk-disabled, [disabled]')) {
+                        toggle = this$1.toggles.eq(index);
+                        break;
+                    }
+                }
+
+                if (!toggle || prev >= 0 && toggle.hasClass(this.cls) || prev === index) {
+                    return;
+                }
+
+                this.toggles.removeClass(this.cls).attr('aria-expanded', false);
+                toggle.addClass(this.cls).attr('aria-expanded', true);
+
+                if (!hasPrev) {
+                    this.toggleNow(this.connects.children((":nth-child(" + (index + 1) + ")")));
+                } else {
+                    this.toggleElement(this.connects.children((":nth-child(" + (prev + 1) + "),:nth-child(" + (index + 1) + ")")));
+                }
+            }
+
+        }
+
+    });
+
+}
+
+function Tab (UIkit) {
+
+    UIkit.component('tab', UIkit.components.switcher.extend({
+
+        mixins: [Class],
+
+        name: 'tab',
+
+        props: {
+            media: 'media'
+        },
+
+        defaults: {
+            media: 960,
+            attrItem: 'uk-tab-item'
+        },
+
+        init: function init() {
+
+            var cls = this.$hasClass('uk-tab-left') && 'uk-tab-left' || this.$hasClass('uk-tab-right') && 'uk-tab-right';
+
+            if (cls) {
+                UIkit.toggle(this.$el, {cls: cls, mode: 'media', media: this.media});
+            }
+        }
+
+    }));
+
+}
+
+function Toggle (UIkit) {
+
+    UIkit.component('toggle', {
+
+        mixins: [UIkit.mixin.togglable],
+
+        args: 'target',
+
+        props: {
+            href: String,
+            target: null,
+            mode: 'list',
+            media: 'media'
+        },
+
+        defaults: {
+            href: false,
+            target: false,
+            mode: 'click',
+            queued: true,
+            media: false
+        },
+
+        computed: {
+
+            target: function target() {
+                return query(this.$props.target || this.href, this.$el) || this.$el;
+            }
+
+        },
+
+        events: [
+
+            {
+
+                name: (pointerEnter + " " + pointerLeave),
+
+                filter: function filter() {
+                    return ~this.mode.indexOf('hover');
+                },
+
+                handler: function handler(e) {
+                    if (!isTouch(e)) {
+                        this.toggle(("toggle" + (e.type === pointerEnter ? 'show' : 'hide')));
+                    }
+                }
+
+            },
+
+            {
+
+                name: 'click',
+
+                filter: function filter() {
+                    return ~this.mode.indexOf('click') || hasTouch;
+                },
+
+                handler: function handler(e) {
+
+                    if (!isTouch(e) && !~this.mode.indexOf('click')) {
+                        return;
+                    }
+
+                    // TODO better isToggled handling
+                    var link = $__default(e.target).closest('a[href]');
+                    if ($__default(e.target).closest('a[href="#"], button').length
+                        || link.length && (
+                            this.cls
+                            || !this.target.is(':visible')
+                            || link.attr('href')[0] === '#' && this.target.is(link.attr('href'))
+                        )
+                    ) {
+                        e.preventDefault();
+                    }
+
+                    this.toggle();
+                }
+
+            }
+        ],
+
+        update: {
+
+            write: function write() {
+
+                if (!~this.mode.indexOf('media') || !this.media) {
+                    return;
+                }
+
+                var toggled = this.isToggled(this.target);
+                if (window.matchMedia(this.media).matches ? !toggled : toggled) {
+                    this.toggle();
+                }
+
+            },
+
+            events: ['load', 'resize']
+
+        },
+
+        methods: {
+
+            toggle: function toggle(type) {
+
+                var event = $.Event(type || 'toggle');
+                this.target.triggerHandler(event, [this]);
+
+                if (!event.isDefaultPrevented()) {
+                    this.toggleElement(this.target);
+                }
+            }
+
+        }
+
+    });
+
+}
+
+function Leader (UIkit) {
+
+    UIkit.component('leader', {
+
+        mixins: [Class],
+
+        props: {
+            fill: String,
+            media: 'media'
+        },
+
+        defaults: {
+            fill: '',
+            media: false,
+            clsWrapper: 'uk-leader-fill',
+            clsHide: 'uk-leader-hide',
+            attrFill: 'data-fill'
+        },
+
+        computed: {
+
+            fill: function fill() {
+                return this.$props.fill || getCssVar('leader-fill');
+            }
+
+        },
+
+        connected: function connected() {
+            this.wrapper = this.$el.wrapInner(("<span class=\"" + (this.clsWrapper) + "\">")).children().first();
+        },
+
+        disconnected: function disconnected() {
+            this.wrapper.contents().unwrap();
+        },
+
+        update: [
+
+            {
+
+                read: function read() {
+                    var prev = this._width;
+                    this._width = Math.floor(this.$el[0].offsetWidth / 2);
+                    this._changed = prev !== this._width;
+                    this._hide = this.media && !window.matchMedia(this.media).matches;
+                },
+
+                write: function write() {
+
+                    this.wrapper.toggleClass(this.clsHide, this._hide);
+
+                    if (this._changed) {
+                        this.wrapper.attr(this.attrFill, new Array(this._width).join(this.fill));
+                    }
+
+               },
+
+                events: ['load', 'resize']
+
+            }
+        ]
+    });
+
+}
+
+function core (UIkit) {
+
+    var scroll = 0, started = 0;
+
+    on(window, 'load resize', UIkit.update);
+    on(window, 'scroll', function (e) {
+        e.dir = scroll < window.pageYOffset ? 'down' : 'up';
+        scroll = window.pageYOffset;
+        UIkit.update(e);
+    });
+
+    on(document, animationstart, function (ref) {
+        var target = ref.target;
+
+        if ((getStyle(target, 'animationName') || '').match(/^uk-.*(left|right)/)) {
+            started++;
+            document.body.style.overflowX = 'hidden';
+            setTimeout(function () {
+                if (!--started) {
+                    document.body.style.overflowX = '';
+                }
+            }, toMs(getStyle(target, 'animationDuration')) + 100);
+        }
+    }, true);
+
+    // core components
+    UIkit.use(Toggle);
+    UIkit.use(Accordion);
+    UIkit.use(Alert);
+    UIkit.use(Cover);
+    UIkit.use(Drop);
+    UIkit.use(Dropdown);
+    UIkit.use(FormCustom);
+    UIkit.use(HeightMatch);
+    UIkit.use(HeightViewport);
+    UIkit.use(Hover);
+    UIkit.use(Margin);
+    UIkit.use(Gif);
+    UIkit.use(Grid);
+    UIkit.use(Leader);
+    UIkit.use(Modal$1);
+    UIkit.use(Nav);
+    UIkit.use(Navbar);
+    UIkit.use(Offcanvas);
+    UIkit.use(Responsive);
+    UIkit.use(Scroll);
+    UIkit.use(Scrollspy);
+    UIkit.use(ScrollspyNav);
+    UIkit.use(Sticky);
+    UIkit.use(Svg);
+    UIkit.use(Icon);
+    UIkit.use(Switcher);
+    UIkit.use(Tab);
+
+}
+
+UIkit.version = '3.0.0-beta.24';
+
+mixin(UIkit);
+core(UIkit);
+
+function plugin(UIkit) {
+
+    if (plugin.installed) {
+        return;
+    }
+
+    UIkit.component('countdown', {
+
+        mixins: [UIkit.mixin.class],
+
+        attrs: true,
+
+        props: {
+            date: String,
+            clsWrapper: String
+        },
+
+        defaults: {
+            date: '',
+            clsWrapper: '.uk-countdown-%unit%'
+        },
+
+        computed: {
+
+            date: function date() {
+                return Date.parse(this.$props.date);
+            },
+
+            days: function days() {
+                return this.$el.find(this.clsWrapper.replace('%unit%', 'days'));
+            },
+
+            hours: function hours() {
+                return this.$el.find(this.clsWrapper.replace('%unit%', 'hours'));
+            },
+
+            minutes: function minutes() {
+                return this.$el.find(this.clsWrapper.replace('%unit%', 'minutes'));
+            },
+
+            seconds: function seconds() {
+                return this.$el.find(this.clsWrapper.replace('%unit%', 'seconds'));
+            },
+
+            units: function units() {
+                var this$1 = this;
+
+                return ['days', 'hours', 'minutes', 'seconds'].filter(function (unit) { return this$1[unit].length; });
+            }
+
+        },
+
+        connected: function connected() {
+            this.start();
+        },
+
+        disconnected: function disconnected() {
+            var this$1 = this;
+
+            this.stop();
+            this.units.forEach(function (unit) { return this$1[unit].empty(); });
+        },
+
+        update: {
+
+            write: function write() {
+                var this$1 = this;
+
+
+                var timespan = getTimeSpan(this.date);
+
+                if (timespan.total <= 0) {
+
+                    this.stop();
+
+                    timespan.days
+                        = timespan.hours
+                        = timespan.minutes
+                        = timespan.seconds
+                        = 0;
+                }
+
+                this.units.forEach(function (unit) {
+
+                    var digits = String(Math.floor(timespan[unit]));
+
+                    digits = digits.length < 2 ? ("0" + digits) : digits;
+
+                    if (this$1[unit].text() !== digits) {
+                        var el = this$1[unit];
+                        digits = digits.split('');
+
+                        if (digits.length !== el.children().length) {
+                            el.empty().append(digits.map(function () { return '<span></span>'; }).join(''));
+                        }
+
+                        digits.forEach(function (digit, i) { return el[0].childNodes[i].innerText = digit; });
+                    }
+
+                });
+
+            }
+
+        },
+
+        methods: {
+
+            start: function start() {
+                var this$1 = this;
+
+
+                this.stop();
+
+                if (this.date && this.units.length) {
+                    this.$emit();
+                    this.timer = setInterval(function () { return this$1.$emit(); }, 1000);
+                }
+
+            },
+
+            stop: function stop() {
+
+                if (this.timer) {
+                    clearInterval(this.timer);
+                    this.timer = null;
+                }
+
+            }
+
+        }
+
+    });
+
+    function getTimeSpan(date) {
+
+        var total = date - Date.now();
+
+        return {
+            total: total,
+            seconds: total / 1000 % 60,
+            minutes: total / 1000 / 60 % 60,
+            hours: total / 1000 / 60 / 60 % 24,
+            days: total / 1000 / 60 / 60 / 24
+        };
+    }
+
+}
+
+function plugin$1(UIkit) {
+
+    if (plugin$1.installed) {
+        return;
+    }
+
+    var ref = UIkit.util;
+    var $ = ref.$;
+    var ajax = ref.ajax;
+    var assign = ref.assign;
+    var doc = ref.doc;
+    var Event = ref.Event;
+    var Dimensions = ref.Dimensions;
+    var getIndex = ref.getIndex;
+    var Transition = ref.Transition;
+
+    UIkit.component('lightbox', {
+
+        name: 'lightbox',
+
+        props: {
+            toggle: String,
+            duration: Number,
+            inverse: Boolean
+        },
+
+        defaults: {
+            toggle: 'a',
+            duration: 400,
+            dark: false,
+            attrItem: 'uk-lightbox-item',
+            items: [],
+            index: 0
+        },
+
+        computed: {
+
+            toggles: function toggles() {
+                var this$1 = this;
+
+                return $(this.toggle, this.$el).each(function (_, el) { return this$1.items.push({
+                    source: el.getAttribute('href'),
+                    title: el.getAttribute('title'),
+                    type: el.getAttribute('type')
+                }); });
+            }
+
+        },
+
+        events: [
+
+            {
+
+                name: 'click',
+
+                delegate: function delegate() {
+                    return ((this.toggle) + ":not(.uk-disabled)");
+                },
+
+                handler: function handler(e) {
+                    e.preventDefault();
+                    this.show(this.toggles.index(e.currentTarget));
+                }
+
+            },
+
+            {
+
+                name: 'showitem',
+
+                handler: function handler(e) {
+
+                    var item = this.getItem();
+
+                    if (item.content) {
+                        this.$update();
+                        e.stopImmediatePropagation();
+                    }
+                }
+
+            }
+
+        ],
+
+        update: {
+
+            write: function write() {
+                var this$1 = this;
+
+
+                var item = this.getItem();
+
+                if (!this.modal || !item.content) {
+                    return;
+                }
+
+                var panel = this.modal.panel,
+                    dim = {width: panel.width(), height: panel.height()},
+                    max = {
+                        width: window.innerWidth - (panel.outerWidth(true) - dim.width),
+                        height: window.innerHeight - (panel.outerHeight(true) - dim.height)
+                    },
+                    newDim = Dimensions.fit({width: item.width, height: item.height}, max);
+
+                Transition.stop(panel);
+                Transition.stop(this.modal.content);
+
+                if (this.modal.content) {
+                    this.modal.content.remove();
+                }
+
+                this.modal.content = $(item.content).css('opacity', 0).appendTo(panel);
+                panel.css(dim);
+
+                Transition.start(panel, newDim, this.duration).then(function () {
+                    Transition.start(this$1.modal.content, {opacity: 1}, 400).then(function () {
+                        panel.find('[uk-transition-hide]').show();
+                        panel.find('[uk-transition-show]').hide();
+                    });
+                });
+
+            },
+
+            events: ['resize']
+
+        },
+
+        methods: {
+
+            show: function show(index) {
+                var this$1 = this;
+
+
+                this.index = getIndex(index, this.items, this.index);
+
+                if (!this.modal) {
+                    this.modal = UIkit.modal.dialog("\n                        <button class=\"uk-modal-close-outside\" uk-transition-hide type=\"button\" uk-close></button>\n                        <span class=\"uk-position-center\" uk-transition-show uk-spinner></span>\n                    ", {center: true});
+                    this.modal.$el.css('overflow', 'hidden').addClass('uk-modal-lightbox');
+                    this.modal.panel.css({width: 200, height: 200});
+                    this.modal.caption = $('<div class="uk-modal-caption" uk-transition-hide></div>').appendTo(this.modal.panel);
+
+                    if (this.items.length > 1) {
+                        $(("<div class=\"" + (this.dark ? 'uk-dark' : 'uk-light') + "\" uk-transition-hide>\n                                <a href=\"#\" class=\"uk-position-center-left\" uk-slidenav-previous uk-lightbox-item=\"previous\"></a>\n                                <a href=\"#\" class=\"uk-position-center-right\" uk-slidenav-next uk-lightbox-item=\"next\"></a>\n                            </div>\n                        ")).appendTo(this.modal.panel.addClass('uk-slidenav-position'));
+                    }
+
+                    this.modal.$el
+                        .on('hidden', this.hide)
+                        .on('click', ("[" + (this.attrItem) + "]"), function (e) {
+                            e.preventDefault();
+                            this$1.show($(e.currentTarget).attr(this$1.attrItem));
+                        }).on('swipeRight swipeLeft', function (e) {
+                        e.preventDefault();
+                        if (!window.getSelection().toString()) {
+                            this$1.show(e.type === 'swipeLeft' ? 'next' : 'previous');
+                        }
+                    });
+                }
+
+                this.modal.panel.find('[uk-transition-hide]').hide();
+                this.modal.panel.find('[uk-transition-show]').show();
+
+                this.modal.content && this.modal.content.remove();
+                this.modal.caption.text(this.getItem().title);
+
+                var event = Event('showitem');
+                this.$el.trigger(event);
+                if (!event.isImmediatePropagationStopped()) {
+                    this.setError(this.getItem());
+                }
+
+                doc.on(("keydown." + (this.$options.name)), function (e) {
+                    switch (e.keyCode) {
+                        case 37:
+                            this$1.show('previous');
+                            break;
+                        case 39:
+                            this$1.show('next');
+                            break;
+                    }
+                });
+            },
+
+            hide: function hide() {
+                var this$1 = this;
+
+
+                doc.off(("keydown." + (this.$options.name)));
+
+                this.modal.hide().then(function () {
+                    this$1.modal.$destroy(true);
+                    this$1.modal = null;
+                });
+            },
+
+            getItem: function getItem() {
+                return this.items[this.index] || {source: '', title: '', type: ''};
+            },
+
+            setItem: function setItem(item, content, width, height) {
+                if ( width === void 0 ) width = 200;
+                if ( height === void 0 ) height = 200;
+
+                assign(item, {content: content, width: width, height: height});
+                this.$update();
+            },
+
+            setError: function setError(item) {
+                this.setItem(item, '<div class="uk-position-cover uk-flex uk-flex-middle uk-flex-center"><strong>Loading resource failed!</strong></div>', 400, 300);
+            }
+
+        }
+
+    });
+
+    UIkit.mixin({
+
+        events: {
+
+            showitem: function showitem(e) {
+                var this$1 = this;
+
+
+                var item = this.getItem();
+
+                if (item.type !== 'image' && item.source && !item.source.match(/\.(jp(e)?g|png|gif|svg)$/i)) {
+                    return;
+                }
+
+                var img = new Image();
+
+                img.onerror = function () { return this$1.setError(item); };
+                img.onload = function () { return this$1.setItem(item, ("<img class=\"uk-responsive-width\" width=\"" + (img.width) + "\" height=\"" + (img.height) + "\" src =\"" + (item.source) + "\">"), img.width, img.height); };
+
+                img.src = item.source;
+
+                e.stopImmediatePropagation();
+            }
+
+        }
+
+    }, 'lightbox');
+
+    UIkit.mixin({
+
+        events: {
+
+            showitem: function showitem(e) {
+                var this$1 = this;
+
+
+                var item = this.getItem();
+
+                if (item.type !== 'video' && item.source && !item.source.match(/\.(mp4|webm|ogv)$/i)) {
+                    return;
+                }
+
+                var video = $('<video class="uk-responsive-width" controls></video>')
+                    .on('loadedmetadata', function () { return this$1.setItem(item, video.attr({width: video[0].videoWidth, height: video[0].videoHeight}), video[0].videoWidth, video[0].videoHeight); })
+                    .attr('src', item.source);
+
+                e.stopImmediatePropagation();
+            }
+
+        }
+
+    }, 'lightbox');
+
+    UIkit.mixin({
+
+        events: {
+
+            showitem: function showitem(e) {
+                var this$1 = this;
+
+
+                var item = this.getItem(), matches;
+
+                if (!(matches = item.source.match(/\/\/.*?youtube\.[a-z]+\/watch\?v=([^&]+)&?(.*)/)) && !(item.source.match(/youtu\.be\/(.*)/))) {
+                    return;
+                }
+
+                var id = matches[1],
+                    img = new Image(),
+                    lowres = false,
+                    setIframe = function (width, height) { return this$1.setItem(item, ("<iframe src=\"//www.youtube.com/embed/" + id + "\" width=\"" + width + "\" height=\"" + height + "\" style=\"max-width:100%;box-sizing:border-box;\"></iframe>"), width, height); };
+
+                img.onerror = function () { return setIframe(640, 320); };
+                img.onload = function () {
+                    //youtube default 404 thumb, fall back to lowres
+                    if (img.width === 120 && img.height === 90) {
+                        if (!lowres) {
+                            lowres = true;
+                            img.src = "//img.youtube.com/vi/" + id + "/0.jpg";
+                        } else {
+                            setIframe(640, 320);
+                        }
+                    } else {
+                        setIframe(img.width, img.height);
+                    }
+                };
+
+                img.src = "//img.youtube.com/vi/" + id + "/maxresdefault.jpg";
+
+                e.stopImmediatePropagation();
+            }
+
+        }
+
+    }, 'lightbox');
+
+    UIkit.mixin({
+
+        events: {
+
+            showitem: function showitem(e) {
+                var this$1 = this;
+
+
+                var item = this.getItem(), matches;
+
+                if (!(matches = item.source.match(/(\/\/.*?)vimeo\.[a-z]+\/([0-9]+).*?/))) {
+                    return;
+                }
+
+                var id = matches[2],
+                    setIframe = function (width, height) { return this$1.setItem(item, ("<iframe src=\"//player.vimeo.com/video/" + id + "\" width=\"" + width + "\" height=\"" + height + "\" style=\"max-width:100%;box-sizing:border-box;\"></iframe>"), width, height); };
+
+                ajax({type: 'GET', url: ("http://vimeo.com/api/oembed.json?url=" + (encodeURI(item.source))), jsonp: 'callback', dataType: 'jsonp'}).then(function (res) { return setIframe(res.width, res.height); });
+
+                e.stopImmediatePropagation();
+            }
+
+        }
+
+    }, 'lightbox');
+
+}
+
+function plugin$2(UIkit) {
+
+    if (plugin$2.installed) {
+        return;
+    }
+
+    var ref = UIkit.util;
+    var $ = ref.$;
+    var each = ref.each;
+    var pointerEnter = ref.pointerEnter;
+    var pointerLeave = ref.pointerLeave;
+    var Transition = ref.Transition;
+    var containers = {};
+
+    UIkit.component('notification', {
+
+        functional: true,
+
+        args: ['message', 'status'],
+
+        defaults: {
+            message: '',
+            status: '',
+            timeout: 5000,
+            group: null,
+            pos: 'top-center',
+            onClose: null,
+            clsClose: 'uk-notification-close',
+            clsMsg: 'uk-notification-message'
+        },
+
+        created: function created() {
+
+            if (!containers[this.pos]) {
+                containers[this.pos] = $(("<div class=\"uk-notification uk-notification-" + (this.pos) + "\"></div>")).appendTo(UIkit.container);
+            }
+
+            this.$mount($(
+                ("<div class=\"" + (this.clsMsg) + (this.status ? (" " + (this.clsMsg) + "-" + (this.status)) : '') + "\">\n                    <a href=\"#\" class=\"" + (this.clsClose) + "\" data-uk-close></a>\n                    <div>" + (this.message) + "</div>\n                </div>")
+            ).appendTo(containers[this.pos].show())[0]);
+
+        },
+
+        ready: function ready() {
+            var this$1 = this;
+
+
+            var marginBottom = parseInt(this.$el.css('margin-bottom'), 10);
+
+            Transition.start(
+                this.$el.css({opacity: 0, marginTop: -1 * this.$el.outerHeight(), marginBottom: 0}),
+                {opacity: 1, marginTop: 0, marginBottom: marginBottom}
+            ).then(function () {
+                if (this$1.timeout) {
+                    this$1.timer = setTimeout(this$1.close, this$1.timeout);
+                    this$1.$el
+                        .on(pointerEnter, function () { return clearTimeout(this$1.timer); })
+                        .on(pointerLeave, function () { return this$1.timer = setTimeout(this$1.close, this$1.timeout); });
+                }
+            });
+
+        },
+
+        events: {
+
+            click: function click(e) {
+                if ($(e.target).closest('a[href="#"]').length) {
+                    e.preventDefault();
+                }
+                this.close();
+            }
+
+        },
+
+        methods: {
+
+            close: function close(immediate) {
+                var this$1 = this;
+
+
+                var remove = function () {
+
+                    this$1.onClose && this$1.onClose();
+                    this$1.$el.trigger('close', [this$1]).remove();
+
+                    if (!containers[this$1.pos].children().length) {
+                        containers[this$1.pos].hide();
+                    }
+
+                };
+
+                if (this.timer) {
+                    clearTimeout(this.timer);
+                }
+
+                if (immediate) {
+                    remove();
+                } else {
+                    Transition.start(this.$el, {opacity: 0, marginTop: -1 * this.$el.outerHeight(), marginBottom: 0}).then(remove)
+                }
+            }
+
+        }
+
+    });
+
+    UIkit.notification.closeAll = function (group, immediate) {
+        each(UIkit.instances, function (_, component) {
+            if (component.$options.name === 'notification' && (!group || group === component.group)) {
+                component.close(immediate);
+            }
+        })
+    };
+
+}
+
+function plugin$3(UIkit) {
+
+    if (plugin$3.installed) {
+        return;
+    }
+
+    var mixin = UIkit.mixin;
+    var util = UIkit.util;
+    var $ = util.$;
+    var assign = util.assign;
+    var doc = util.docElement;
+    var docHeight = util.docHeight;
+    var getDimensions = util.getDimensions;
+    var isWithin = util.isWithin;
+    var on = util.on;
+    var off = util.off;
+    var offsetTop = util.offsetTop;
+    var pointerDown = util.pointerDown;
+    var pointerMove = util.pointerMove;
+    var pointerUp = util.pointerUp;
+    var promise = util.promise;
+    var win = util.win;
+
+    UIkit.component('sortable', {
+
+        mixins: [mixin.class],
+
+        props: {
+            group: String,
+            animation: Number,
+            threshold: Number,
+            clsItem: String,
+            clsPlaceholder: String,
+            clsDrag: String,
+            clsDragState: String,
+            clsBase: String,
+            clsNoDrag: String,
+            clsEmpty: String,
+            clsCustom: String,
+            handle: String
+        },
+
+        defaults: {
+            group: false,
+            animation: 150,
+            threshold: 5,
+            clsItem: 'uk-sortable-item',
+            clsPlaceholder: 'uk-sortable-placeholder',
+            clsDrag: 'uk-sortable-drag',
+            clsDragState: 'uk-drag',
+            clsBase: 'uk-sortable',
+            clsNoDrag: 'uk-sortable-nodrag',
+            clsEmpty: 'uk-sortable-empty',
+            clsCustom: '',
+            handle: false
+        },
+
+        init: function init() {
+            var this$1 = this;
+
+            ['init', 'start', 'move', 'end'].forEach(function (key) {
+                var fn = this$1[key];
+                this$1[key] = function (e) {
+                    e = e.originalEvent || e;
+                    this$1.scrollY = window.scrollY;
+                    var ref = e.touches && e.touches[0] || e;
+                    var pageX = ref.pageX;
+                    var pageY = ref.pageY;
+                    this$1.pos = {x: pageX, y: pageY};
+
+                    fn(e);
+                }
+            });
+        },
+
+        events: ( obj = {}, obj[pointerDown] = 'init', obj ),
+
+        update: {
+
+            write: function write() {
+                var this$1 = this;
+
+
+                if (this.clsEmpty) {
+                    this.$toggleClass(this.clsEmpty, !this.$el.children().length);
+                }
+
+                if (!this.drag) {
+                    return;
+                }
+
+                this.drag.offset({top: this.pos.y + this.origin.top, left: this.pos.x + this.origin.left});
+
+                var top = offsetTop(this.drag), bottom = top + this.drag[0].offsetHeight;
+
+                if (top > 0 && top < this.scrollY) {
+                    setTimeout(function () { return win.scrollTop(this$1.scrollY - 5); }, 5);
+                } else if (bottom < docHeight() && bottom > window.innerHeight + this.scrollY) {
+                    setTimeout(function () { return win.scrollTop(this$1.scrollY + 5); }, 5);
+                }
+
+            }
+
+        },
+
+        methods: {
+
+            init: function init(e) {
+
+                var target = $(e.target), placeholder = this.$el.children().filter(function (i, el) { return isWithin(e.target, el); });
+
+                if (!placeholder.length
+                    || target.is(':input')
+                    || this.handle && !isWithin(target, this.handle)
+                    || e.button && e.button !== 0
+                    || isWithin(target, ("." + (this.clsNoDrag)))
+                ) {
+                    return;
+                }
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                this.touched = [this];
+                this.placeholder = placeholder;
+                this.origin = assign({target: target, index: this.placeholder.index()}, this.pos);
+
+                doc.on(pointerMove, this.move);
+                doc.on(pointerUp, this.end);
+                win.on('scroll', this.scroll);
+
+                if (!this.threshold) {
+                    this.start(e);
+                }
+
+            },
+
+            start: function start(e) {
+
+                this.drag = $(this.placeholder[0].outerHTML.replace(/^<li/i, '<div').replace(/li>$/i, 'div>'))
+                    .attr('uk-no-boot', '')
+                    .addClass(((this.clsDrag) + " " + (this.clsCustom)))
+                    .css({
+                        boxSizing: 'border-box',
+                        width: this.placeholder.outerWidth(),
+                        height: this.placeholder.outerHeight()
+                    })
+                    .css(this.placeholder.css(['paddingLeft', 'paddingRight', 'paddingTop', 'paddingBottom']))
+                    .appendTo(UIkit.container);
+
+                this.drag.children().first().height(this.placeholder.children().height());
+
+                var ref = getDimensions(this.placeholder);
+                var left = ref.left;
+                var top = ref.top;
+                assign(this.origin, {left: left - this.pos.x, top: top - this.pos.y});
+
+                this.placeholder.addClass(this.clsPlaceholder);
+                this.$el.children().addClass(this.clsItem);
+                doc.addClass(this.clsDragState);
+
+                this.$el.trigger('start', [this, this.placeholder, this.drag]);
+
+                this.move(e);
+            },
+
+            move: function move(e) {
+
+                if (!this.drag) {
+
+                    if (Math.abs(this.pos.x - this.origin.x) > this.threshold || Math.abs(this.pos.y - this.origin.y) > this.threshold) {
+                        this.start(e);
+                    }
+
+                    return;
+                }
+
+                this.$emit();
+
+                var target = e.type === 'mousemove' ? e.target : document.elementFromPoint(this.pos.x - document.body.scrollLeft, this.pos.y - document.body.scrollTop),
+                    sortable = getSortable(target),
+                    previous = getSortable(this.placeholder[0]),
+                    move = sortable !== previous;
+
+                if (!sortable || isWithin(target, this.placeholder) || move && (!sortable.group || sortable.group !== previous.group)) {
+                    return;
+                }
+
+                target = sortable.$el.is(target.parentNode) && $(target) || sortable.$el.children().has(target);
+
+                if (move) {
+                    previous.remove(this.placeholder);
+                } else if (!target.length) {
+                    return;
+                }
+
+                sortable.insert(this.placeholder, target);
+
+                if (!~this.touched.indexOf(sortable)) {
+                    this.touched.push(sortable);
+                }
+
+            },
+
+            scroll: function scroll() {
+                var scroll = window.scrollY;
+                if (scroll !== this.scrollY) {
+                    this.pos.y += scroll - this.scrollY;
+                    this.scrollY = scroll;
+                    this.$emit();
+                }
+            },
+
+            end: function end(e) {
+
+                doc.off(pointerMove, this.move);
+                doc.off(pointerUp, this.end);
+                win.off('scroll', this.scroll);
+
+                if (!this.drag) {
+
+                    if (e.type !== 'mouseup' && isWithin(e.target, 'a[href]')) {
+                        location.href = $(e.target).closest('a[href]').attr('href');
+                    }
+
+                    return;
+                }
+
+                preventClick();
+
+                var sortable = getSortable(this.placeholder[0]);
+
+                if (this === sortable) {
+                    if (this.origin.index !== this.placeholder.index()) {
+                        this.$el.trigger('change', [this, this.placeholder, 'moved']);
+                    }
+                } else {
+                    sortable.$el.trigger('change', [sortable, this.placeholder, 'added']);
+                    this.$el.trigger('change', [this, this.placeholder, 'removed']);
+                }
+
+                this.$el.trigger('stop', [this]);
+
+                this.drag.remove();
+                this.drag = null;
+
+                var classes = this.touched.map(function (sortable) { return ((sortable.clsPlaceholder) + " " + (sortable.clsItem)); }).join(' ');
+                this.touched.forEach(function (sortable) { return sortable.$el.children().removeClass(classes); });
+
+                doc.removeClass(this.clsDragState);
+
+            },
+
+            insert: function insert(element, target) {
+                var this$1 = this;
+
+
+                this.$el.children().addClass(this.clsItem);
+
+                var insert = function () {
+
+                    if (target.length) {
+
+                        if (!this$1.$el.has(element).length || element.prevAll().filter(target).length) {
+                            element.insertBefore(target);
+                        } else {
+                            element.insertAfter(target);
+                        }
+
+                    } else {
+                        this$1.$el.append(element);
+                    }
+
+                };
+
+                if (this.animation) {
+                    this.animate(insert);
+                } else {
+                    insert();
+                }
+
+            },
+
+            remove: function remove(element) {
+
+                if (!this.$el.has(element).length) {
+                    return;
+                }
+
+                if (this.animation) {
+                    this.animate(function () { return element.detach(); });
+                } else {
+                    element.detach();
+                }
+
+            },
+
+            animate: function animate(action) {
+                var this$1 = this;
+
+
+                var props = [],
+                    children = this.$el.children().toArray().map(function (el) {
+                        el = $(el);
+                        props.push(assign({
+                            position: 'absolute',
+                            pointerEvents: 'none',
+                            width: el.outerWidth(),
+                            height: el.outerHeight()
+                        }, el.position()));
+                        return el;
+                    }),
+                    reset = {position: '', width: '', height: '', pointerEvents: '', top: '', left: ''};
+
+                action();
+
+                children.forEach(function (el) { return el.stop(); });
+                this.$el.children().css(reset);
+                this.$updateSync('update', true);
+
+                this.$el.css('min-height', this.$el.height());
+
+                var positions = children.map(function (el) { return el.position(); });
+                promise.all(children.map(function (el, i) { return el.css(props[i]).animate(positions[i], this$1.animation).promise(); }))
+                    .then(function () {
+                        this$1.$el.css('min-height', '').children().css(reset);
+                        this$1.$updateSync('update', true);
+                    });
+
+            }
+
+        }
+
+    });
+    var obj;
+
+    function getSortable(element) {
+        return UIkit.getComponent(element, 'sortable') || element.parentNode && getSortable(element.parentNode);
+    }
+
+    function preventClick() {
+        var timer = setTimeout(function () { return doc.trigger('click'); }, 0),
+            listener = function (e) {
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                clearTimeout(timer);
+                off(doc, 'click', listener, true);
+            };
+
+        on(doc, 'click', listener, true);
+    }
+
+}
+
+function plugin$4(UIkit) {
+
+    if (plugin$4.installed) {
+        return;
+    }
+
+    var util = UIkit.util;
+    var mixin = UIkit.mixin;
+    var $ = util.$;
+    var doc = util.doc;
+    var fastdom = util.fastdom;
+    var flipPosition = util.flipPosition;
+    var isTouch = util.isTouch;
+    var isWithin = util.isWithin;
+    var pointerDown = util.pointerDown;
+    var pointerEnter = util.pointerEnter;
+    var pointerLeave = util.pointerLeave;
+
+    var actives = [];
+
+    UIkit.component('tooltip', {
+
+        attrs: true,
+
+        mixins: [mixin.togglable, mixin.position],
+
+        props: {
+            delay: Number,
+            container: Boolean,
+            title: String
+        },
+
+        defaults: {
+            pos: 'top',
+            title: '',
+            delay: 0,
+            animation: ['uk-animation-scale-up'],
+            duration: 100,
+            cls: 'uk-active',
+            clsPos: 'uk-tooltip',
+            container: true,
+        },
+
+        computed: {
+
+            container: function container() {
+                return $(this.$props.container === true && UIkit.container || this.$props.container || UIkit.container);
+            }
+
+        },
+
+        connected: function connected() {
+            var this$1 = this;
+
+            fastdom.mutate(function () { return this$1.$el.removeAttr('title').attr('aria-expanded', false); });
+        },
+
+        disconnected: function disconnected() {
+            this.hide();
+        },
+
+        methods: {
+
+            show: function show() {
+                var this$1 = this;
+
+
+                if (~actives.indexOf(this)) {
+                    return;
+                }
+
+                actives.forEach(function (active) { return active.hide(); });
+                actives.push(this);
+
+                doc.on(("click." + (this.$options.name)), function (e) {
+                    if (!isWithin(e.target, this$1.$el)) {
+                        this$1.hide();
+                    }
+                });
+
+                clearTimeout(this.showTimer);
+
+                this.tooltip = $(("<div class=\"" + (this.clsPos) + "\" aria-hidden=\"true\"><div class=\"" + (this.clsPos) + "-inner\">" + (this.title) + "</div></div>")).appendTo(this.container);
+
+                this.$el.attr('aria-expanded', true);
+
+                this.positionAt(this.tooltip, this.$el);
+                this.origin = this.getAxis() === 'y' ? ((flipPosition(this.dir)) + "-" + (this.align)) : ((this.align) + "-" + (flipPosition(this.dir)));
+
+                this.showTimer = setTimeout(function () {
+                    this$1.toggleElement(this$1.tooltip, true);
+
+                    this$1.hideTimer = setInterval(function () {
+                        if (!this$1.$el.is(':visible')) {
+                            this$1.hide();
+                        }
+                    }, 150);
+
+                }, this.delay);
+            },
+
+            hide: function hide() {
+
+                var index = actives.indexOf(this);
+
+                if (!~index || this.$el.is('input') && this.$el[0] === document.activeElement) {
+                    return;
+                }
+
+                actives.splice(index, 1);
+
+                clearTimeout(this.showTimer);
+                clearInterval(this.hideTimer);
+                this.$el.attr('aria-expanded', false);
+                this.toggleElement(this.tooltip, false);
+                this.tooltip && this.tooltip.remove();
+                this.tooltip = false;
+                doc.off(("click." + (this.$options.name)));
+
+            }
+
+        },
+
+        events: ( obj = {
+
+            'blur': 'hide'
+
+        }, obj[("focus " + pointerEnter + " " + pointerDown)] = function (e) {
+                if (e.type !== pointerDown || !isTouch(e)) {
+                    this.show();
+                }
+            }, obj[pointerLeave] = function (e) {
+                if (!isTouch(e)) {
+                    this.hide()
+                }
+            }, obj )
+
+    });
+    var obj;
+
+}
+
+function plugin$5(UIkit) {
+
+    if (plugin$5.installed) {
+        return;
+    }
+
+    var ref = UIkit.util;
+    var $ = ref.$;
+    var ajax = ref.ajax;
+    var on = ref.on;
+
+    UIkit.component('upload', {
+
+        props: {
+            allow: String,
+            clsDragover: String,
+            concurrent: Number,
+            dataType: String,
+            mime: String,
+            msgInvalidMime: String,
+            msgInvalidName: String,
+            multiple: Boolean,
+            name: String,
+            params: Object,
+            type: String,
+            url: String
+        },
+
+        defaults: {
+            allow: false,
+            clsDragover: 'uk-dragover',
+            concurrent: 1,
+            dataType: undefined,
+            mime: false,
+            msgInvalidMime: 'Invalid File Type: %s',
+            msgInvalidName: 'Invalid File Name: %s',
+            multiple: false,
+            name: 'files[]',
+            params: {},
+            type: 'POST',
+            url: '',
+            abort: null,
+            beforeAll: null,
+            beforeSend: null,
+            complete: null,
+            completeAll: null,
+            error: null,
+            fail: function fail(msg) {
+                alert(msg);
+            },
+            load: null,
+            loadEnd: null,
+            loadStart: null,
+            progress: null
+        },
+
+        events: {
+
+            change: function change(e) {
+
+                if (!$(e.target).is('input[type="file"]')) {
+                    return;
+                }
+
+                e.preventDefault();
+
+                if (e.target.files) {
+                    this.upload(e.target.files);
+                }
+
+                e.target.value = '';
+            },
+
+            drop: function drop(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                var transfer = e.originalEvent.dataTransfer;
+
+                if (!transfer || !transfer.files) {
+                    return;
+                }
+
+                this.$removeClass(this.clsDragover);
+
+                this.upload(transfer.files);
+            },
+
+            dragenter: function dragenter(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            },
+
+            dragover: function dragover(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.$addClass(this.clsDragover);
+            },
+
+            dragleave: function dragleave(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.$removeClass(this.clsDragover);
+            }
+
+        },
+
+        methods: {
+
+            upload: function upload(files) {
+                var this$1 = this;
+
+
+                if (!files.length) {
+                    return;
+                }
+
+                this.$el.trigger('upload', [files]);
+
+                for (var i = 0; i < files.length; i++) {
+
+                    if (this$1.allow) {
+                        if (!match(this$1.allow, files[i].name)) {
+                            this$1.fail(this$1.msgInvalidName.replace(/%s/, this$1.allow));
+                            return;
+                        }
+                    }
+
+                    if (this$1.mime) {
+                        if (!match(this$1.mime, files[i].type)) {
+                            this$1.fail(this$1.msgInvalidMime.replace(/%s/, this$1.mime));
+                            return;
+                        }
+                    }
+
+                }
+
+                if (!this.multiple) {
+                    files = [files[0]];
+                }
+
+                this.beforeAll && this.beforeAll(this, files);
+
+                var chunks = chunk(files, this.concurrent),
+                    upload = function (files) {
+
+                        var data = new FormData();
+
+                        files.forEach(function (file) { return data.append(this$1.name, file); });
+
+                        for (var key in this$1.params) {
+                            data.append(key, this$1.params[key]);
+                        }
+
+                        ajax({
+                            data: data,
+                            url: this$1.url,
+                            type: this$1.type,
+                            dataType: this$1.dataType,
+                            beforeSend: this$1.beforeSend,
+                            complete: [this$1.complete, function (xhr, status) {
+                                if (chunks.length) {
+                                    upload(chunks.shift());
+                                } else {
+                                    this$1.completeAll && this$1.completeAll(xhr);
+                                }
+
+                                if (status === 'abort') {
+                                    this$1.abort && this$1.abort(xhr);
+                                }
+                            }],
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            xhr: function () {
+                                var xhr = $.ajaxSettings.xhr();
+                                xhr.upload && this$1.progress && on(xhr.upload, 'progress', this$1.progress);
+                                ['loadStart', 'load', 'loadEnd', 'error', 'abort'].forEach(function (type) { return this$1[type] && on(xhr, type.toLowerCase(), this$1[type]); });
+                                return xhr;
+                            }
+                        })
+
+                    };
+
+                upload(chunks.shift());
+
+            }
+
+        }
+
+    });
+
+    function match(pattern, path) {
+        return path.match(new RegExp(("^" + (pattern.replace(/\//g, '\\/').replace(/\*\*/g, '(\\/[^\\/]+)*').replace(/\*/g, '[^\\/]+').replace(/((?!\\))\?/g, '$1.')) + "$"), 'i'));
+    }
+
+    function chunk(files, size) {
+        var chunks = [];
+        for (var i = 0; i < files.length; i += size) {
+            var chunk = [];
+            for (var j = 0; j < size; j++) {
+                chunk.push(files[i+j]);
+            }
+            chunks.push(chunk);
+        }
+        return chunks;
+    }
+
+}
+
+function plugin$6(UIkit) {
+
+    if (plugin$6.installed) {
+        return;
+    }
+
+    var ref = UIkit.util;
+    var scrolledOver = ref.scrolledOver;
+
+    UIkit.component('grid-parallax', UIkit.components.grid.extend({
+
+        props: {
+            target: String,
+            translate: Number
+        },
+
+        defaults: {
+            target: false,
+            translate: 150
+        },
+
+        init: function init() {
+            this.$addClass('uk-grid');
+        },
+
+        disconnected: function disconnected() {
+            this.reset();
+            this.$el.css('margin-bottom', '');
+        },
+
+        computed: {
+
+            translate: function translate() {
+                return Math.abs(this.$props.translate);
+            },
+
+            items: function items() {
+                return (this.target ? this.$el.find(this.target) : this.$el.children()).toArray();
+            }
+
+        },
+
+        update: [
+
+            {
+
+                read: function read() {
+                    this.columns = this.rows && this.rows[0] && this.rows[0].length || 0;
+                    this.rows = this.rows && this.rows.map(function (elements) { return sortBy(elements, 'offsetLeft'); });
+                },
+
+                write: function write() {
+                    this.$el
+                        .css('margin-bottom', '')
+                        .css('margin-bottom', this.columns > 1 ? this.translate + parseFloat(this.$el.css('margin-bottom')) : '');
+                },
+
+                events: ['load', 'resize']
+            },
+
+            {
+
+                write: function write() {
+
+                    var translate = scrolledOver(this.$el) * this.translate;
+
+                    if (!this.rows || this.columns === 1 || !translate) {
+                        return this.reset();
+                    }
+
+                    this.rows.forEach(function (row) { return row.forEach(function (el, i) { return el.style.transform = "translateY(" + (i % 2 ? translate : translate / 8) + "px)"; }
+                        ); }
+                    );
+
+                },
+
+                events: ['scroll', 'load', 'resize']
+            }
+        ],
+
+        methods: {
+
+            reset: function reset() {
+                this.items.forEach(function (item) { return item.style.transform = ''; });
+            }
+
+        }
+
+    }));
+
+    UIkit.component('grid-parallax').options.update.unshift({
+
+        read: function read() {
+            this.reset();
+        },
+
+        events: ['load', 'resize']
+
+    });
+
+    function sortBy(collection, prop) {
+        return collection.sort(function (a,b) { return a[prop] > b[prop]
+                ? 1
+                : b[prop] > a[prop]
+                    ? -1
+                    : 0; }
+        )
+    }
+
+}
+
+function plugin$7(UIkit) {
+
+    if (plugin$7.installed) {
+        return;
+    }
+
+    var ref = UIkit.util;
+    var $ = ref.$;
+    var clamp = ref.clamp;
+    var Dimensions = ref.Dimensions;
+    var getImage = ref.getImage;
+    var isUndefined = ref.isUndefined;
+    var scrolledOver = ref.scrolledOver;
+    var query = ref.query;
+
+    var props = ['x', 'y', 'bgx', 'bgy', 'rotate', 'scale', 'color', 'backgroundColor', 'borderColor', 'opacity', 'blur', 'hue', 'grayscale', 'invert', 'saturate', 'sepia', 'fopacity'];
+
+    UIkit.component('parallax', {
+
+        props: props.reduce(function (props, prop) {
+            props[prop] = 'list';
+            return props;
+        }, {
+            easing: Number,
+            target: String,
+            viewport: Number,
+            media: 'media'
+        }),
+
+        defaults: props.reduce(function (defaults, prop) {
+            defaults[prop] = undefined;
+            return defaults;
+        }, {
+            easing: 1,
+            target: false,
+            viewport: 1,
+            media: false
+        }),
+
+        computed: {
+
+            target: function target() {
+                return this.$props.target && query(this.$props.target, this.$el) || this.$el;
+            },
+
+            props: function props$1() {
+                var this$1 = this;
+
+
+                return props.reduce(function (props, prop) {
+
+                    if (isUndefined(this$1.$props[prop])) {
+                        return props;
+                    }
+
+                    var isColor = prop.match(/color/i),
+                        isCssProp = isColor || prop === 'opacity',
+                        values = this$1.$props[prop];
+
+                    if (isCssProp) {
+                        this$1.$el.css(prop, '');
+                    }
+
+                    var start = (!isUndefined(values[1])
+                                ? values[0]
+                                : prop === 'scale'
+                                    ? 1
+                                    : isCssProp
+                                        ? this$1.$el.css(prop)
+                                        : 0) || 0,
+                        end = isUndefined(values[1]) ? values[0] : values[1],
+                        unit = ~values.join('').indexOf('%') ? '%' : 'px',
+                        diff;
+
+                    if (isColor) {
+
+                        var color = this$1.$el[0].style.color;
+                        this$1.$el[0].style.color = start;
+                        start = parseColor(this$1.$el.css('color'));
+                        this$1.$el[0].style.color = end;
+                        end = parseColor(this$1.$el.css('color'));
+                        this$1.$el[0].style.color = color;
+
+                    } else {
+
+                        start = parseFloat(start);
+                        end = parseFloat(end);
+                        diff = Math.abs(start - end);
+
+                    }
+
+                    props[prop] = {start: start, end: end, diff: diff, unit: unit};
+
+                    if (prop.match(/^bg/)) {
+                        if (this$1.covers) {
+                            props[prop].end = start <= end ? diff : -diff;
+                            props[prop].start = 0;
+                        } else {
+                            props[prop].pos = this$1.$el.css(("background-position-" + (prop[2])));
+                        }
+                    }
+
+                    return props;
+
+                }, {});
+
+            },
+
+            bgProps: function bgProps() {
+                var this$1 = this;
+
+                return ['bgx', 'bgy'].filter(function (bg) { return bg in this$1.props; });
+            },
+
+            covers: function covers() {
+                var size = this.$el.css('backgroundSize');
+                return ~['contain', 'cover'].indexOf(size) ? size : false;
+            }
+
+        },
+
+        disconnected: function disconnected() {
+            this._image = undefined;
+        },
+
+        update: [
+
+            {
+
+                read: function read() {
+                    var this$1 = this;
+
+
+                    if (this._image) {
+                        this._image.dimEl = {
+                            width: this.$el[0].offsetWidth,
+                            height: this.$el[0].offsetHeight
+                        }
+                    }
+
+                    if (!isUndefined(this._image) || !this.bgProps.length) {
+                        return;
+                    }
+
+                    var src = this.$el.css('backgroundImage').replace(/^none|url\(["']?(.+?)["']?\)$/, '$1');
+
+                    if (!src || !this.covers) {
+                        return;
+                    }
+
+                    this._image = false;
+
+                    getImage(src).then(function (img) {
+                        this$1._image = {
+                            width: img.naturalWidth,
+                            height: img.naturalHeight
+                        };
+
+                        this$1.$emit();
+                    });
+
+                },
+
+                write: function write() {
+                    var this$1 = this;
+
+
+                    if (this._image) {
+
+                        if (!this.media || window.matchMedia(this.media).matches) {
+
+                            var image = this._image;
+                            var dimEl = image.dimEl;
+
+                            this.bgProps.forEach(function (prop) { return dimEl[prop === 'bgy' ? 'height' : 'width'] += this$1.props[prop].diff; });
+
+                            var dim = this.covers === 'cover'
+                                ? Dimensions.cover(image, dimEl)
+                                : Dimensions.fit(image, dimEl);
+
+                            this.$el.css({
+                                backgroundSize: ((dim.width) + "px " + (dim.height) + "px"),
+                                backgroundRepeat: 'no-repeat'
+                            });
+
+                        } else {
+                            this.$el.css({backgroundSize: '', backgroundRepeat: ''});
+                        }
+
+                    }
+
+                },
+
+                events: ['load', 'resize']
+
+            },
+
+            {
+
+                write: function write() {
+                    var this$1 = this;
+
+
+                    if (this.media && !window.matchMedia(this.media).matches) {
+                        this._prev = undefined;
+                        Object.keys(getCss(this.props, 0)).forEach(function (prop) { return this$1.$el.css(prop, ''); });
+                        return;
+                    }
+
+                    var percent = scrolledOver(this.target) / (this.viewport || 1);
+
+                    percent = clamp(percent * (1 - (this.easing - this.easing * percent)));
+
+                    if (this._prev === percent) {
+                        return;
+                    }
+
+                    this.$el.css(getCss(this.props, percent, this.covers));
+                    this._prev = percent;
+
+                },
+
+                events: ['scroll', 'load', 'resize']
+            }
+        ]
+    });
+
+    function parseColor(color) {
+        return color.split(/[(),]/g).slice(1, -1).concat(1).slice(0, 4).map(function (n) { return parseFloat(n); });
+    }
+
+    function getCss(props, percent, covers) {
+
+        return Object.keys(props).reduce(function (css, prop) {
+
+            var values = props[prop],
+                value = !isUndefined(values.diff)
+                    ? values.start + values.diff * percent * (values.start < values.end ? 1 : -1)
+                    : values.end;
+
+            switch (prop) {
+
+                // transforms
+                case 'x':
+                case 'y':
+                    css.transform += " translate" + prop + "(" + (value + values.unit) + ")";
+                    break;
+                case 'rotate':
+                    css.transform += " rotate(" + value + "deg)";
+                    break;
+                case 'scale':
+                    css.transform += " scale(" + value + ")";
+                    break;
+
+                // bg image
+                case 'bgy':
+                case 'bgx':
+                    css[("background-position-" + (prop[2]))] = "calc(" + (!covers
+                            ? values.pos
+                            : values.start < values.end 
+                                ? '100%' 
+                                : '0%') + " + " + (value + values.unit) + ")";
+                    break;
+
+                // color
+                case 'color':
+                case 'backgroundColor':
+                case 'borderColor':
+                    css[prop] = "rgba(" + (values.start.map(function (value, i) {
+                            value = value + percent * (values.end[i] - value);
+                            return i === 3 ? parseFloat(value) : parseInt(value, 10);
+                        }).join(',')) + ")";
+                    break;
+
+                // CSS Filter
+                case 'blur':
+                    css.filter += " blur(" + value + "px)";
+                    break;
+                case 'hue':
+                    css.filter += " hue-rotate(" + value + "deg)";
+                    break;
+                case 'fopacity':
+                    css.filter += " opacity(" + value + "%)";
+                    break;
+                case 'grayscale':
+                case 'invert':
+                case 'saturate':
+                case 'sepia':
+                    css.filter += " " + prop + "(" + value + "%)";
+                    break;
+
+                default:
+                    css[prop] = value;
+            }
+
+            return css;
+
+        }, {transform: '', filter: ''});
+
+    }
+
+}
+
+UIkit.use(plugin);
+UIkit.use(plugin$1);
+UIkit.use(plugin$2);
+UIkit.use(plugin$3);
+UIkit.use(plugin$4);
+UIkit.use(plugin$5);
+UIkit.use(plugin$6);
+UIkit.use(plugin$7);
+
+if (true) {
+    boot(UIkit);
+}
+
+return UIkit;
+
+})));
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(41)();
+exports.push([module.i, "\n.uk-comment-body[data-v-7f5fa1aa] {\n    white-space: pre-wrap;\n}\n", ""]);
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(72);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(53)("c3a51746", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-7f5fa1aa\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Message.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-7f5fa1aa\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Message.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
