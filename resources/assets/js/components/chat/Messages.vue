@@ -15,6 +15,13 @@ export default {
             messages: []
         }
     },
+    methods: {
+        removeMessage (id) {
+            this.messages = this.messages.filter( (message) => {
+                return message.id !== id
+            })
+        }
+    },
     mounted () {
         axios.get('/chat/messages').then( (response) => {
             this.messages = response.data
@@ -26,6 +33,9 @@ export default {
             if (message.selfOwned) {
                 this.$refs.messages.scrollTop = 0
             }
+        })
+        .$on('message.remove', (message) => {
+            this.removeMessage(message.id)
         })
     }
 }

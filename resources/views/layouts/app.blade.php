@@ -11,8 +11,15 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.24/css/uikit.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.24/css/uikit.min.css" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script>
+        window.Laravel = {!! json_encode([
+            'authenticated' => auth()->check(),
+            'id' auth()->user() ?? auth()->user()->id,
+            'name' auth()->user() ?? auth()->user()->name
+        ])!!}
+    </script>
 </head>
 <body>
     <div id="app">

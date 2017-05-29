@@ -23,11 +23,13 @@ import moment from 'moment'
 export default {
     data () {
         return {
-            body: null
+            body: null,
+            bodyBackUp: null
         }
     },
     methods: {
         handleMessageInput (e) {
+            this.bodyBackUp = this.body
             if ( e.keyCode === 13 && !e.shiftKey) {
                 e.preventDefault();
                 this.send();
@@ -42,7 +44,7 @@ export default {
                 created_at: moment().utc(0).format('YYYY-MM-DD HH:mm:ss'),
                 selfOwned: true,
                 user: {
-                    name: 'César Antonio'
+                    name: Laravel.user.name
                 }
             }
         },
@@ -52,7 +54,15 @@ export default {
             }
 
             let tempMessage = this.buildTempMessage();
+
             Bus.$emit('message.added', tempMessage)
+
+            axios.post('/chat/messages', {
+                body: this.body.trim()
+            }).catch( () => {
+                this.body = this.bodyBackUp
+                Bus.$emit('message.remove', tempMessage)
+            })
 
             this.body = null
         }

@@ -39124,12 +39124,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            body: null
+            body: null,
+            bodyBackUp: null
         };
     },
 
     methods: {
         handleMessageInput: function handleMessageInput(e) {
+            this.bodyBackUp = this.body;
             if (e.keyCode === 13 && !e.shiftKey) {
                 e.preventDefault();
                 this.send();
@@ -39144,17 +39146,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 created_at: __WEBPACK_IMPORTED_MODULE_1_moment___default()().utc(0).format('YYYY-MM-DD HH:mm:ss'),
                 selfOwned: true,
                 user: {
-                    name: 'César Antonio'
+                    name: Laravel.user.name
                 }
             };
         },
         send: function send() {
+            var _this = this;
+
             if (!this.body || this.body.trim() === '') {
                 return;
             }
 
             var tempMessage = this.buildTempMessage();
+
             __WEBPACK_IMPORTED_MODULE_0__bus_js__["a" /* default */].$emit('message.added', tempMessage);
+
+            axios.post('/chat/messages', {
+                body: this.body.trim()
+            }).catch(function () {
+                _this.body = _this.bodyBackUp;
+                __WEBPACK_IMPORTED_MODULE_0__bus_js__["a" /* default */].$emit('message.remove', tempMessage);
+            });
 
             this.body = null;
         }
@@ -39519,6 +39531,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             messages: []
         };
     },
+
+    methods: {
+        removeMessage: function removeMessage(id) {
+            this.messages = this.messages.filter(function (message) {
+                return message.id !== id;
+            });
+        }
+    },
     mounted: function mounted() {
         var _this = this;
 
@@ -39532,6 +39552,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (message.selfOwned) {
                 _this.$refs.messages.scrollTop = 0;
             }
+        }).$on('message.remove', function (message) {
+            _this.removeMessage(message.id);
         });
     }
 });
