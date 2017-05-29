@@ -19,3 +19,5 @@ $router->auth();
 
 $router->get('/home', 'HomeController@index')->name('home');
 $router->get('/chat', 'Chat\\ChatController@index')->name('chat');
+
+$router->get('/chat/messages', 'Chat\\ChatMessagesController@index')->name('chat.messages');

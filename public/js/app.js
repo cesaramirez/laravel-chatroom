@@ -39113,8 +39113,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({});
 
@@ -39123,7 +39121,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(41)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 /***/ }),
 /* 50 */
@@ -39170,22 +39168,20 @@ module.exports = Component.exports
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "uk-card uk-card-default uk-card-hover"
-  }, [_c('div', {
-    staticClass: "uk-card-body"
-  }, [_c('chat-messages'), _vm._v(" "), _vm._m(0)], 1)])
+  }, [_c('chat-messages'), _vm._v(" "), _vm._m(0)], 1)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('form', {
-    staticClass: "uk-form"
+    staticClass: "uk-form uk-padding-small"
   }, [_c('textarea', {
     staticClass: "uk-textarea",
     attrs: {
       "id": "body",
-      "rows": "8",
+      "rows": "5",
       "cols": "80"
     }
   }), _vm._v(" "), _c('span', {
     staticClass: "uk-text-meta"
-  }, [_vm._v("\n                Hit return to send or Ctrl + Return for a new line\n            ")])])
+  }, [_vm._v("\n            Hit return to send or Ctrl + Return for a new line\n        ")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -39487,23 +39483,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            messages: []
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        axios.get('/chat/messages').then(function (response) {
+            _this.messages = response.data;
+        });
+    }
+});
 
 /***/ }),
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(41)();
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
-
-/***/ }),
+/* 56 */,
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
-
-
-/* styles */
-__webpack_require__(59)
 
 var Component = __webpack_require__(35)(
   /* script */
@@ -39541,8 +39543,15 @@ module.exports = Component.exports
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "uk-margin"
-  }, [_c('chat-message')], 1)
+    staticClass: "uk-overflow-auto uk-height-medium"
+  }, _vm._l((_vm.messages), function(message) {
+    return _c('chat-message', {
+      key: message.id,
+      attrs: {
+        "message": message
+      }
+    })
+  }))
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -39553,32 +39562,7 @@ if (false) {
 }
 
 /***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(56);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(53)("3b7066f1", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-4d615758\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Messages.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-4d615758\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Messages.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 59 */,
 /* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -39605,8 +39589,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['message']
+});
 
 /***/ }),
 /* 61 */,
@@ -39652,10 +39639,13 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('article', {
-    staticClass: "uk-comment uk-comment-primary"
+  return _c('div', {
+    staticClass: "uk-padding-small"
+  }, [_c('article', {
+    staticClass: "uk-comment",
+    class: {
+      'uk-comment-primary': _vm.message.selfOwned
+    }
   }, [_c('header', {
     staticClass: "uk-comment-header uk-grid-medium uk-flex-middle",
     attrs: {
@@ -39670,16 +39660,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "href": "#"
     }
-  }, [_vm._v("Author")])]), _vm._v(" "), _c('ul', {
+  }, [_vm._v("\n                    " + _vm._s(_vm.message.user.name) + "\n                ")])]), _vm._v(" "), _c('ul', {
     staticClass: "uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top"
   }, [_c('li', [_c('a', {
     attrs: {
       "href": "#"
     }
-  }, [_vm._v("12 days ago")])])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.message.created_at))])])])])]), _vm._v(" "), _c('div', {
     staticClass: "uk-comment-body"
-  }, [_c('p', [_vm._v("Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\n\njusto duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.")])])])])
-}]}
+  }, [_c('p', [_vm._v(_vm._s(_vm.message.body))])])])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
