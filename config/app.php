@@ -167,6 +167,7 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
+        GrahamCampbell\Exceptions\ExceptionsServiceProvider::class,
 
         /*
          * Application Service Providers...
