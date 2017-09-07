@@ -5,12 +5,12 @@
                 <li>
                   <h4>
                       <span>
-                        1 user online
+                        {{ users.length }} {{ pluralize('user', users.length) }} online
                       </span>
                   </h4>
                 </li>
-                <li>
-                    <a href="#">César Ramírez</a>
+                <li v-for="user in users" :key="user.id">
+                    <a href="#">{{ user.name }}</a>
                 </li>
             </ul>
         </div>
@@ -18,7 +18,31 @@
 </template>
 
 <script>
+import Bus from '../../bus'
+import pluralize from 'pluralize'
+
 export default {
+    data() {
+        return {
+            users: []
+        }
+    },
+    mounted() {
+        Bus.$on('users.here', (users) => {
+            this.users = users
+        })
+        .$on('user.joined', (user) => {
+            this.users.unshift(user)
+        })
+        .$on('user.left', (user) => {
+            this.users = this.users.filter( (u) => {
+                return u.id !== user.id
+            })
+        })
+    },
+    methods: {
+        pluralize: pluralize
+    }
 }
 </script>
 

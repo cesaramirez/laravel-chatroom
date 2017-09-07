@@ -1,7 +1,10 @@
+import Vue from 'vue';
 import UIkit from 'uikit';
 import Icons from 'uikit/dist/js/uikit-icons';
 import lodash from 'lodash';
 import axios from 'axios';
+
+window.Vue = Vue;
 
 UIkit.use(Icons);
 
@@ -18,13 +21,15 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
-import Echo from 'laravel-echo'
+import LaravelEcho from 'laravel-echo'
 
 window.Pusher = require('pusher-js');
 
-window.Echo = new Echo({
+window.Echo = new LaravelEcho({
     broadcaster: 'pusher',
     key: 'fc1bb2ba1a19ded93e6c',
     cluster: 'us2',
     encryption: true
 });
+
+require('./echo')
