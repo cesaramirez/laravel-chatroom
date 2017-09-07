@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Chat;
 
-use App\Http\Requests\StoreMessageRequest;
-use Illuminate\Http\Request;
+use App\Events\Chat\MessageCreated;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreMessageRequest;
 use App\Models\Chat\Message;
 
 class ChatMessagesController extends Controller
@@ -19,8 +19,10 @@ class ChatMessagesController extends Controller
     public function store(StoreMessageRequest $request)
     {
         $message = $request->user()->messages()->create([
-            'body' => $request->body
+            'body' => $request->body,
         ]);
+
+        broadcast(new MessageCreated($message))->toOthers();
 
         return response()->json($message, 200);
     }

@@ -4,15 +4,17 @@
                  :class="{ 'uk-comment-primary' : message.selfOwned }">
             <header class="uk-comment-header uk-grid-medium uk-flex-middle" uk-grid>
                 <div class="uk-width-expand">
-                    <h4 class="uk-comment-title uk-margin-remove"><a class="uk-link-reset" href="#">
-                        {{ message.user.name }}
-                    </a></h4>
-                    <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
-                        <li><a href="#">{{ message.created_at }}</a></li>
-                    </ul>
+                    <h4 class="uk-text-small uk-margin-remove">
+                        <a class="uk-link-reset" href="#">
+                            {{ message.user.name }}
+                            <span class="uk-text-meta">
+                                {{ message.created_at }}
+                            </span>
+                        </a>
+                    </h4>
                 </div>
             </header>
-            <div class="uk-comment-body">
+            <div class="uk-text-small">
                 <p>{{ message.body }}</p>
             </div>
         </article>

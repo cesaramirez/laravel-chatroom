@@ -10,3 +10,7 @@ Echo.join('chat')
     .leaving( (user) => {
         Bus.$emit('user.left', user)
     })
+    .listen('Chat.MessageCreated', (e) => {
+        console.log(e.message);
+        Bus.$emit('message.added', e.message);
+    })

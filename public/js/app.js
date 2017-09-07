@@ -70088,6 +70088,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['message']
@@ -70113,20 +70115,16 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "uk-width-expand"
   }, [_c('h4', {
-    staticClass: "uk-comment-title uk-margin-remove"
+    staticClass: "uk-text-small uk-margin-remove"
   }, [_c('a', {
     staticClass: "uk-link-reset",
     attrs: {
       "href": "#"
     }
-  }, [_vm._v("\n                    " + _vm._s(_vm.message.user.name) + "\n                ")])]), _vm._v(" "), _c('ul', {
-    staticClass: "uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top"
-  }, [_c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v(_vm._s(_vm.message.created_at))])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "uk-comment-body"
+  }, [_vm._v("\n                        " + _vm._s(_vm.message.user.name) + "\n                        "), _c('span', {
+    staticClass: "uk-text-meta"
+  }, [_vm._v("\n                            " + _vm._s(_vm.message.created_at) + "\n                        ")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "uk-text-small"
   }, [_c('p', [_vm._v(_vm._s(_vm.message.body))])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -70332,6 +70330,9 @@ Echo.join('chat').here(function (users) {
     __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('user.joined', user);
 }).leaving(function (user) {
     __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('user.left', user);
+}).listen('Chat.MessageCreated', function (e) {
+    console.log(e.message);
+    __WEBPACK_IMPORTED_MODULE_0__bus__["a" /* default */].$emit('message.added', e.message);
 });
 
 /***/ }),
