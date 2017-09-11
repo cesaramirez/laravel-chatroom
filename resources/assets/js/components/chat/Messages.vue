@@ -1,5 +1,5 @@
 <template lang="html">
-    <div class="uk-overflow-auto uk-height-medium" ref="messages">
+    <div class="uk-overflow-auto uk-height-medium" id="messages">
         <chat-message v-for="message in messages"
                       :key="message.id"
                       :message="message">

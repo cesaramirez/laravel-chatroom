@@ -69944,8 +69944,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    ref: "messages",
-    staticClass: "uk-overflow-auto uk-height-medium"
+    staticClass: "uk-overflow-auto uk-height-medium",
+    attrs: {
+      "id": "messages"
+    }
   }, _vm._l((_vm.messages), function(message) {
     return _c('chat-message', {
       key: message.id,
