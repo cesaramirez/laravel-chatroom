@@ -11,6 +11,17 @@
 |
 */
 
-Route::get('/', function () {
+$router->get('/', function () {
     return view('welcome');
 });
+
+$router->auth();
+
+$router->get('/home', 'HomeController@index')->name('home');
+$router->get('/chat', 'Chat\\ChatController@index')->name('chat');
+
+$router->get('/chat/messages', 'Chat\\ChatMessagesController@index')
+       ->name('chat.messages');
+
+$router->post('/chat/messages', 'Chat\\ChatMessagesController@store')
+       ->name('chat.messages');
