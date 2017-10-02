@@ -22,16 +22,18 @@ class Message extends Model
     protected $appends = ['selfOwned'];
 
     /**
-     * Get message owned to user
-     * @return boolean
+     * Get message owned to user.
+     *
+     * @return bool
      */
     public function getSelfOwnedAttribute()
     {
         return $this->user_id === auth()->user()->id;
     }
-    
+
     /**
-     * Message related with user
+     * Message related with user.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()

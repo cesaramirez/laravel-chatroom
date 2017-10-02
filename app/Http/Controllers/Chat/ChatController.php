@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Chat;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ChatController extends Controller
 {
     /**
-     * Chat Constructor
+     * Chat Constructor.
      */
     public function __construct()
     {
@@ -16,7 +15,8 @@ class ChatController extends Controller
     }
 
     /**
-     * Index chat
+     * Index chat.
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()

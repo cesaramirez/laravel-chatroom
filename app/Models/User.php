@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Chat\Message;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -29,7 +29,8 @@ class User extends Authenticatable
     ];
 
     /**
-     * Messages from user
+     * Messages from user.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function messages()
